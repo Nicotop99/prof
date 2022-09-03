@@ -1,0 +1,206 @@
+<resources>
+    <string name="app_name">Pub Mania</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="benvenutoIn">Benvenuto in</string>
+    <string name="avanti">Avanti</string>
+    <string name="registrailtuopubinpochissimistep">Registra il tuo pub in pochissimi step</string>
+    <string name="Creaofferteutilizzabilidatuoiclienti">Crea offerte utilizzabili dai tuoi clienti</string>
+    <string name="Fattiecensioreattipubblicitàora">Fatti recensiore e fatti pubblicità ora</string>
+    <string name="Fine">Fine</string>
+    <string name="benvenuto">Benvenuto</string>
+    <string name="Effettuailloginpercontinuare">Effettua il login per continuare</string>
+    <string name="accedi">Accedi</string>
+    <string name="haidimenticatolapassword">Hai dimenticato la password?</string>
+    <string name="cliccaqua">Clicca qua</string>
+    <string name="restaconnesso">Resta connesso</string>
+    <string name="nonseiancoraregistrato">Non sei ancora registrato?</string>
+    <string name="registrati">Registrati</string>
+    <string name="registratiGratuitamente">Registrati gratuitamente</string>
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+    <string name="Cellulare">Cellulare</string>
+    <string name="leemailnoncoicidono">L\'email non coincide</string>
+    <string name="indirizzoemailnonvalido">Indirizzo email non valido</string>
+    <string name="emailnoninserita">Email non inserita</string>
+    <string name="passwordnoninserita">Password non inserita</string>
+    <string name="passwordalmeno8caratteri">Password almeno 8 caratteri</string>
+    <string name="lepasswordnoncoicidono">Le password non coincidono</string>
+    <string name="nomenoninserito">Nome non inserito</string>
+    <string name="cognomenoninserito">Cognome non inserito</string>
+    <string name="cellularenoninserito">Cellulare non inserito</string>
+    <string name="cellnonvalido">Cellulare non valido</string>
+    <string name="emaildiconfermainviata">Ti abbiamo inviato un email per verificarne l\'autenticità. Se non la visualizzi prova a controllare nella casella \"Spam\"</string>
+    <string name="erroreriprovapiutardi">Errore riprova più tardi</string>
+    <string name="accountdisabilitato">Questo account è stato disabilitato</string>
+    <string name="utentenontrovato">Utente non trovato</string>
+    <string name="passworderrata">La password è errata</string>
+    <string name="sipregadiverificarelinidizzoemail">Si prega di verificare questo indirizzo Email</string>
+    <string name="italia">Italia(IT)</string>
+    <string name="selezionepaese">Seleziona il paese della tua partita IVA</string>
+
+    <string-array name="arrayLocationPartitaIva">
+        <item>@string/selezionepaese</item>
+        <item>@string/italia</item>
+
+    </string-array>
+    <string-array name="arraySconto">
+        <item>@string/scontoApplicato</item>
+        <item>@string/prezzo</item>
+        <item>@string/percentiale</item>
+    </string-array>
+
+
+    <string-array name="arrayQuanteVolte">
+        <item>@string/quanteVoltepuoessereusato</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>@string/sempre</item>
+    </string-array>
+
+    <string-array name="arrauChiPuousarlo">
+        <item>@string/chipuousarlo</item>
+        <item>@string/tutti</item>
+        <item>@string/solofollowe</item>
+    </string-array>
+
+    <string-array name="arrayCategoria">
+        <item>@string/selezionacategoria</item>
+        <item>@string/cocktail</item>
+        <item>@string/dolci</item>
+        <item>@string/salati</item>
+        <item>@string/bevande</item>
+    </string-array>
+
+    <string-array name="arrayQualeProdotto">
+
+        <item>@string/suqualeprodottovuoifarelosconto</item>
+        <item>@string/tutti</item>
+        <item>@string/selezionasingolo</item>
+
+    </string-array>
+
+    <string name="inseriscilatuapartitaiva">Inserisci la tua partita IVA</string>
+    <string name="partitaIva">Partita IVA</string>
+    <string name="completaregistrazione">Completa la registrazione</string>
+    <string name="partitaivanoninserita">Partita IVA non inserita</string>
+    <string name="partitaivanonvalida">Partita IVA non valida</string>
+    <string name="paesenoninserito">Paese non inserito</string>
+    <string name="Recensioni">Recensioni</string>
+    <string name="seguiti">Seguiti</string>
+    <string name="notifiche">Notifiche</string>
+    <string name="recensioni">Recensioni</string>
+    <string name="aggiungiprodottoalmenù">Aggiungi prodotto al menù</string>
+    <string name="cosastaicercando">Cosa stai cercando?</string>
+    <string name="profilo">Profilo</string>
+    <string name="impostazioni">Impostazioni</string>
+    <string name="Benvenuto">Benvenuto ,</string>
+    <string name="cocktail">Cocktail</string>
+    <string name="dolci">Dolci</string>
+    <string name="salati">Salati</string>
+    <string name="bevande">Bevande</string>
+    <string name="prezzo">Prezzo</string>
+    <string name="categoria">Categoria</string>
+    <string name="selezionacategoria">Seleziona categoria</string>
+    <string name="ingrdienti">Ingredianti</string>
+    <string name="crea">Crea</string>
+    <string name="ingredientegiainserito">Ingrediente gia inserito</string>
+    <string name="ingredientenonvalido">Ingrediente non valido</string>
+    <string name="nomearticolononinserito">Nome articolo non inserito</string>
+    <string name="prezzononinserito">Prezzo non inserito</string>
+    <string name="categorianonselezionata">Categoria non selezionata</string>
+    <string name="caricaimmagine">Carica immagini</string>
+    <string name="creaProdotto">Crea prodotto</string>
+    <string name="Prodottocreatoconsuccesso">Prodotto creato con successo</string>
+    <string name="visualizza">Visualizza</string>
+    <string name="menuPrincipale">Menu principale</string>
+    <string name="ingredienti">Ingredienti:</string>
+    <string name="seisicurodivolereliminareilprodotto">Sei sicuro di voler eliminare questo prodotto?</string>
+    <string name="si">Si</string>
+    <string name="no">No</string>
+    <string name="modificaArticolo">Modifica articolo</string>
+    <string name="aggiornamentopostincorso">Aggiornamento post in corso...</string>
+    <string name="sipregadinonuscire">Ti preghiamo di non uscire dalla pagina/App</string>
+    <string name="creanuovoCoupon">Crea nuovo coupon</string>
+    <string name="piuusato">Più usato</string>
+    <string name="piurecente">Più recente</string>
+    <string name="menousato">Meno usato</string>
+    <string name="menoRecente">Meno recente</string>
+    <string name="nessuncouponcreato">Non hai nessun coupon</string>
+    <string name="creaneunoconilbottoneinalto">Creane uno ora con cliccando il bottone in alto</string>
+    <string name="creacoupon">Crea coupon</string>
+    <string name="titol">Titolo</string>
+    <string name="scontoApplicato">Sconto applicato</string>
+    <string name="percentiale">Percentuale</string>
+    <string name="tipodisconto">Tipo di sconto</string>
+    <string name="quanteVoltepuoessereusato">Quante volte puo essere usato?</string>
+    <string name="sempre">Sempre</string>
+    <string name="chipuousarlo">Chi puo utilizzare questo coupon?</string>
+    <string name="tutti">Tutti</string>
+    <string name="solofollowe">Solo i follower</string>
+    <string name="titolononinserito">Titolo non inserito</string>
+    <string name="questocampononpuoesserevuoto">Questo campo non puo essere vuoto</string>
+    <string name="tipodiscontononinserito">Tipo di sconto non inserito</string>
+    <string name="quantevoltepuoessereinseritononinserit">Quante volte può essere utilizzato?</string>
+    <string name="chipuoutilizzarlo">Chi può utilizzarlo?</string>
+    <string name="suqualeprodottovuoifarelosconto">Su quale prodotto vuoi fare lo sconto?</string>
+    <string name="Tutti">Tutti</string>
+    <string name="selezionasingolo">Seleziona singolo</string>
+    <string name="cercs">Cerca</string>
+    <string name="elimina">Elimina</string>
+    <string name="sututtiiprodotti">di sconto su tutti i prodotti</string>
+    <string name="scontoDi">Sconto di</string>
+    <string name="sututtolimporto">su tutto l\'importo</string>
+    <string name="su">su</string>
+    <string name="volteutilizzato">volte utilizzato</string>
+    <string name="seisicurodivolereliminarequesrcopuon">Sei sicuro di voler eliminare questo coupon?</string>
+    <string name="follower">Follower</string>
+    <string name="mediaRecensioni">Media recensioni</string>
+    <string name="coupon">Coupon</string>
+    <string name="Nonhaiancoranessunafoto">Non hai ancora nessuna foto</string>
+    <string name="caricaneunaoa">Caricane una ora</string>
+    <string name="premendoquestotasto">Premendo questo tasto</string>
+    <string name="creapost">Crea post</string>
+    <string name="creailtuoprimopost">Crea il tuo primo post</string>
+    <string name="descrizione">Descrizione</string>
+    <string name="selezionafoto">Seleziona foto</string>
+    <string name="cambiafoto">Cambia foto</string>
+    <string name="salvamodifice">Salva modifiche</string>
+    <string name="fotoProfiloCambiata">Foto profilo cambiata con successo</string>
+    <string name="mettiinevidenza">Metti in evidenza</string>
+    <string name="rimuovidallevidenza">Rimuovi dall evidenza</string>
+    <string name="seisicurodivolereliminarequestopost">Sei sicuro di voler eliminare questo post?</string>
+    <string name="scansionaqr">Scansiona un QR</string>
+    <string name="questoutentrhagiautilizzatoquestocoupon">Questo utente ha gia utilizzato questo coupon</string>
+    <string name="discontosu">di sconto su</string>
+    <string name="tuttolordine">tutto l\'ordine</string>
+    <string name="fine">Fine</string>
+    <string name="profiloPub">Profilo Pub</string>
+    <string name="nomeLocale">Nome locale</string>
+    <string name="orarioapertura">Orario apertura</string>
+    <string name="lunedi">Lunedì</string>
+    <string name="martedi">Martedì</string>
+    <string name="mercoledi">Mercoledì</string>
+    <string name="giovedi">Giovedì</string>
+    <string name="venerdi">Venerdì</string>
+    <string name="sabato">Sabato</string>
+    <string name="domenica">Domenica</string>
+    <string name="orariochiusura">Orario chiusura</string>
+    <string name="lunediapriraialleore">"Lunedì aprirai alle ore "</string>
+    <string name="martediapriraialleore">"Martedì aprirai alle ore "</string>
+    <string name="mmercolediapriraialleore">"Mercoledì aprirai alle ore "</string>
+    <string name="giovediapriraialleore">"Giovedì aprirai alle ore "</string>
+    <string name="venerdidiapriraialleore">"Venerdì aprirai alle ore "</string>
+    <string name="sabatodiapriraialleore">"Sabato aprirai alle ore "</string>
+    <string name="domenicadiapriraialleore">"Domenica aprirai alle ore "</string>
+    <string name="lunedichidialleore">"Lunedì chiuderai alle ore "</string>
+    <string name="martedichidialleore">"Martedì chiuderai alle ore "</string>
+    <string name="mercoledichidialleore">"Mercoldì chiuderai alle ore "</string>
+    <string name="giovedichidialleore">"Giovedì chiuderai alle ore "</string>
+    <string name="venerdchidialleore">"Venerdì chiuderai alle ore "</string>
+    <string name="sanatochidialleore">"Sabato chiuderai alle ore "</string>
+    <string name="domenicachidialleore">"Domenica chiuderai alle ore "</string>
+
+</resources>

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "891813146423",
+    "project_id": "pubmania-404db",
+    "storage_bucket": "pubmania-404db.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891813146423:android:c1948311da6a90da42b4b2",
+        "android_client_info": {
+          "package_name": "com.pubmania.professionista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891813146423-mm1qgbbl3lnldngcv1j5s8si4pngeqjc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAUmNDGd_R0RNG0oS0Hnl2mZMtxhkrqLQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891813146423-mm1qgbbl3lnldngcv1j5s8si4pngeqjc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

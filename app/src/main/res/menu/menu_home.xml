@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/HomeBotton"
+        android:title="Home"
+        android:icon="@drawable/home_icon"/>
+
+    <item android:id="@+id/couponBotton"
+        android:title="Coupon"
+        android:icon="@drawable/coupon_icon"/>
+
+    <item android:id="@+id/nullable"
+        android:title=""/>
+
+    <item android:id="@+id/recensioniBotton"
+        android:title="@string/recensioni"
+        android:icon="@drawable/recensioni_icon"/>
+
+    <item android:id="@+id/profil_page"
+        android:title="@string/recensioni"
+        android:icon="@drawable/recensioni_icon"/>
+
+</menu>

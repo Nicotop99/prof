@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/profilo"
+        android:icon="@drawable/profile_icon"
+        android:id="@+id/menu_lat_profilo"/>
+
+    <item android:title="@string/impostazioni"
+        android:icon="@drawable/impos_icon"
+        android:id="@+id/menu_lat_impo"/>
+    <item android:title="Dashboard"
+        android:icon="@drawable/dashboard_icon"
+        android:id="@+id/menu_lat_dash"/>
+
+
+</menu>
