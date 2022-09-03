@@ -4,6 +4,7 @@
 
 
     //prorcodio
+    //ciaooo
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -25,7 +26,8 @@
         <activity android:name=".Profile_bottom">
 
         </activity>
-        <activity android:name=".couponActivity" >
+        <activity android:name=".couponActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
