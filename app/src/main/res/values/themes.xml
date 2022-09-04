@@ -16,11 +16,18 @@
         <item name="android:textColor">@color/black</item>
         <!-- Customize your theme here. -->
     </style>
+    <style name="mySpinnerItemStyle" parent="@android:style/Widget.Holo.DropDownItem.Spinner">
+        <item name="android:textSize">8dp</item>
+
+</style>
 
     <style name="spinnerPaese">
         <item name="font">@font/bahiama</item>
-    </style>
 
+    </style>
+<style name="spi">
+    <item name="android:textSize">8dp</item>
+</style>
     <style name="styleSpinner">
         <item name="fontFamily">@font/bahiama</item>
     </style>

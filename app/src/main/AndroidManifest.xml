@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pubmania.professionista">
 
-
-    //prorcodio
-    //ciaooo
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -20,23 +17,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PubMania"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ProfiloPub">
+        <activity
+            android:name=".Recensioni_Bottom"
+            android:exported="true" ><intent-filter>
+            <action android:name="android.intent.action.MAIN" />
 
-        </activity>
-        <activity android:name=".Profile_bottom">
-
-        </activity>
-        <activity android:name=".couponActivity"
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter></activity>
+        <activity android:name=".ProfiloPub"></activity>
+        <activity android:name=".Profile_bottom"></activity>
+        <activity
+            android:name=".couponActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".HomePage">
 
         </activity>
+        <activity android:name=".HomePage"></activity>
         <activity android:name=".CheckPartitaIva" />
         <activity android:name=".Registrazione" />
         <activity android:name=".Login" />

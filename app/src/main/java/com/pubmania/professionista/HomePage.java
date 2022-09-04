@@ -132,8 +132,9 @@ public class HomePage extends AppCompatActivity {
             }
         } );
         setImageSlider();
-
     }
+
+
     ArrayList<SlideModel> arrayModel = new ArrayList<>();
 
     private void setImageSlider() {

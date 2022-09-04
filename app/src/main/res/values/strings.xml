@@ -82,6 +82,16 @@
 
     </string-array>
 
+    <string-array name="giornifa">
+        <item>@string/ultimi7giorno</item>
+        <item>@string/ultimi14giorni</item>
+        <item>@string/trenta30giornifa</item>
+        <item>@string/seimesifa</item>
+        <item>@string/unannofa</item>
+        <item>@string/sempre</item>
+
+    </string-array>
+
     <string name="inseriscilatuapartitaiva">Inserisci la tua partita IVA</string>
     <string name="partitaIva">Partita IVA</string>
     <string name="completaregistrazione">Completa la registrazione</string>
@@ -202,5 +212,12 @@
     <string name="venerdchidialleore">"Venerdì chiuderai alle ore "</string>
     <string name="sanatochidialleore">"Sabato chiuderai alle ore "</string>
     <string name="domenicachidialleore">"Domenica chiuderai alle ore "</string>
+    <string name="valutazionie">Valutazioni</string>
+    <string name="gestionerecensioni">Gestione recensioni</string>
+    <string name="ultimi7giorno">Ultimi 7 giorni</string>
+    <string name="ultimi14giorni">Ultimi 14 giorni</string>
+    <string name="trenta30giornifa">30 giorni fa</string>
+    <string name="seimesifa">6 mesi fa</string>
+    <string name="unannofa">1 anno fa</string>
 
 </resources>
