@@ -219,5 +219,9 @@
     <string name="trenta30giornifa">30 giorni fa</string>
     <string name="seimesifa">6 mesi fa</string>
     <string name="unannofa">1 anno fa</string>
+    <string name="stelle">stelle</string>
+    <string name="a">a</string>
+    <string name="recension">recensioni a</string>
+    <string name="nessunarecensionecon">Nessuna recensione con un titolo</string>
 
 </resources>

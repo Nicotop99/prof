@@ -34,15 +34,48 @@
 
     <Spinner
         android:id="@+id/spinner"
-        android:theme="@style/spi"
-
         android:layout_width="0dp"
+
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
-        android:textSize="8dp"
         android:background="@drawable/back_giorno_fa2"
         android:entries="@array/giornifa"
+        android:textSize="8dp"
+        android:theme="@style/spi"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView82"
-        app:layout_constraintTop_toBottomOf="@+id/textView82" />
+        app:layout_constraintTop_toBottomOf="@+id/textView82"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <ListView
+        android:id="@+id/listRec"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="90dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idBarChart" />
+
+    <TextView
+        android:id="@+id/textView94"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginBottom="90dp"
+        android:fontFamily="@font/bahiama"
+        android:text="@string/nessunarecensionecon"
+        android:textAlignment="center"
+        android:textColor="@color/giallochiaro"
+        android:textSize="28dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idBarChart" />
 </androidx.constraintlayout.widget.ConstraintLayout>

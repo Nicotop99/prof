@@ -20,6 +20,14 @@
         <item name="android:textSize">8dp</item>
 
 </style>
+    <style name="CustomCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/pro</item>
+    </style>
+    <style name="pro">
+        <item name="cornerSizeBottomLeft">11dp</item>
+        <item name="cornerSizeTopLeft">11dp</item>
+
+    </style>
 
     <style name="spinnerPaese">
         <item name="font">@font/bahiama</item>
