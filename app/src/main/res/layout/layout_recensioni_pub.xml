@@ -5,27 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/imageView39"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/back_recensioni_pub" />
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/materialCardView"
         android:layout_width="85dp"
         android:layout_height="0dp"
         android:layout_marginStart="2dp"
-
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
 
-        android:elevation="10dp"
-        android:theme="@style/CustomCardViewStyle"
+        app:cardCornerRadius="10dp"
+        android:backgroundTint="@color/giallochiaro"
         app:layout_constraintBottom_toBottomOf="@+id/imageView39"
         app:layout_constraintStart_toStartOf="@+id/imageView39"
         app:layout_constraintTop_toTopOf="@+id/imageView39">
@@ -33,11 +22,24 @@
         <ImageView
             android:id="@+id/imageView40"
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            style="@style/CustomCardViewStyle"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
 
+            android:scaleType="centerCrop"
             tools:srcCompat="@tools:sample/avatars" />
     </com.google.android.material.card.MaterialCardView>
+
+    <ImageView
+        android:id="@+id/imageView39"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:scaleType="fitXY"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/back_recensioni_pub" />
 
     <TextView
         android:id="@+id/textView93"
@@ -74,6 +76,7 @@
         app:layout_constraintEnd_toEndOf="@+id/imageView39" />
 
     <LinearLayout
+        android:id="@+id/linearLayout3"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
@@ -119,6 +122,15 @@
             app:srcCompat="@drawable/ballrecensionebianco" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView103"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:visibility="invisible"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        tools:layout_editor_absoluteX="164dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

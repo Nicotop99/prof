@@ -47,6 +47,8 @@ public class AdapterRecensioni extends ArrayAdapter<StringRec> {
         ImageView rec5 = (ImageView) view.findViewById(R.id.imageView45);
         TextView ora = (TextView) view.findViewById(R.id.textView96);
         CardView cardView = (CardView) view.findViewById(R.id.materialCardView);
+        TextView idPost = (TextView) view.findViewById(R.id.textView103);
+        idPost.setText(stringRec.getId());
         if(stringRec.getTitolo().isEmpty()){
             titolo.setVisibility(View.GONE);
         }else{
@@ -68,43 +70,11 @@ public class AdapterRecensioni extends ArrayAdapter<StringRec> {
 
         ora.setText(stringRec.getOra());
 
-        if(!stringRec.getValStruttura().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValStruttura());
-        }
-        if(!stringRec.getValProdotti().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValProdotti());
-        }
-        if(!stringRec.getValServizio().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValServizio());
-        }
-        if(!stringRec.getValBagni().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValBagni());
-        }if(!stringRec.getValQuantitaGente().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValQuantitaGente());
-        }if(!stringRec.getValRagazze().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValRagazze());
-        }if(!stringRec.getValRagazzi().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValRagazzi());
-        }
-        if(!stringRec.getValPrezzi().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValPrezzi());
-        }
-        if(!stringRec.getValDivertimento().equals("0")){
-            countMedia +=1;
-            countTot +=Integer.parseInt( stringRec.getValDivertimento());
-        }
 
 
 
-        media = countTot / countMedia;
+
+        media = Integer.parseInt(stringRec.getMedia());
         if(media == 1){
             rec1.setImageResource(R.drawable.ballrecensionegiallo);
             rec2.setImageResource(R.drawable.ballrecensionebianco);

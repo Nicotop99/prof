@@ -5,10 +5,11 @@
       <map>
         <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/drawable/bla.xml" value="0.236" />
         <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/activity_profile_bottom.xml" value="0.24547101449275363" />
-        <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/activity_recensioni_bottom.xml" value="0.264" />
+        <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/activity_recensioni_bottom.xml" value="0.6" />
+        <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/click_rec_pub.xml" value="0.264" />
         <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/grif_profile.xml" value="0.24547101449275363" />
         <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/layout_click_grafico.xml" value="0.264" />
-        <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/layout_recensioni_pub.xml" value="0.72" />
+        <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/layout_recensioni_pub.xml" value="0.536" />
         <entry key="..\:/Users/nicol/StudioProjects/prof/app/src/main/res/layout/spiner_layout.xml" value="0.2427536231884058" />
       </map>
     </option>

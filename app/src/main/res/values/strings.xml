@@ -223,5 +223,15 @@
     <string name="a">a</string>
     <string name="recension">recensioni a</string>
     <string name="nessunarecensionecon">Nessuna recensione con un titolo</string>
-
+    <string name="cisono">Ci sono</string>
+    <string name="struttura">Struttura</string>
+    <string name="prodotti">Prodotti</string>
+    <string name="servizio">Servizio</string>
+    <string name="bagni">Bagni</string>
+    <string name="quantitagente">Quantità persone</string>
+    <string name="valutazioneragazze">Valutazione ragazze</string>
+    <string name="valutazioneragazzi">Valutazione ragazzi</string>
+    <string name="prezzi">Prezzi</string>
+    <string name="divertimento">Divertimento</string>
+    <string name="recensioneDi">Recensione di</string>
 </resources>

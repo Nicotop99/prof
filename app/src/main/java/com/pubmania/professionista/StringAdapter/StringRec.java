@@ -4,16 +4,17 @@ import java.util.List;
 
 public class StringRec {
     public String id,emailpub,emailPubblico,desc,titolo,valStruttura,valProdotti,valBagni,valQuantitaGente,valRagazze,valRagazzi,
-            valPrezzi,valDivertimento,valServizio,ora;
+            valPrezzi,valDivertimento,valServizio,ora,media;
     public List<String> arrayList;
     public StringRec(){
 
     }
 
-    public StringRec(String id, String emailpub, String emailPubblico, String desc, String titolo, String valStruttura,
+    public StringRec(String media, String id, String emailpub, String emailPubblico, String desc, String titolo, String valStruttura,
                      String valProdotti, String valBagni, String valQuantitaGente, String valRagazze, String valRagazzi,
                      String valPrezzi, String valDivertimento, String valServizio, String ora, List<String> arrayList) {
         this.id = id;
+        this.media = media;
         this.emailpub = emailpub;
         this.emailPubblico = emailPubblico;
         this.desc = desc;
@@ -29,6 +30,14 @@ public class StringRec {
         this.valServizio = valServizio;
         this.ora = ora;
         this.arrayList = arrayList;
+    }
+
+    public String getMedia() {
+        return media;
+    }
+
+    public void setMedia(String media) {
+        this.media = media;
     }
 
     public String getId() {

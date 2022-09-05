@@ -1,0 +1,703 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ScrollView
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:scrollIndicators="none"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView102">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:scrollIndicators="none"
+            android:stretchMode="columnWidth"
+
+            app:columnCount="1"
+
+            >
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView69333"
+                    app:layout_constraintStart_toStartOf="@+id/textView69333"
+                    app:layout_constraintTop_toBottomOf="@+id/textView69333">
+
+                    <ImageView
+                        android:id="@+id/imageView48"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView49"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView50"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView51"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView52"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView69333"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/struttura"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textView693333"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/prodotti"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView693333"
+                    app:layout_constraintStart_toStartOf="@+id/textView693333"
+                    app:layout_constraintTop_toBottomOf="@+id/textView693333">
+
+                    <ImageView
+                        android:id="@+id/imageView483"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView493"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView503"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView513"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView523"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+
+                android:layout_marginTop="10dp">
+
+                <TextView
+                    android:id="@+id/textView6933331"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/servizio"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView6933331"
+                    app:layout_constraintStart_toStartOf="@+id/textView6933331"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6933331">
+
+                    <ImageView
+                        android:id="@+id/imageView4831"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView4931"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5031"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5131"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5231"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView693332"
+                    app:layout_constraintStart_toStartOf="@+id/textView693332"
+                    app:layout_constraintTop_toBottomOf="@+id/textView693332">
+
+                    <ImageView
+                        android:id="@+id/imageView482"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView492"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView502"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView512"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView522"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView693332"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/bagni"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView693334"
+                    app:layout_constraintStart_toStartOf="@+id/textView693334"
+                    app:layout_constraintTop_toBottomOf="@+id/textView693334">
+
+                    <ImageView
+                        android:id="@+id/imageView484"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView494"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView504"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView514"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView524"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView693334"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/quantitagente"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constRagazze"
+                android:layout_width="match_parent"
+
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView6933345"
+                    app:layout_constraintStart_toStartOf="@+id/textView6933345"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6933345">
+
+                    <ImageView
+                        android:id="@+id/imageView4845"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView4945"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5045"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5145"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5245"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView6933345"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/valutazioneragazze"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/entrambi"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+
+                >
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView69333459"
+                    app:layout_constraintStart_toStartOf="@+id/textView69333459"
+                    app:layout_constraintTop_toBottomOf="@+id/textView69333459">
+
+                    <ImageView
+                        android:id="@+id/imageView48459"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView49459"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView50459"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView51459"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView52459"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView69333459"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/valutazioneragazzi"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView6933346"
+                    app:layout_constraintStart_toStartOf="@+id/textView6933346"
+                    app:layout_constraintTop_toBottomOf="@+id/textView6933346">
+
+                    <ImageView
+                        android:id="@+id/imageView4846"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView4946"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5046"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView51646"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView5246"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView6933346"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/prezzi"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:layout_marginTop="10dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="@+id/textView69333467"
+                    app:layout_constraintStart_toStartOf="@+id/textView69333467"
+                    app:layout_constraintTop_toBottomOf="@+id/textView69333467">
+
+                    <ImageView
+                        android:id="@+id/imageView48467"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView49467"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView50467"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView516467"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                    <ImageView
+                        android:id="@+id/imageView52467"
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:layout_marginStart="4dp"
+                        app:srcCompat="@drawable/ballrecensionebianco" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView69333467"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/bahiama"
+                    android:text="@string/divertimento"
+                    android:textColor="@color/black"
+                    android:textSize="26dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/textView101"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/bahiama"
+        android:text="@string/descrizione"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView100" />
+
+    <TextView
+        android:id="@+id/textView100"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/bahiama"
+        android:text="TextView"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/textView99"
+        app:layout_constraintTop_toBottomOf="@+id/textView99" />
+
+    <TextView
+        android:id="@+id/textView99"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/bahiama"
+        android:text="@string/titol"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView98" />
+
+    <TextView
+        android:id="@+id/textView102"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:fontFamily="@font/bahiama"
+        android:text="TextView"
+        android:textSize="12dp"
+        app:layout_constraintStart_toStartOf="@+id/textView101"
+        app:layout_constraintTop_toBottomOf="@+id/textView101" />
+
+    <com.denzcoskun.imageslider.ImageSlider
+        android:id="@+id/imageSlider"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView98"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/bahiama"
+        android:text="Recensione di nicola oliverio"
+        android:textColor="@color/black"
+        android:textSize="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageSlider" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
