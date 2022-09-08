@@ -6,10 +6,11 @@ public class StringRecensioni {
 
     }
 
-    public String id,emailCliente,emailPub,idPost,nomeLocale,urlFotoProfilo;
+    public String id,emailCliente,emailPub,idPost,nomeLocale,urlFotoProfilo,token;
 
-    public StringRecensioni(String id, String emailCliente, String emailPub, String idPost,String nomeLocale,String urlFotoProfilo) {
+    public StringRecensioni(String token, String id, String emailCliente, String emailPub, String idPost,String nomeLocale,String urlFotoProfilo) {
         this.id = id;
+        this.token = token;
         this.urlFotoProfilo = urlFotoProfilo;
         this.nomeLocale = nomeLocale;
         this.emailCliente = emailCliente;
@@ -17,6 +18,13 @@ public class StringRecensioni {
         this.idPost = idPost;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getUrlFotoProfilo() {
         return urlFotoProfilo;

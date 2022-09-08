@@ -5,10 +5,11 @@ public class StringCoupon {
 
     }
 
-    public String id,titolo,email,tipo,giorno,mese,ora,prezzo,quanteVolte,chi,qualeProdotto,volteUtilizzate,categoria;
+    public String id,titolo,email,tipo,giorno,mese,ora,prezzo,quanteVolte,chi,qualeProdotto,volteUtilizzate,categoria,token;
 
-    public StringCoupon(String categoria, String id, String titolo, String email, String tipo, String giorno, String mese, String ora, String prezzo, String quanteVolte, String chi, String qualeProdotto, String volteUtilizzate) {
+    public StringCoupon(String token, String categoria, String id, String titolo, String email, String tipo, String giorno, String mese, String ora, String prezzo, String quanteVolte, String chi, String qualeProdotto, String volteUtilizzate) {
         this.id = id;
+        this.token = token;
         this.titolo = titolo;
         this.email = email;
         this.tipo = tipo;
@@ -22,6 +23,14 @@ public class StringCoupon {
         this.categoria = categoria;
         this.qualeProdotto = qualeProdotto;
 
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getCategoria() {

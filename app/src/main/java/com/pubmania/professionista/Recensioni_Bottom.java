@@ -46,6 +46,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.pubmania.professionista.Adapter.AdapterRecensioni;
 import com.pubmania.professionista.Adapter.array_list_coupon;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
@@ -88,7 +89,6 @@ public class Recensioni_Bottom extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recensioni_bottom);
         email = "oliverio.enicola@gmail.com";
-
         // initializing variable for bar chart.
         chart = findViewById(R.id.idBarChart);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);

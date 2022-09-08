@@ -4,7 +4,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
-
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-feature
         android:name="android.hardware.camera"
         android:required="false" />
@@ -19,11 +19,7 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Recensioni_Bottom"
-            android:exported="true" ><intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+            android:exported="true" ></activity>
         <activity android:name=".ProfiloPub"></activity>
         <activity android:name=".Profile_bottom"></activity>
         <activity
@@ -31,7 +27,33 @@
             android:exported="true">
 
         </activity>
-        <activity android:name=".HomePage"></activity>
+        <receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:permission="com.google.android.c2dm.permission.SEND"
+            android:exported="true"
+            android:label="BootReceiver">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+                <action android:name="com.google.android.c2dm.intent.RECEIVE" />
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+        </receiver>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <activity android:name=".HomePage"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".CheckPartitaIva" />
         <activity android:name=".Registrazione" />
         <activity android:name=".Login" />

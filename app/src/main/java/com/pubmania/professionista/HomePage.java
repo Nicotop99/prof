@@ -68,6 +68,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -120,6 +121,8 @@ public class HomePage extends AppCompatActivity {
         creaArticolo();
         setImageButtonCategoria();
         setAutoCLick();
+
+        startService(new Intent(getApplicationContext(),MyFirebaseMessagingService.class));
 
         imageSlider = (ImageSlider) findViewById( R.id.image_slider );
         menuSlider = (ImageButton) findViewById( R.id.imageButton10 );
@@ -182,9 +185,10 @@ public class HomePage extends AppCompatActivity {
     boolean entrato = false;
     String nomePub;
     boolean exist = false;
+    boolean exist2 = false;
     int size = 0;
     CodeScannerView codeScannerView;
-    String tipo,prezzo,prodotti;
+    String tipo,prezzo,prodotti,tokenn;
     private void setMenuBasso() {
         scanQR = (FloatingActionButton) findViewById( R.id.floatBotton );
         scanQR.setOnClickListener( new View.OnClickListener() {
@@ -235,6 +239,7 @@ public class HomePage extends AppCompatActivity {
 
                             }
                             String emailCliente = separated[0];
+                            tokenn = separated[7] + ":" + separated[8];
                             Log.d( "omfodsfm",idPost );
                             countI = 1;
                             firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
@@ -247,7 +252,7 @@ public class HomePage extends AppCompatActivity {
 
                                             size = documentSnapshot.getData().size();
                                             if(documentSnapshot.getId().equals( idPost )){
-                                                exist = true;
+                                                exist2 = true;
                                                 countI = documentSnapshot.getData().size() +1;
 
                                                 documentSnapshott =documentSnapshot;
@@ -256,7 +261,7 @@ public class HomePage extends AppCompatActivity {
 
                                         }
 
-                                            if (exist == true) {
+                                            if (exist2 == true) {
                                                 for (int i = 1; i < documentSnapshott.getData().size(); i++) {
                                                     if (documentSnapshott.getData().get( String.valueOf( i ) ).equals( emailCliente )) {
 
@@ -328,6 +333,7 @@ public class HomePage extends AppCompatActivity {
                                                                             Map<String, Object> user = new HashMap<>();
                                                                             user.put("idPost", idPost);
                                                                             user.put( "emailPub",email );
+
                                                                             firebaseFirestore.collection( emailCliente+"Coupon" ).add( user )
                                                                                     .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
                                                                                         @Override
@@ -337,25 +343,32 @@ public class HomePage extends AppCompatActivity {
                                                                                             firebaseFirestore.collection( emailCliente+"Rec" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                                                                                 @Override
                                                                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                                                                                    if(task.isSuccessful()){
+                                                                                                    Log.d("oijflsdjfl","kkkasdasdasdsad");
+
+                                                                                                    if(task != null){
                                                                                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
 
                                                                                                             if(documentSnapshot.getString( "emailPub" ).equals( email )){
                                                                                                                 exist = true;
+                                                                                                                Log.d("oijflsdjfl","kkk");
                                                                                                             }
 
                                                                                                         }
                                                                                                         if(exist == false){
+                                                                                                            Log.d("mflkfskfmksd","uno");
                                                                                                             StringRecensioni stringRecensioni = new StringRecensioni();
                                                                                                             stringRecensioni.setEmailCliente( emailCliente );
                                                                                                             stringRecensioni.setEmailPub( email );
                                                                                                             stringRecensioni.setNomeLocale( nomePub );
+                                                                                                            stringRecensioni.setToken(tokenn);
                                                                                                             stringRecensioni.setIdPost( idPost );
                                                                                                             stringRecensioni.setUrlFotoProfilo( urlFotoProfilo );
                                                                                                             firebaseFirestore.collection( emailCliente+"Rec" ).add( stringRecensioni )
                                                                                                                     .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
                                                                                                                         @Override
                                                                                                                         public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                                            Log.d("mflkfskfmksd","due");
+
                                                                                                                             DocumentReference documentReference1 = firebaseFirestore.collection( emailCliente+"Rec" ).document(task.getResult().getId());
                                                                                                                             documentReference1.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
                                                                                                                                 @Override
@@ -398,6 +411,44 @@ public class HomePage extends AppCompatActivity {
                                                                                                                         }
                                                                                                                     } );
                                                                                                         }
+                                                                                                        else{
+                                                                                                            AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
+// ...Irrelevant code for customizing the buttons and title
+
+
+                                                                                                            LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                            View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+
+                                                                                                            dialogBuilderr.setView( viewView );
+
+                                                                                                            AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                                            alertDialogg.show();
+                                                                                                            TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                                            TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                                            ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                                            imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                                                @Override
+                                                                                                                public void onClick(View view) {
+                                                                                                                    alertDialogg.dismiss();
+                                                                                                                }
+                                                                                                            } );
+                                                                                                            if (tipo.equals( "Prezzo" )) {
+                                                                                                                title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                                            } else {
+                                                                                                                title.setText( prezzo + " % " + getString( R.string.discontosu ) );
+                                                                                                            }
+                                                                                                            if (prodotti.equals( "Tutti" )) {
+                                                                                                                prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                                            } else {
+                                                                                                                prodotto.setText( prodotti );
+                                                                                                            }
+
+
+                                                                                                            alertDialog.dismiss();
+                                                                                                        }
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        Log.d("mfldsfksd","okfdslmf");
                                                                                                     }
                                                                                                 }
                                                                                             } );
@@ -409,7 +460,12 @@ public class HomePage extends AppCompatActivity {
 
 
                                                                                         }
-                                                                                    } );
+                                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                                        @Override
+                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                            Log.d("lflsdnf",e.getMessage());
+                                                                                        }
+                                                                                    });
                                                                         }
                                                                     } );
 
@@ -437,7 +493,12 @@ public class HomePage extends AppCompatActivity {
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             alertDialog.dismiss();
                                                                         }
-                                                                    } );
+                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+                                                                            Log.d("ofjndsljnflj",e.getMessage());
+                                                                        }
+                                                                    });
                                                         }
                                                     } );
                                                 }

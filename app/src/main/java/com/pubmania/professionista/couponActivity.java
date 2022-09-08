@@ -41,6 +41,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.pubmania.professionista.Adapter.AdapterSearchCoupon;
 import com.pubmania.professionista.Adapter.array_list_coupon;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
@@ -66,6 +67,7 @@ public class couponActivity extends AppCompatActivity {
         setContentView( R.layout.layout_coupon );
         email = "oliverio.enicola@gmail.com";
         setcreaNuovoCoupon();
+        getToken();
         generaListView();
         setMenuBasso();
         openMenuDestra();
@@ -74,6 +76,27 @@ public class couponActivity extends AppCompatActivity {
     ImageButton piuusato,menousato,piurecente,menorecente;
     ArrayList<Integer>prova = new ArrayList<>();
     ArrayList<Integer>provaCheck = new ArrayList<>();
+    String token;
+    void getToken(){
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        token = task.getResult();
+
+                        // Log and toast
+                        Log.d("fndlsjfl",token);
+
+
+                    }
+                });
+    }
     private void filtri() {
 
 
@@ -587,6 +610,7 @@ public class couponActivity extends AppCompatActivity {
                             StringCoupon stringCoupon = new StringCoupon();
                             stringCoupon.setChi( chi );
                             stringCoupon.setEmail( email );
+                            stringCoupon.setToken(token);
                             stringCoupon.setGiorno(  String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ));
                             stringCoupon.setMese( String.valueOf( cal.get(Calendar.MONTH) ) );
                             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
