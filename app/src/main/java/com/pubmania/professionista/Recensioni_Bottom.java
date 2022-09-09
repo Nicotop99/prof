@@ -96,6 +96,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
 
 
+
         setTipo();
     }
     ImageView recen,dash;
