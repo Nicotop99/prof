@@ -174,8 +174,6 @@ public class HomePage extends AppCompatActivity {
     }
 
     BottomNavigationView bottomAppBar;
-    Bitmap bitmapp;
-    Bitmap myBitmap;
     FloatingActionButton scanQR;
     AlertDialog alertDialog;
     CodeScanner codeScanner;

@@ -19,7 +19,13 @@
         android:usesCleartextTraffic="true">
         <activity
             android:name=".Recensioni_Bottom"
-            android:exported="true" ></activity>
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ProfiloPub"></activity>
         <activity android:name=".Profile_bottom"></activity>
         <activity
@@ -48,11 +54,7 @@
         </service>
         <activity android:name=".HomePage"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".CheckPartitaIva" />
         <activity android:name=".Registrazione" />

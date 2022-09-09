@@ -2,6 +2,7 @@ package com.pubmania.professionista;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
 import android.content.ContentUris;
@@ -18,6 +19,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -90,6 +92,58 @@ public class Recensioni_Bottom extends AppCompatActivity {
         setContentView(R.layout.activity_recensioni_bottom);
         email = "oliverio.enicola@gmail.com";
         // initializing variable for bar chart.
+
+
+
+
+        setTipo();
+    }
+    ImageView recen,dash;
+    boolean recensi = false;
+    ConstraintLayout layout_rec,layout_dash;
+    ScrollView scrollView;
+    private void setTipo() {
+        recen = (ImageView) findViewById( R.id.imageView46 ) ;
+        dash = (ImageView) findViewById( R.id.imageView47 );
+        layout_rec = (ConstraintLayout) findViewById( R.id.l_rec );
+        scrollView = (ScrollView) findViewById( R.id.scrollView );
+        layout_dash = (ConstraintLayout) findViewById( R.id.l_dash );
+        recen.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(recensi == false){
+                    recensi = true;
+                    layout_rec.setVisibility( View.VISIBLE );
+                    recen.setImageResource( R.drawable.button_dash_in );
+                    dash.setImageResource( R.drawable.button_dash_notinn );
+                    layout_dash.setVisibility( View.GONE );
+                    scrollView.setVisibility( View.GONE );
+                    setTimer();
+                    setSPinner();
+                    setListView();
+                    setGrafico();
+                }
+            }
+        } );
+        dash.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(recensi == true){
+                    recensi = false;
+                    layout_dash.setVisibility( View.VISIBLE );
+                    layout_rec.setVisibility( View.GONE );
+                    scrollView.setVisibility( View.VISIBLE );
+
+                    recen.setImageResource( R.drawable.button_dash_notinn );
+                    dash.setImageResource( R.drawable.button_dash_in );
+
+                }
+            }
+        } );
+
+    }
+
+    private void setGrafico() {
         chart = findViewById(R.id.idBarChart);
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.setScaleEnabled(false);
@@ -117,12 +171,6 @@ public class Recensioni_Bottom extends AppCompatActivity {
         axisRighttt.setGranularity(10f);
 
         axisRighttt.setGranularity(1.0f);
-
-
-
-        setTimer();
-        setSPinner();
-        setListView();
     }
 
     ListView listView;
@@ -729,11 +777,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
 
 
-    private void prepareChartData(BarData data) {
-        data.setValueTextSize(12f);
-        chart.setData(data);
-        chart.invalidate();
-    }
+
 
 
 }

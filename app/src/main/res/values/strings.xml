@@ -234,4 +234,8 @@
     <string name="prezzi">Prezzi</string>
     <string name="divertimento">Divertimento</string>
     <string name="recensioneDi">Recensione di</string>
+    <string name="nuovifoller">Nuovi follower</string>
+    <string name="nuoveRecensioni">Nuove recensioni</string>
+    <string name="couponutlizzati">Coupon utilizzati</string>
+    <string name="prodottiPubblicati">Prodotti pubblicati</string>
 </resources>
