@@ -1,6 +1,7 @@
 package com.pubmania.professionista;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
@@ -9,7 +10,9 @@ import android.content.ContentUris;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -41,6 +44,7 @@ import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -58,6 +62,9 @@ import com.pubmania.professionista.StringAdapter.StringRecensioni;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -76,6 +83,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
     // variable for our bar data set.
     BarDataSet barDataSet;
+    BarDataSet barDataSetDash;
 
     // array list for storing entries.
     ArrayList barEntriesArrayList = new ArrayList();
@@ -96,9 +104,135 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
 
 
-
+        setGraphicsDash();
         setTipo();
     }
+    int giorniDash = 7;
+
+    ArrayList BarEntryDash = new ArrayList();
+    ArrayList<String> pro = new ArrayList<String>();
+    BarChart barChartDash;
+    int uno,due,tre,quattro,cinque,sei,sette;
+    private void setGraphicsDash() {
+        barChartDash = findViewById( R.id.idBarChartDash );
+        barChartDash.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChartDash.setScaleEnabled(false);
+        barChartDash.getDescription().setEnabled(false);
+
+
+
+        XAxis xAxis = barChartDash.getXAxis();
+        xAxis.setGranularity(1f);
+
+        xAxis.setEnabled(true);
+
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
+
+        // xAxis.setValueFormatter(new IndexAxisValueFormatter(DAYS));
+
+
+        YAxis axisRight = barChartDash.getAxisRight();
+        axisRight.setGranularity(10f);
+
+        axisRight.setGranularity(1.0f);
+
+        YAxis axisRighttt = barChartDash.getAxisLeft();
+        axisRighttt.setGranularity(10f);
+
+        axisRighttt.setGranularity(1.0f);
+        for (int i = 0;i< giorniDash;i++){
+            SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
+
+
+            String currentDateandTime = sdf.format( new Date() );
+            SimpleDateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+            Calendar cal2 = Calendar.getInstance();
+            try {
+                cal2.setTime( dateFormat.parse( currentDateandTime ) );
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            cal2.add( Calendar.DATE, -(i) );
+            int mon = cal2.get( Calendar.MONTH ) + 1;
+            Log.d( "jnfsdkjsdfn",mon + " " + cal2.get( Calendar.DAY_OF_MONTH ) );
+            pro.add( String.valueOf(cal2.get( Calendar.DAY_OF_MONTH ) + "/" + mon));
+        }
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(pro));
+
+        firebaseFirestore.collection( email+"Dash" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+
+                        SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
+                        String currentDateandTime = sdf.format( new Date() );
+                        Date currentTime = Calendar.getInstance().getTime();
+                        Log.d("ofdosf", String.valueOf(currentTime.getTime()));
+                        String dataPost = documentSnapshot.getString("ora");
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        formatter.setLenient(false);
+                        Date oldDate = null;
+                        try {
+                            oldDate = formatter.parse(dataPost);
+                            Log.d("jnfkjdsf", String.valueOf(oldDate.getTime()));
+                            long diff = currentTime.getTime() - oldDate.getTime();
+                            int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                            if(days<giorni){
+
+                                if(days == 0){
+                                    uno += 1;
+                                }else if(days == 1){
+                                    due += 1;
+                                }else if(days == 2){
+                                    tre += 1;
+                                }else if(days == 3){
+                                    quattro += 1;
+                                }else if(days == 4){
+                                    cinque += 1;
+                                } else if (days == 5) {
+                                    sei +=1;
+                                }else if(days == 6){
+                                    sette +=1;
+                                }
+
+                            }
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                            Log.d("jnfkjdsf",e.getMessage());
+                        }
+
+
+                    }
+                    BarEntryDash.add( new BarEntry( 0 ,uno ) );
+                    BarEntryDash.add( new BarEntry( 1 ,due ) );
+                    BarEntryDash.add( new BarEntry( 2 ,tre   ) );
+                    BarEntryDash.add( new BarEntry( 3 ,quattro ) );
+                    BarEntryDash.add( new BarEntry( 4 ,cinque ) );
+                    BarEntryDash.add( new BarEntry( 5 ,sei ) );
+                    BarEntryDash.add( new BarEntry( 6 ,sette ) );
+                    barDataSetDash = new BarDataSet(BarEntryDash, getString(R.string.valutazionie));
+                    BarData data = new BarData(  barDataSetDash);
+                    data.setDrawValues(false);
+
+                    barChartDash.setData(data);
+                    barDataSetDash.setValueTextSize(16f);
+
+                    barChartDash.invalidate();
+                }
+            }
+        } ).addOnFailureListener( new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d( "ofdlfn",e.getMessage() );
+            }
+        } );
+    }
+
     ImageView recen,dash;
     boolean recensi = false;
     ConstraintLayout layout_rec,layout_dash;
