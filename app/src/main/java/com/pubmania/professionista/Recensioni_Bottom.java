@@ -37,6 +37,7 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
@@ -47,6 +48,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -100,30 +103,91 @@ public class Recensioni_Bottom extends AppCompatActivity {
         setContentView(R.layout.activity_recensioni_bottom);
         email = "oliverio.enicola@gmail.com";
         // initializing variable for bar chart.
-
-
+       // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        // user.getMetadata().getCreationTimestamp(); prendere data di registrazione
 
 
         setGraphicsDash();
+        setSpinnerDash();
         setTipo();
     }
+
+    Spinner spinnerDash;
+    private void setSpinnerDash() {
+        spinnerDash = (Spinner) findViewById( R.id.spinner6 );
+        spinnerDash.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                Log.d("jnfdskjfn","ofasdasdnd");
+                d = 0;
+                BarEntryDash.clear();
+
+                if(c2 == true) {
+                    uno = 0;
+                    due = 0;
+                    tre = 0;
+                    quattro = 0;
+                    cinque = 0;
+                    sei = 0;
+                    sette = 0;
+                    String periodo = spinnerDash.getSelectedItem().toString();
+                    BarEntryDash.clear();
+                    intArrays.clear();
+                    if (periodo.equals(getString(R.string.ultimi7giorno))) {
+                        giorniDash = 7;
+                        setGraphicsDash();
+                        Log.d( "ofsdjlslfsd","Sett" );
+                    } else if (periodo.equals(getString(R.string.ultimi14giorni))) {
+                        giorniDash = 14;
+                        setGraphicsDash();
+                    } else if (periodo.equals(getString(R.string.trenta30giornifa))) {
+                        giorniDash = 30;
+                        setGraphicsDash();
+                    } else if (periodo.equals(getString(R.string.seimesifa))) {
+                        giorniDash = 180;
+                        setGraphicsDash();
+                    } else if (periodo.equals(getString(R.string.unannofa))) {
+                        giorniDash = 365;
+                        setGraphicsDash();
+                    } else if (periodo.equals(getString(R.string.sempre))) {
+                        giorniDash = 10000000;
+                        setGraphicsDash();
+
+                    }
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                Log.d("jnfdskjfn","ofnd");
+            }
+        });
+
+    }
+
     int giorniDash = 7;
 
     ArrayList BarEntryDash = new ArrayList();
     ArrayList<String> pro = new ArrayList<String>();
+    ArrayList<Integer> intArrays = new ArrayList<Integer>();
     BarChart barChartDash;
     int uno,due,tre,quattro,cinque,sei,sette;
+    boolean c2 = false;
+    TextView dataText;
     private void setGraphicsDash() {
+        dataText = (TextView) findViewById( R.id.textView122 );
         barChartDash = findViewById( R.id.idBarChartDash );
         barChartDash.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChartDash.setScaleEnabled(false);
         barChartDash.getDescription().setEnabled(false);
-
+        barChartDash.clear();
+        BarEntryDash.clear();
 
 
         XAxis xAxis = barChartDash.getXAxis();
         xAxis.setGranularity(1f);
-
+        xAxis.setTextSize( 0f );
+        xAxis.setDrawLabels(false);
         xAxis.setEnabled(true);
 
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -141,22 +205,25 @@ public class Recensioni_Bottom extends AppCompatActivity {
         axisRighttt.setGranularity(10f);
 
         axisRighttt.setGranularity(1.0f);
-        for (int i = 0;i< giorniDash;i++){
-            SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
+        if(giorniDash < 400) {
+            for (int i = 0; i < giorniDash; i++) {
+                SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
+                Log.d( "omfsdlfmlsdm", String.valueOf( giorniDash ) );
 
-
-            String currentDateandTime = sdf.format( new Date() );
-            SimpleDateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
-            Calendar cal2 = Calendar.getInstance();
-            try {
-                cal2.setTime( dateFormat.parse( currentDateandTime ) );
-            } catch (ParseException e) {
-                e.printStackTrace();
+                String currentDateandTime = sdf.format( new Date() );
+                SimpleDateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
+                Calendar cal2 = Calendar.getInstance();
+                try {
+                    cal2.setTime( dateFormat.parse( currentDateandTime ) );
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                cal2.add( Calendar.DATE, -(i) );
+                int mon = cal2.get( Calendar.MONTH ) + 1;
+                intArrays.add( i + 1 );
+                Log.d( "jnfsdkjsdfn", mon + " " + cal2.get( Calendar.DAY_OF_MONTH ) );
+                pro.add( String.valueOf( cal2.get( Calendar.DAY_OF_MONTH ) + "/" + mon ) );
             }
-            cal2.add( Calendar.DATE, -(i) );
-            int mon = cal2.get( Calendar.MONTH ) + 1;
-            Log.d( "jnfsdkjsdfn",mon + " " + cal2.get( Calendar.DAY_OF_MONTH ) );
-            pro.add( String.valueOf(cal2.get( Calendar.DAY_OF_MONTH ) + "/" + mon));
         }
         xAxis.setValueFormatter(new IndexAxisValueFormatter(pro));
 
@@ -182,20 +249,8 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                             if(days<giorni){
 
-                                if(days == 0){
-                                    uno += 1;
-                                }else if(days == 1){
-                                    due += 1;
-                                }else if(days == 2){
-                                    tre += 1;
-                                }else if(days == 3){
-                                    quattro += 1;
-                                }else if(days == 4){
-                                    cinque += 1;
-                                } else if (days == 5) {
-                                    sei +=1;
-                                }else if(days == 6){
-                                    sette +=1;
+                                for (int i = 0;i<intArrays.size();i++){
+
                                 }
 
                             }
@@ -208,21 +263,45 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
 
                     }
-                    BarEntryDash.add( new BarEntry( 0 ,uno ) );
-                    BarEntryDash.add( new BarEntry( 1 ,due ) );
-                    BarEntryDash.add( new BarEntry( 2 ,tre   ) );
-                    BarEntryDash.add( new BarEntry( 3 ,quattro ) );
-                    BarEntryDash.add( new BarEntry( 4 ,cinque ) );
-                    BarEntryDash.add( new BarEntry( 5 ,sei ) );
-                    BarEntryDash.add( new BarEntry( 6 ,sette ) );
+                    for (int i = 0;i<intArrays.size();i++){
+                        Random rand = new Random();
+
+// Obtain a number between [0 - 49].
+                        int n = rand.nextInt(50);
+                        BarEntryDash.add( new BarEntry( i ,n ) );
+                        Log.d( "fmslfsdlf", String.valueOf( BarEntryDash.size() ) );
+                    }
+
                     barDataSetDash = new BarDataSet(BarEntryDash, getString(R.string.valutazionie));
                     BarData data = new BarData(  barDataSetDash);
                     data.setDrawValues(false);
-
+                    c2 = true;
                     barChartDash.setData(data);
                     barDataSetDash.setValueTextSize(16f);
 
                     barChartDash.invalidate();
+                    barChartDash.setOnChartValueSelectedListener( new OnChartValueSelectedListener() {
+                        @Override
+                        public void onValueSelected(Entry e, Highlight h) {
+                            final String x = barChartDash.getXAxis().getValueFormatter().getFormattedValue(e.getX(), barChartDash.getXAxis());
+                            String[] parts = x.split("/"); // String array, each element is text between dots
+
+                            String beforeFirstDot = parts[1];
+                            Calendar cal=Calendar.getInstance();
+                            SimpleDateFormat month_date = new SimpleDateFormat("MMMM");
+                            cal.set(Calendar.MONTH,Integer.parseInt( beforeFirstDot  ) - 1);
+                            String month_name = month_date.format(cal.getTime());
+
+                            dataText.setText(getString( R.string.il ) + " " +  parts[0] + " " + month_name + getString( R.string.hairicevuto ) + " " + (int)e.getY() + " " + getString( R.string.visitsulprofillo ));
+
+
+                        }
+
+                        @Override
+                        public void onNothingSelected() {
+
+                        }
+                    } );
                 }
             }
         } ).addOnFailureListener( new OnFailureListener() {
