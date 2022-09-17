@@ -63,6 +63,7 @@ import com.pubmania.professionista.StringAdapter.StringCoupon;
 import com.pubmania.professionista.StringAdapter.StringRec;
 import com.pubmania.professionista.StringAdapter.StringRecensioni;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -133,6 +134,8 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     String periodo = spinnerDash.getSelectedItem().toString();
                     BarEntryDash.clear();
                     intArrays.clear();
+                    barDataSetDash.clear();
+                    pro.clear();
                     if (periodo.equals(getString(R.string.ultimi7giorno))) {
                         giorniDash = 7;
                         setGraphicsDash();
@@ -165,7 +168,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
     }
 
-    int giorniDash = 7;
+    int giorniDash = 14;
 
     ArrayList BarEntryDash = new ArrayList();
     ArrayList<String> pro = new ArrayList<String>();
@@ -173,7 +176,9 @@ public class Recensioni_Bottom extends AppCompatActivity {
     BarChart barChartDash;
     int uno,due,tre,quattro,cinque,sei,sette;
     boolean c2 = false;
+    int t = 0;
     TextView dataText;
+    BarData data;
     private void setGraphicsDash() {
         dataText = (TextView) findViewById( R.id.textView122 );
         barChartDash = findViewById( R.id.idBarChartDash );
@@ -219,10 +224,15 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 cal2.add( Calendar.DATE, -(i) );
-                int mon = cal2.get( Calendar.MONTH ) + 1;
+                DateFormat dateFormatt = new SimpleDateFormat("MM");
+                DateFormat dateFormat2t = new SimpleDateFormat("dd");
+                Date date = new Date();
+
+                Log.d("dsfsdfasdfasdas",dateFormatt.format(cal2.getTime()));
+                int mon = Integer.parseInt( new SimpleDateFormat("MM").format(cal2.getTime()) );
                 intArrays.add( i + 1 );
                 Log.d( "jnfsdkjsdfn", mon + " " + cal2.get( Calendar.DAY_OF_MONTH ) );
-                pro.add( String.valueOf( cal2.get( Calendar.DAY_OF_MONTH ) + "/" + mon ) );
+                pro.add( String.valueOf( dateFormat2t.format( cal2.getTime() ) + "/" +dateFormatt.format(cal2.getTime()) ) );
             }
         }
         xAxis.setValueFormatter(new IndexAxisValueFormatter(pro));
@@ -247,14 +257,64 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             Log.d("jnfkjdsf", String.valueOf(oldDate.getTime()));
                             long diff = currentTime.getTime() - oldDate.getTime();
                             int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-                            if(days<giorni){
+                            if(days<giorniDash){
+                                Log.d( "ojffnsdjlfj","entratooo" );
+                                String currentString = documentSnapshot.getString( "ora" );
+                                Log.d( "ofsdljfjlj",currentString );
+                                String[] separated = currentString.split("/");
+                                String giorno = separated[0] +"/"+ separated[1];
+                                Log.d( "josfdfls", String.valueOf( pro ) );
 
                                 for (int i = 0;i<intArrays.size();i++){
+                                    Log.d( "lfsdlf", String.valueOf( pro ) );
+                                    BarEntryDash.add( new BarEntry( i,1 ) );
+
+                                    if(giorno.equals( pro.get( i ) )){
+                                        Log.d( "fgfdggsdfsdfsdf", String.valueOf( i ) );
+                                        Log.d( "fgfdggsdfsdfsdf", String.valueOf( BarEntryDash ) );
+                                        if(!BarEntryDash.isEmpty()) {
+
+
+                                             Entry entry = (Entry) BarEntryDash.get( i );
+                                             t  = (int) (entry.getY() + 2);
+                                             Log.d( "kofdsflsdk","try"   );
+                                             Log.d( "kofdsflsdk", String.valueOf( i ) );
+                                             Log.d( "kofdsflsdk", String.valueOf( BarEntryDash.get( i ) ) );
+
+                                             BarEntry barEntry = (BarEntry) BarEntryDash.get( i );
+                                             barEntry.setY( t );
+                                            BarEntryDash.add( i , barEntry );
+                                             Log.d( "lfjdnsjffnjnsdn", String.valueOf( BarEntryDash.get( i ) ) );
+                                            barChartDash.notifyDataSetChanged();
+                                             final String x = barChartDash.getXAxis().getValueFormatter().getFormattedValue(entry.getX(), barChartDash.getXAxis());
+                                             Log.d( "lfsldfnn",x );
+
+                                              Log.d( "lkdslfs", String.valueOf( BarEntryDash.get( i ) ) );
+
+
+                                        }else{
+                                            t = 1;
+                                            Log.d( "jffnsdjlfn","elseee" );
+                                        }
+
+                                        Log.d( "jffnsdjlfn", String.valueOf( i ) + " " + t );
+                                        Log.d( "jffnsdjlfn", String.valueOf( BarEntryDash.get(i-1 ) ) );
+
+
+                                    }else{
+
+                                    }
+                                    Log.d( "dmflmfmfk",i + " " +1 );
+                                    Log.d( "sjfnjksdsdnfjfn", String.valueOf( BarEntryDash ) );
+
+                                    t = 0;
 
                                 }
 
+                            }else{
+                                Log.d( "jnfsdljflnjsdn",days + " " + giorniDash );
                             }
-
+                            Log.d( "kjsdfksdnf", String.valueOf( days ) );
 
                         } catch (ParseException e) {
                             e.printStackTrace();
@@ -268,23 +328,24 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
 // Obtain a number between [0 - 49].
                         int n = rand.nextInt(50);
-                        BarEntryDash.add( new BarEntry( i ,n ) );
+
                         Log.d( "fmslfsdlf", String.valueOf( BarEntryDash.size() ) );
                     }
 
-                    barDataSetDash = new BarDataSet(BarEntryDash, getString(R.string.valutazionie));
-                    BarData data = new BarData(  barDataSetDash);
+                    barDataSetDash = new BarDataSet(BarEntryDash, "getString(R.string.valutazionie");
+                    data = new BarData(  barDataSetDash);
                     data.setDrawValues(false);
                     c2 = true;
                     barChartDash.setData(data);
+                    Log.d( "sjfnjksdsdnfjfn", String.valueOf( BarEntryDash.get(5 ) ) );
                     barDataSetDash.setValueTextSize(16f);
-
-                    barChartDash.invalidate();
                     barChartDash.setOnChartValueSelectedListener( new OnChartValueSelectedListener() {
                         @Override
                         public void onValueSelected(Entry e, Highlight h) {
                             final String x = barChartDash.getXAxis().getValueFormatter().getFormattedValue(e.getX(), barChartDash.getXAxis());
                             String[] parts = x.split("/"); // String array, each element is text between dots
+
+                            Log.d( "ljfdnjnsd", String.valueOf(h.getY() ) );
 
                             String beforeFirstDot = parts[1];
                             Calendar cal=Calendar.getInstance();
@@ -302,6 +363,8 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
                         }
                     } );
+                    barChartDash.invalidate();
+
                 }
             }
         } ).addOnFailureListener( new OnFailureListener() {
