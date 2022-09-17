@@ -172,15 +172,13 @@
                 android:id="@+id/textView122"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginEnd="32dp"
                 android:fontFamily="@font/bahiama"
                 android:textAlignment="center"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toStartOf="@+id/spinner6"
-                app:layout_constraintStart_toStartOf="@+id/idBarChartDash"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:textSize="14dp"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="@+id/textView123"
+                app:layout_constraintStart_toStartOf="@+id/textView123"
+                app:layout_constraintTop_toBottomOf="@+id/textView123" />
 
             <TextView
                 android:id="@+id/textView109"
@@ -253,24 +251,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
                 android:fontFamily="@font/bahiama"
                 android:text="@string/nuovifoller"
                 android:textColor="@color/black"
                 android:textSize="32dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/idBarChartDash" />
+                app:layout_constraintTop_toBottomOf="@+id/textView124" />
 
             <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/idBarChartDash"
                 android:layout_width="0dp"
                 android:layout_height="300dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="4dp"
                 android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner6" />
+                app:layout_constraintTop_toBottomOf="@+id/textView122" />
 
             <TextView
                 android:id="@+id/textView107"
@@ -407,6 +403,28 @@
                 android:visibility="invisible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView120" />
+
+            <TextView
+                android:id="@+id/textView123"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bahiama"
+                android:textColor="@color/black"
+                android:textSize="22dp"
+                app:layout_constraintEnd_toStartOf="@+id/spinner6"
+                app:layout_constraintStart_toStartOf="@+id/idBarChartDash"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView124"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/bahiama"
+                android:textAlignment="center"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/idBarChartDash" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

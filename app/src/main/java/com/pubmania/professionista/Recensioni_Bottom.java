@@ -6,20 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.app.AlertDialog;
-import android.content.ContentUris;
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Paint;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.format.DateUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ScrollView;
@@ -30,52 +24,34 @@ import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.github.mikephil.charting.charts.BarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.messaging.FirebaseMessaging;
 import com.pubmania.professionista.Adapter.AdapterRecensioni;
-import com.pubmania.professionista.Adapter.array_list_coupon;
-import com.pubmania.professionista.StringAdapter.ArrayProdotto;
-import com.pubmania.professionista.StringAdapter.StringCoupon;
 import com.pubmania.professionista.StringAdapter.StringRec;
-import com.pubmania.professionista.StringAdapter.StringRecensioni;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Recensioni_Bottom extends AppCompatActivity {
@@ -106,11 +82,12 @@ public class Recensioni_Bottom extends AppCompatActivity {
         // initializing variable for bar chart.
        // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         // user.getMetadata().getCreationTimestamp(); prendere data di registrazione
-
-
         setGraphicsDash();
         setSpinnerDash();
         setTipo();
+
+
+
     }
 
     Spinner spinnerDash;
@@ -119,7 +96,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
         spinnerDash.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("jnfdskjfn","ofasdasdnd");
+
                 d = 0;
                 BarEntryDash.clear();
 
@@ -139,7 +116,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     if (periodo.equals(getString(R.string.ultimi7giorno))) {
                         giorniDash = 7;
                         setGraphicsDash();
-                        Log.d( "ofsdjlslfsd","Sett" );
+
                     } else if (periodo.equals(getString(R.string.ultimi14giorni))) {
                         giorniDash = 14;
                         setGraphicsDash();
@@ -162,24 +139,32 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Log.d("jnfdskjfn","ofnd");
+
             }
         });
 
     }
 
-    int giorniDash = 14;
+    int giorniDash = 7;
 
     ArrayList BarEntryDash = new ArrayList();
     ArrayList<String> pro = new ArrayList<String>();
     ArrayList<Integer> intArrays = new ArrayList<Integer>();
     BarChart barChartDash;
+    int countVisual = 0;
     int uno,due,tre,quattro,cinque,sei,sette;
     boolean c2 = false;
     int t = 0;
     TextView dataText;
     BarData data;
+    int prova;
+    TextView countVisitiText;
+    TextView percentualeGrafico;
     private void setGraphicsDash() {
+        countVisual = 0;
+        prova = 0;
+        percentualeGrafico = (TextView) findViewById( R.id.textView124 );
+        countVisitiText = (TextView) findViewById( R.id.textView123 );
         dataText = (TextView) findViewById( R.id.textView122 );
         barChartDash = findViewById( R.id.idBarChartDash );
         barChartDash.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -213,7 +198,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
         if(giorniDash < 400) {
             for (int i = 0; i < giorniDash; i++) {
                 SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
-                Log.d( "omfsdlfmlsdm", String.valueOf( giorniDash ) );
+
 
                 String currentDateandTime = sdf.format( new Date() );
                 SimpleDateFormat dateFormat = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss" );
@@ -228,10 +213,10 @@ public class Recensioni_Bottom extends AppCompatActivity {
                 DateFormat dateFormat2t = new SimpleDateFormat("dd");
                 Date date = new Date();
 
-                Log.d("dsfsdfasdfasdas",dateFormatt.format(cal2.getTime()));
+
                 int mon = Integer.parseInt( new SimpleDateFormat("MM").format(cal2.getTime()) );
                 intArrays.add( i + 1 );
-                Log.d( "jnfsdkjsdfn", mon + " " + cal2.get( Calendar.DAY_OF_MONTH ) );
+
                 pro.add( String.valueOf( dateFormat2t.format( cal2.getTime() ) + "/" +dateFormatt.format(cal2.getTime()) ) );
             }
         }
@@ -242,102 +227,107 @@ public class Recensioni_Bottom extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task.isSuccessful()){
+                    Log.d( "lfmdlsfn", String.valueOf( task.getResult().size() ) );
+                    for (int i = 0;i<giorniDash;i++){
+                        BarEntryDash.add( new BarEntry( i,0 ) );
+                        Log.d( "jsdnjlfsd", String.valueOf( BarEntryDash.size() ) );
+
+                    }
                     for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
 
                         SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
                         String currentDateandTime = sdf.format( new Date() );
                         Date currentTime = Calendar.getInstance().getTime();
-                        Log.d("ofdosf", String.valueOf(currentTime.getTime()));
+
                         String dataPost = documentSnapshot.getString("ora");
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                         formatter.setLenient(false);
                         Date oldDate = null;
                         try {
                             oldDate = formatter.parse(dataPost);
-                            Log.d("jnfkjdsf", String.valueOf(oldDate.getTime()));
+
                             long diff = currentTime.getTime() - oldDate.getTime();
                             int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                             if(days<giorniDash){
-                                Log.d( "ojffnsdjlfj","entratooo" );
+
                                 String currentString = documentSnapshot.getString( "ora" );
-                                Log.d( "ofsdljfjlj",currentString );
+
                                 String[] separated = currentString.split("/");
                                 String giorno = separated[0] +"/"+ separated[1];
-                                Log.d( "josfdfls", String.valueOf( pro ) );
+
+
+
 
                                 for (int i = 0;i<intArrays.size();i++){
-                                    Log.d( "lfsdlf", String.valueOf( pro ) );
-                                    BarEntryDash.add( new BarEntry( i,1 ) );
 
                                     if(giorno.equals( pro.get( i ) )){
-                                        Log.d( "fgfdggsdfsdfsdf", String.valueOf( i ) );
-                                        Log.d( "fgfdggsdfsdfsdf", String.valueOf( BarEntryDash ) );
+
+
                                         if(!BarEntryDash.isEmpty()) {
+                                            Log.d( "jkfnsdjdfnjsdn", String.valueOf( i ) );
 
 
                                              Entry entry = (Entry) BarEntryDash.get( i );
-                                             t  = (int) (entry.getY() + 2);
-                                             Log.d( "kofdsflsdk","try"   );
-                                             Log.d( "kofdsflsdk", String.valueOf( i ) );
-                                             Log.d( "kofdsflsdk", String.valueOf( BarEntryDash.get( i ) ) );
-
+                                             t  = (int) (entry.getY() + 1);
                                              BarEntry barEntry = (BarEntry) BarEntryDash.get( i );
                                              barEntry.setY( t );
-                                            BarEntryDash.add( i , barEntry );
-                                             Log.d( "lfjdnsjffnjnsdn", String.valueOf( BarEntryDash.get( i ) ) );
-                                            barChartDash.notifyDataSetChanged();
+                                            BarEntryDash.set( i , barEntry );
+                                            Log.d( "klmdlddm", String.valueOf( BarEntryDash.get( i ) ) );
                                              final String x = barChartDash.getXAxis().getValueFormatter().getFormattedValue(entry.getX(), barChartDash.getXAxis());
-                                             Log.d( "lfsldfnn",x );
 
-                                              Log.d( "lkdslfs", String.valueOf( BarEntryDash.get( i ) ) );
+
+
 
 
                                         }else{
                                             t = 1;
-                                            Log.d( "jffnsdjlfn","elseee" );
+
                                         }
 
-                                        Log.d( "jffnsdjlfn", String.valueOf( i ) + " " + t );
-                                        Log.d( "jffnsdjlfn", String.valueOf( BarEntryDash.get(i-1 ) ) );
-
-
-                                    }else{
-
+                                        
                                     }
-                                    Log.d( "dmflmfmfk",i + " " +1 );
-                                    Log.d( "sjfnjksdsdnfjfn", String.valueOf( BarEntryDash ) );
-
                                     t = 0;
-
                                 }
-
-                            }else{
-                                Log.d( "jnfsdljflnjsdn",days + " " + giorniDash );
                             }
-                            Log.d( "kjsdfksdnf", String.valueOf( days ) );
+                            else if(days - giorniDash < giorniDash ){
+                                prova +=1;
+                            }
 
                         } catch (ParseException e) {
                             e.printStackTrace();
-                            Log.d("jnfkjdsf",e.getMessage());
                         }
-
-
-                    }
-                    for (int i = 0;i<intArrays.size();i++){
-                        Random rand = new Random();
-
-// Obtain a number between [0 - 49].
-                        int n = rand.nextInt(50);
-
-                        Log.d( "fmslfsdlf", String.valueOf( BarEntryDash.size() ) );
                     }
 
+                    for (int i = 0;i<BarEntryDash.size();i++){
+                        BarEntry entry = (BarEntry) BarEntryDash.get( i );
+                        countVisual += entry.getY();
+                    }
+                    Log.d( "ofsdfslfmsdk",countVisual+ " " + prova );
+                    if(countVisual > prova){
+                        percentualeGrafico.setTextColor( Color.GREEN );
+                        Float percent = Float.valueOf( countVisual) / Float.valueOf( prova );
+                        int per = (int) (percent * 100);
+                        Log.d( "fsdlflsdkm", String.valueOf( countVisual ) + " " + prova );
+                        percentualeGrafico.setText( String.valueOf(100- per ) );
+                        int x = Math.abs(100-per);
+                        percentualeGrafico.setText( getString( R.string.hairicevuto ) + " " + x +"% " + getString( R.string.divisiteinpiu )  );
+                    }else{
+                        percentualeGrafico.setTextColor( Color.RED );
+                        Float percent = Float.valueOf( countVisual) / Float.valueOf( prova );
+                        int per = (int) (percent * 100);
+                        Log.d( "fsdlflsdkm", String.valueOf( countVisual ) + " " + prova );
+                        percentualeGrafico.setText( String.valueOf( 100 - per ) );
+                        percentualeGrafico.setText( getString( R.string.hairicevutooo ) + " " + per +"% " + getString( R.string.divisiteinmeno )  );
+
+                    }
+                    countVisitiText.setText( getString( R.string.hairicevuto ) + " " + countVisual + " " + getString( R.string.visitsulprofillo ) );
                     barDataSetDash = new BarDataSet(BarEntryDash, "getString(R.string.valutazionie");
                     data = new BarData(  barDataSetDash);
                     data.setDrawValues(false);
                     c2 = true;
                     barChartDash.setData(data);
-                    Log.d( "sjfnjksdsdnfjfn", String.valueOf( BarEntryDash.get(5 ) ) );
+                    Log.d( "pkkdmdkdm", String.valueOf( BarEntryDash.size() ) );
+
                     barDataSetDash.setValueTextSize(16f);
                     barChartDash.setOnChartValueSelectedListener( new OnChartValueSelectedListener() {
                         @Override
@@ -345,7 +335,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             final String x = barChartDash.getXAxis().getValueFormatter().getFormattedValue(e.getX(), barChartDash.getXAxis());
                             String[] parts = x.split("/"); // String array, each element is text between dots
 
-                            Log.d( "ljfdnjnsd", String.valueOf(h.getY() ) );
+
 
                             String beforeFirstDot = parts[1];
                             Calendar cal=Calendar.getInstance();
@@ -354,7 +344,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             String month_name = month_date.format(cal.getTime());
 
                             dataText.setText(getString( R.string.il ) + " " +  parts[0] + " " + month_name + getString( R.string.hairicevuto ) + " " + (int)e.getY() + " " + getString( R.string.visitsulprofillo ));
-
+                            dataText.setVisibility( View.VISIBLE );
 
                         }
 
@@ -370,7 +360,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
         } ).addOnFailureListener( new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.d( "ofdlfn",e.getMessage() );
+
             }
         } );
     }
@@ -882,7 +872,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                Log.d("jnfdskjfn","ofasdasdnd");
+
                 d = 0;
                 if(c == true) {
                     valutazioneUno = 0;
@@ -917,7 +907,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-                Log.d("jnfdskjfn","ofnd");
+
             }
         });
     }
@@ -943,14 +933,14 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
                             String currentDateandTime = sdf.format( new Date() );
                             Date currentTime = Calendar.getInstance().getTime();
-                            Log.d("ofdosf", String.valueOf(currentTime.getTime()));
+
                             String dataPost = doc.getString("ora");
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
                             formatter.setLenient(false);
                             Date oldDate = null;
                             try {
                                 oldDate = formatter.parse(dataPost);
-                                Log.d("jnfkjdsf", String.valueOf(oldDate.getTime()));
+
                                 long diff = currentTime.getTime() - oldDate.getTime();
                                 int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
                                 if(days<giorni){
@@ -959,7 +949,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
                                     if(media == 1){
                                         valutazioneUno +=1;
-                                        Log.d("ljksdfn","klflfld");
+
                                     }else if(media ==2){
                                         valutazioneDue += 1;
                                     }else if(media == 3){
@@ -978,7 +968,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
                             } catch (ParseException e) {
                                 e.printStackTrace();
-                                Log.d("jnfkjdsf",e.getMessage());
+
                             }
 
 
@@ -998,8 +988,8 @@ public class Recensioni_Bottom extends AppCompatActivity {
 
 
 
-                        Log.d("kjfndknf", valutazioneUno + " " + valutazioneDue + valutazioneTre + valutazioneQuattro + valutazioneCinque);
-                        Log.d("onfdsn","ofnsssssd");
+
+
 
                         barEntriesArrayList.add(new BarEntry(1,valutazioneUno));
                         barEntriesArrayList.add(new BarEntry(2, valutazioneDue));
@@ -1018,7 +1008,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                         chart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
                             @Override
                             public void onValueSelected(Entry e, Highlight h) {
-                                Log.d("jnfkjdsf",e.getX() + " " + e.getY());
+
                                 AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( Recensioni_Bottom.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 

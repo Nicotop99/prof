@@ -239,6 +239,10 @@
     <string name="couponutlizzati">Coupon utilizzati</string>
     <string name="prodottiPubblicati">Prodotti pubblicati</string>
     <string name="hairicevuto">hai ricevuto</string>
+    <string name="hairicevutooo">Hai ricevuto</string>
     <string name="il">Il</string>
     <string name="visitsulprofillo">visite sul profilo</string>
+    <string name="visitesulprofilo">visite sul profilo</string>
+    <string name="divisiteinpiu">di visite in più rispetto alla data selezionata</string>
+    <string name="divisiteinmeno">di visite in meno rispetto alla data selezionata</string>
 </resources>
