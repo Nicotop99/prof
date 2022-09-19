@@ -90,8 +90,26 @@ public class Recensioni_Bottom extends AppCompatActivity {
         setSpinnerDash();
         setTipo();
         setTextView();
-/*
-        for (int i = 0;i<900;i++){
+
+        /*
+        for (int i = 0;i<300;i++){
+            Map<String, Object> user = new HashMap<>();
+            user.put("emailCliente", "Ada");
+            user.put("emailPub", email);
+            Date date = new Date();
+            Random r = new Random();
+            int giorno = r.nextInt(30);
+            int mese = r.nextInt(11);
+            int media = r.nextInt(10);
+            date.setMonth( mese );
+            date.setDate( giorno );
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            String currentDateandTime = sdf.format(date);
+            user.put("ora", currentDateandTime);
+            user.put( "media", String.valueOf( media ));
+            firebaseFirestore.collection( email+"Rec" ).add( user );
+        }
+        for (int i = 0;i<300;i++){
             Map<String, Object> user = new HashMap<>();
             user.put("emailCliente", "Ada");
             user.put("emailPub", email);
@@ -100,7 +118,24 @@ public class Recensioni_Bottom extends AppCompatActivity {
             int giorno = r.nextInt(30);
             int mese = r.nextInt(6);
             int media = r.nextInt(20);
-            date.setMonth( 7 );
+            date.setMonth( mese );
+            date.setDate( giorno );
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            String currentDateandTime = sdf.format(date);
+            user.put("ora", currentDateandTime);
+            user.put( "media", String.valueOf( media ));
+            firebaseFirestore.collection( email+"Rec" ).add( user );
+        }
+        for (int i = 0;i<450;i++){
+            Map<String, Object> user = new HashMap<>();
+            user.put("emailCliente", "Ada");
+            user.put("emailPub", email);
+            Date date = new Date();
+            Random r = new Random();
+            int giorno = r.nextInt(30);
+            int mese = r.nextInt(6);
+            int media = r.nextInt(60);
+            date.setMonth( mese );
             date.setDate( giorno );
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
             String currentDateandTime = sdf.format(date);
@@ -110,14 +145,17 @@ public class Recensioni_Bottom extends AppCompatActivity {
         }
 
 
- */
+         */
+
     }
     TextView nuoviFollower,nuoveRecensioni,mediaRecensioni,coponUtilizzati,prodttiCaricati;
     TextView perc1,perc2,perc3,perc4,perc5;
     int countFollower;
     int countFollowerAfter;
-    int countRec,counRecAfte,sommaMediaAfter,sommaRecMediaAfter;
-    int sommaMedia,countRecMedia;
+    int countRec,counRecAfte;
+    float sommaMedia,countRecMedia,sommaMediaAfter,sommaRecMediaAfter;
+    Float percentMedia;
+
     private void setTextView() {
         countFollower = 0;
         countFollowerAfter = 0;
@@ -137,8 +175,6 @@ public class Recensioni_Bottom extends AppCompatActivity {
         perc3 = (TextView) findViewById( R.id.textView114 );
         perc4 = (TextView) findViewById( R.id.textView117 );
         perc5 = (TextView) findViewById( R.id.textView120 );
-
-
         firebaseFirestore.collection( email + "follower" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
@@ -175,12 +211,19 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     Float percent = Float.valueOf( countFollower) / Float.valueOf( countFollowerAfter );
                     int tot = (int) (percent * 100);
                     Log.d( "fjnsd.kfnsdk",countFollower + " " + countFollowerAfter );
-                    Log.d( "fdsfs", String.valueOf( 100 - tot ) );
-                    if(countFollower > countFollowerAfter){
+                    Log.d( "fdsfs", String.valueOf(  tot ) );
+
+                    if(tot > 100000){
+                        perc1.setVisibility( View.GONE );
+                    }else  if(countFollower > countFollowerAfter){
                         int x = Math.abs(100-tot);
+                        perc1.setVisibility( View.VISIBLE );
+
                         perc1.setText( getString( R.string.hairicevutooo ) + " " + x + "% " + getString( R.string.followerinPiu ) );
                         perc1.setTextColor( Color.GREEN);
                     }else{
+                        perc1.setVisibility( View.VISIBLE );
+
                         perc1.setText( getString( R.string.hairicevutooo ) + " " +  (100-tot) +  "% " + getString( R.string.followerInMeno ) );
                         perc1.setTextColor(Color.RED);
                     }
@@ -210,6 +253,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             if(days<giorniDash){
                                 countRec +=1;
                                     sommaMedia += Integer.parseInt( documentSnapshot.getString( "media" ) );
+                                    Log.d( "osdljfsdj", String.valueOf( sommaMedia ) );
                                     countRecMedia +=1;
                             }else if(days - giorniDash < giorniDash ){
                                 counRecAfte +=1;
@@ -222,9 +266,10 @@ public class Recensioni_Bottom extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    Log.d( "fldsnlfnjsdnflnsd", sommaMedia + " " + countRecMedia );
-                    double me = sommaMedia / (double) countRecMedia;
-                    double after = sommaMediaAfter / (double) sommaRecMediaAfter;
+
+                    float me =  (sommaMedia /  countRecMedia);
+                    float after =  (sommaMediaAfter /  sommaRecMediaAfter);
+                    Log.d( "fldsnlfnjsdnflnsd", sommaMediaAfter + " " + sommaRecMediaAfter + " " + counRecAfte );
                     if(me > 0) {
                         mediaRecensioni.setText( new DecimalFormat( "##.##" ).format( me ) );
                     }else{
@@ -235,39 +280,50 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     }else{
                         nuoveRecensioni.setText( "0" );
                     }
+
                     Float percent = Float.valueOf( countRec) / Float.valueOf( counRecAfte );
                     int tot = (int) (percent * 100);
-                    Log.d( "fjnsd.kfnsdk",countRec + " " + counRecAfte );
-                    Log.d( "fdsfs", String.valueOf( 100 - tot ) );
-                    if( sommaMedia> counRecAfte){
+                    Log.d( "fjnsd.kfnsdk", String.valueOf( percent ) );
+                    Log.d( "dddddddddddd", sommaMedia+ " " + counRecAfte );
+
+                   if(percent.isInfinite() || percent.isNaN()){
+                        perc2.setVisibility( View.GONE );
+                    }
+                    else if( sommaMedia > counRecAfte){
                         int x = Math.abs(100-tot);
                         perc2.setText( getString( R.string.hairicevutooo ) + " " + x + "% " + getString( R.string.recensioniInPiu ) );
                         perc2.setTextColor( Color.GREEN);
-                    }else if(tot == 0) {
-                        perc2.setTextColor( Color.GRAY );
-                        perc2.setText( getString( R.string.hairicevutooo ) + " " + "0" + "% " + getString( R.string.recensioniInPiu ) );
+                       perc2.setVisibility( View.VISIBLE );
 
-                    }else
-                        {
-                            perc2.setText( getString( R.string.hairicevutooo ) + " " +  (100-tot) +  "% " + getString( R.string.recensioniinMeno ) );
+                   }
+                    else{
+                       perc2.setVisibility( View.VISIBLE );
+
+                       perc2.setText( getString( R.string.hairicevutooo ) + " " +  (100-tot) +  "% " + getString( R.string.recensioniinMeno ) );
                             perc2.setTextColor(Color.RED);
                         }
 
 
-                    Float percentMedia = Float.valueOf( (float) me ) / Float.valueOf( (float) after );
+
+                        percentMedia =me / after;
+
+                    Log.d( "fjnsdljnflj", String.valueOf( percentMedia ) );
                     int totMedia = (int) (percentMedia * 100);
                     Log.d( "jlfndsjlnfsdn",me + " " + after + " " + totMedia );
-                    if( me> after){
+                    if(percentMedia.isNaN() || percentMedia.isInfinite()){
+                        perc3.setVisibility( View.GONE );
+                    }
+                    else if( me> after){
                         int x = Math.abs(100-totMedia);
                         perc3.setText( getString( R.string.Lamediae ) + " " + x + "% " + getString( R.string.rispoettoa ) );
                         perc3.setTextColor( Color.GREEN);
-                    }else if(totMedia == 0) {
-                        perc3.setTextColor( Color.GRAY );
+                        perc3.setVisibility( View.VISIBLE );
+                    }
 
-                        perc3.setText( getString( R.string.Lamediae2 ) + " " +  (0) +  "% " + getString( R.string.rispoettoa )  );
-
-                    }else
+                    else
                         {
+                            perc3.setVisibility( View.VISIBLE );
+
                             perc3.setText( getString( R.string.Lamediae2 ) + " " +  (100-totMedia) +  "% " + getString( R.string.rispoettoa )  );
                             perc3.setTextColor(Color.RED);
                         }
@@ -503,21 +559,34 @@ public class Recensioni_Bottom extends AppCompatActivity {
                         countVisual += entry.getY();
                     }
                     Log.d( "ofsdfslfmsdk",countVisual+ " " + prova );
+
+
+
                     if(countVisual > prova){
                         percentualeGrafico.setTextColor( Color.GREEN );
                         Float percent = Float.valueOf( countVisual) / Float.valueOf( prova );
                         int per = (int) (percent * 100);
-                        Log.d( "fsdlflsdkm", String.valueOf( countVisual ) + " " + prova );
-                        percentualeGrafico.setText( String.valueOf(100- per ) );
-                        int x = Math.abs(100-per);
-                        percentualeGrafico.setText( getString( R.string.hairicevuto ) + " " + x +"% " + getString( R.string.divisiteinpiu )  );
+                        if(percent.isInfinite() || percent.isNaN()){
+                            percentualeGrafico.setVisibility( View.GONE );
+                        }else{
+                            int x = Math.abs(100-per);
+                            percentualeGrafico.setText( getString( R.string.hairicevuto ) + " " + x +"% " + getString( R.string.divisiteinpiu )  );
+                        }
+
+
                     }else{
+
                         percentualeGrafico.setTextColor( Color.RED );
                         Float percent = Float.valueOf( countVisual) / Float.valueOf( prova );
                         int per = (int) (percent * 100);
-                        Log.d( "fsdlflsdkm", String.valueOf( countVisual ) + " " + prova );
-                        percentualeGrafico.setText( String.valueOf( 100 - per ) );
-                        percentualeGrafico.setText( getString( R.string.hairicevutooo ) + " " + per +"% " + getString( R.string.divisiteinmeno )  );
+                        Log.d( "fsdlflsdkm", String.valueOf( percent ) );
+                        if(percent.isInfinite() || percent.isNaN()){
+                            percentualeGrafico.setVisibility( View.GONE );
+                        }else{
+
+                            percentualeGrafico.setText( getString( R.string.hairicevutooo ) + " " + per +"% " + getString( R.string.divisiteinmeno )  );
+                        }
+
 
                     }
                     countVisitiText.setText( getString( R.string.hairicevuto ) + " " + countVisual + " " + getString( R.string.visitsulprofillo ) );
