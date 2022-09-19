@@ -245,4 +245,11 @@
     <string name="visitesulprofilo">visite sul profilo</string>
     <string name="divisiteinpiu">di visite in più rispetto alla data selezionata</string>
     <string name="divisiteinmeno">di visite in meno rispetto alla data selezionata</string>
+    <string name="recensioniInPiu">recensioni in più rispetto alla data selezionata</string>
+    <string name="followerInMeno">di follower in meno rispetto alla data selezionata</string>
+    <string name="followerinPiu" >di follower in più rispetto alla data selezionata</string>
+    <string name="recensioniinMeno">recensioni in meno rispetto alla data selezionata</string>
+    <string name="Lamediae">La media è cresciuta del</string>
+    <string name="Lamediae2">La media è diminuita del</string>
+    <string name="rispoettoa">rispetto alla data selezionata</string>
 </resources>

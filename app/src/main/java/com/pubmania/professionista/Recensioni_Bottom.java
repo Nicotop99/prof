@@ -45,13 +45,17 @@ import com.pubmania.professionista.Adapter.AdapterRecensioni;
 import com.pubmania.professionista.StringAdapter.StringRec;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class Recensioni_Bottom extends AppCompatActivity {
@@ -85,6 +89,193 @@ public class Recensioni_Bottom extends AppCompatActivity {
         setGraphicsDash();
         setSpinnerDash();
         setTipo();
+        setTextView();
+/*
+        for (int i = 0;i<900;i++){
+            Map<String, Object> user = new HashMap<>();
+            user.put("emailCliente", "Ada");
+            user.put("emailPub", email);
+            Date date = new Date();
+            Random r = new Random();
+            int giorno = r.nextInt(30);
+            int mese = r.nextInt(6);
+            int media = r.nextInt(20);
+            date.setMonth( 7 );
+            date.setDate( giorno );
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+            String currentDateandTime = sdf.format(date);
+            user.put("ora", currentDateandTime);
+            user.put( "media", String.valueOf( media ));
+            firebaseFirestore.collection( email+"Rec" ).add( user );
+        }
+
+
+ */
+    }
+    TextView nuoviFollower,nuoveRecensioni,mediaRecensioni,coponUtilizzati,prodttiCaricati;
+    TextView perc1,perc2,perc3,perc4,perc5;
+    int countFollower;
+    int countFollowerAfter;
+    int countRec,counRecAfte,sommaMediaAfter,sommaRecMediaAfter;
+    int sommaMedia,countRecMedia;
+    private void setTextView() {
+        countFollower = 0;
+        countFollowerAfter = 0;
+        countRec = 0;
+        counRecAfte = 0;
+        sommaMediaAfter = 0;
+        sommaRecMediaAfter = 0;
+        sommaMedia = 0;
+        countRecMedia = 0;
+        nuoviFollower = (TextView) findViewById( R.id.textView107 );
+        nuoveRecensioni = (TextView) findViewById( R.id.textView110 );
+        mediaRecensioni = (TextView) findViewById( R.id.textView113 );
+        coponUtilizzati = (TextView) findViewById( R.id.textView116 );
+        prodttiCaricati = (TextView) findViewById( R.id.textView119 );
+        perc1 = (TextView) findViewById( R.id.textView108 );
+        perc2 = (TextView) findViewById( R.id.textView111 );
+        perc3 = (TextView) findViewById( R.id.textView114 );
+        perc4 = (TextView) findViewById( R.id.textView117 );
+        perc5 = (TextView) findViewById( R.id.textView120 );
+
+
+        firebaseFirestore.collection( email + "follower" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
+                        String currentDateandTime = sdf.format( new Date() );
+                        Date currentTime = Calendar.getInstance().getTime();
+
+                        String dataPost = documentSnapshot.getString("ora");
+                        Log.d( "fkdslksm",dataPost );
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        formatter.setLenient(false);
+                        Date oldDate = null;
+                        try {
+                            oldDate = formatter.parse(dataPost);
+
+                            long diff = currentTime.getTime() - oldDate.getTime();
+                            int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                            if(days<giorniDash){
+                                countFollower +=1;
+
+                            }else if(days - giorniDash < giorniDash ){
+                                countFollowerAfter +=1;
+                            }
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    nuoviFollower.setText( String.valueOf( countFollower ) );
+                    Float percent = Float.valueOf( countFollower) / Float.valueOf( countFollowerAfter );
+                    int tot = (int) (percent * 100);
+                    Log.d( "fjnsd.kfnsdk",countFollower + " " + countFollowerAfter );
+                    Log.d( "fdsfs", String.valueOf( 100 - tot ) );
+                    if(countFollower > countFollowerAfter){
+                        int x = Math.abs(100-tot);
+                        perc1.setText( getString( R.string.hairicevutooo ) + " " + x + "% " + getString( R.string.followerinPiu ) );
+                        perc1.setTextColor( Color.GREEN);
+                    }else{
+                        perc1.setText( getString( R.string.hairicevutooo ) + " " +  (100-tot) +  "% " + getString( R.string.followerInMeno ) );
+                        perc1.setTextColor(Color.RED);
+                    }
+
+                }
+            }
+        } );
+        firebaseFirestore.collection(email + "Rec"  ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
+                        String currentDateandTime = sdf.format( new Date() );
+                        Date currentTime = Calendar.getInstance().getTime();
+
+                        String dataPost = documentSnapshot.getString("ora");
+                        Log.d( "fkdslksm",dataPost );
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+                        formatter.setLenient(false);
+                        Date oldDate = null;
+                        try {
+                            oldDate = formatter.parse(dataPost);
+
+                            long diff = currentTime.getTime() - oldDate.getTime();
+                            int days = (int) TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
+                            if(days<giorniDash){
+                                countRec +=1;
+                                    sommaMedia += Integer.parseInt( documentSnapshot.getString( "media" ) );
+                                    countRecMedia +=1;
+                            }else if(days - giorniDash < giorniDash ){
+                                counRecAfte +=1;
+                                sommaMediaAfter += Integer.parseInt( documentSnapshot.getString( "media" ) );
+                                sommaRecMediaAfter +=1;
+                            }
+
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    Log.d( "fldsnlfnjsdnflnsd", sommaMedia + " " + countRecMedia );
+                    double me = sommaMedia / (double) countRecMedia;
+                    double after = sommaMediaAfter / (double) sommaRecMediaAfter;
+                    if(me > 0) {
+                        mediaRecensioni.setText( new DecimalFormat( "##.##" ).format( me ) );
+                    }else{
+                        mediaRecensioni.setText( "0" );
+                    }
+                    if(countRec > 0) {
+                        nuoveRecensioni.setText( String.valueOf( countRec ) );
+                    }else{
+                        nuoveRecensioni.setText( "0" );
+                    }
+                    Float percent = Float.valueOf( countRec) / Float.valueOf( counRecAfte );
+                    int tot = (int) (percent * 100);
+                    Log.d( "fjnsd.kfnsdk",countRec + " " + counRecAfte );
+                    Log.d( "fdsfs", String.valueOf( 100 - tot ) );
+                    if( sommaMedia> counRecAfte){
+                        int x = Math.abs(100-tot);
+                        perc2.setText( getString( R.string.hairicevutooo ) + " " + x + "% " + getString( R.string.recensioniInPiu ) );
+                        perc2.setTextColor( Color.GREEN);
+                    }else if(tot == 0) {
+                        perc2.setTextColor( Color.GRAY );
+                        perc2.setText( getString( R.string.hairicevutooo ) + " " + "0" + "% " + getString( R.string.recensioniInPiu ) );
+
+                    }else
+                        {
+                            perc2.setText( getString( R.string.hairicevutooo ) + " " +  (100-tot) +  "% " + getString( R.string.recensioniinMeno ) );
+                            perc2.setTextColor(Color.RED);
+                        }
+
+
+                    Float percentMedia = Float.valueOf( (float) me ) / Float.valueOf( (float) after );
+                    int totMedia = (int) (percentMedia * 100);
+                    Log.d( "jlfndsjlnfsdn",me + " " + after + " " + totMedia );
+                    if( me> after){
+                        int x = Math.abs(100-totMedia);
+                        perc3.setText( getString( R.string.Lamediae ) + " " + x + "% " + getString( R.string.rispoettoa ) );
+                        perc3.setTextColor( Color.GREEN);
+                    }else if(totMedia == 0) {
+                        perc3.setTextColor( Color.GRAY );
+
+                        perc3.setText( getString( R.string.Lamediae2 ) + " " +  (0) +  "% " + getString( R.string.rispoettoa )  );
+
+                    }else
+                        {
+                            perc3.setText( getString( R.string.Lamediae2 ) + " " +  (100-totMedia) +  "% " + getString( R.string.rispoettoa )  );
+                            perc3.setTextColor(Color.RED);
+                        }
+                    }
+                }
+
+        } );
+
 
 
 
@@ -116,22 +307,32 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     if (periodo.equals(getString(R.string.ultimi7giorno))) {
                         giorniDash = 7;
                         setGraphicsDash();
-
+                        setTextView();
                     } else if (periodo.equals(getString(R.string.ultimi14giorni))) {
                         giorniDash = 14;
+                        setTextView();
+
                         setGraphicsDash();
                     } else if (periodo.equals(getString(R.string.trenta30giornifa))) {
                         giorniDash = 30;
+                        setTextView();
+
                         setGraphicsDash();
                     } else if (periodo.equals(getString(R.string.seimesifa))) {
                         giorniDash = 180;
                         setGraphicsDash();
+                        setTextView();
+
                     } else if (periodo.equals(getString(R.string.unannofa))) {
                         giorniDash = 365;
+                        setTextView();
+
                         setGraphicsDash();
                     } else if (periodo.equals(getString(R.string.sempre))) {
                         giorniDash = 10000000;
                         setGraphicsDash();
+                        setTextView();
+
 
                     }
                 }
@@ -400,7 +601,6 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     layout_dash.setVisibility( View.VISIBLE );
                     layout_rec.setVisibility( View.GONE );
                     scrollView.setVisibility( View.VISIBLE );
-
                     recen.setImageResource( R.drawable.button_dash_notinn );
                     dash.setImageResource( R.drawable.button_dash_in );
 

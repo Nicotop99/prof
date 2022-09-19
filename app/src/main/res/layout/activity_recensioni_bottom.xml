@@ -372,22 +372,22 @@
                     android:id="@+id/textView108"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="16dp"
                     android:fontFamily="@font/bahiama"
                     android:text="TextView"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView107"
                     app:layout_constraintStart_toEndOf="@+id/textView107"
-                    app:layout_constraintTop_toBottomOf="@+id/textView106" />
+                    app:layout_constraintTop_toTopOf="@+id/textView107" />
 
                 <TextView
                     android:id="@+id/textView111"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
+                    android:layout_marginStart="16dp"
                     android:fontFamily="@font/bahiama"
                     android:text="TextView"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView110"
                     app:layout_constraintStart_toEndOf="@+id/textView107"
                     app:layout_constraintTop_toTopOf="@+id/textView110" />
@@ -399,7 +399,7 @@
                     android:layout_marginStart="32dp"
                     android:fontFamily="@font/bahiama"
                     android:text="TextView"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView113"
                     app:layout_constraintStart_toEndOf="@+id/textView107"
                     app:layout_constraintTop_toTopOf="@+id/textView113" />
@@ -411,7 +411,7 @@
                     android:layout_marginStart="32dp"
                     android:fontFamily="@font/bahiama"
                     android:text="TextView"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView116"
                     app:layout_constraintStart_toEndOf="@+id/textView107"
                     app:layout_constraintTop_toTopOf="@+id/textView116" />
@@ -423,7 +423,7 @@
                     android:layout_marginStart="32dp"
                     android:fontFamily="@font/bahiama"
                     android:text="TextView"
-                    android:textSize="18dp"
+                    android:textSize="12dp"
                     app:layout_constraintBottom_toBottomOf="@+id/textView119"
                     app:layout_constraintStart_toEndOf="@+id/textView107"
                     app:layout_constraintTop_toTopOf="@+id/textView119" />
