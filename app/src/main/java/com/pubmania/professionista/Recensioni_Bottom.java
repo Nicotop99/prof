@@ -173,7 +173,6 @@ public class Recensioni_Bottom extends AppCompatActivity {
         barChartDash.clear();
         BarEntryDash.clear();
 
-
         XAxis xAxis = barChartDash.getXAxis();
         xAxis.setGranularity(1f);
         xAxis.setTextSize( 0f );
@@ -325,6 +324,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     data = new BarData(  barDataSetDash);
                     data.setDrawValues(false);
                     c2 = true;
+                    barDataSetDash.setColor(Color.parseColor("#EFF0AF") );
                     barChartDash.setData(data);
                     Log.d( "pkkdmdkdm", String.valueOf( BarEntryDash.size() ) );
 
