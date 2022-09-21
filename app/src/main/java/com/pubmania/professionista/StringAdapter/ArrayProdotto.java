@@ -12,6 +12,7 @@ public class ArrayProdotto {
     public String giorno;
     public String mese;
     public String ora;
+
     public String categoria;
     public String email;
     public List<String> foto;

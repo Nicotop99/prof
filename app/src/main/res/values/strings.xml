@@ -252,4 +252,7 @@
     <string name="Lamediae">La media è cresciuta del</string>
     <string name="Lamediae2">La media è diminuita del</string>
     <string name="rispoettoa">rispetto alla data selezionata</string>
+    <string name="usati">Usati</string>
+    <string name="dicouponinpiu">di coupon in più rispetto alla data selezionata</string>
+    <string name="dicouponinmeno">di coupon in meno rispetto alla data selezionata</string>
 </resources>

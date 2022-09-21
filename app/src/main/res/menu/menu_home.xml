@@ -17,7 +17,7 @@
         android:icon="@drawable/recensioni_icon"/>
 
     <item android:id="@+id/profil_page"
-        android:title="@string/recensioni"
+        android:title="Dashboard"
         android:icon="@drawable/recensioni_icon"/>
 
 </menu>

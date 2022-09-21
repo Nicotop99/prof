@@ -371,39 +371,58 @@ public class HomePage extends AppCompatActivity {
                                                                                                                             documentReference1.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
                                                                                                                                 @Override
                                                                                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
+
+                                                                                                                                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                                                                                                                                    String currentDateandTime = sdf.format(new Date());
+                                                                                                                                    Map<String, Object> user = new HashMap<>();
+                                                                                                                                    user.put("emailPub", email);
+                                                                                                                                    user.put("emailCliente", emailCliente);
+                                                                                                                                    user.put("ora", currentDateandTime);
+                                                                                                                                    firebaseFirestore.collection( email+"couponUtilizzati" ).add( user )
+                                                                                                                                            .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 
 
-                                                                                                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                                                                                                                                    View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+                                                                                                                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                                                                    View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
 
-                                                                                                                                    dialogBuilderr.setView( viewView );
+                                                                                                                                                    dialogBuilderr.setView( viewView );
 
-                                                                                                                                    AlertDialog alertDialogg = dialogBuilderr.create();
-                                                                                                                                    alertDialogg.show();
-                                                                                                                                    TextView title = (TextView) viewView.findViewById( R.id.textView75 );
-                                                                                                                                    TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
-                                                                                                                                    ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
-                                                                                                                                    imageButton.setOnClickListener( new View.OnClickListener() {
-                                                                                                                                        @Override
-                                                                                                                                        public void onClick(View view) {
-                                                                                                                                            alertDialogg.dismiss();
-                                                                                                                                        }
-                                                                                                                                    } );
-                                                                                                                                    if (tipo.equals( "Prezzo" )) {
-                                                                                                                                        title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
-                                                                                                                                    } else {
-                                                                                                                                        title.setText( prezzo + " % " + getString( R.string.discontosu ) );
-                                                                                                                                    }
-                                                                                                                                    if (prodotti.equals( "Tutti" )) {
-                                                                                                                                        prodotto.setText( getText( R.string.sututtolimporto ) );
-                                                                                                                                    } else {
-                                                                                                                                        prodotto.setText( prodotti );
-                                                                                                                                    }
+                                                                                                                                                    AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                                                                                    alertDialogg.show();
+                                                                                                                                                    TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                                                                                    TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                                                                                    ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                                                                                    imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                                                                                        @Override
+                                                                                                                                                        public void onClick(View view) {
+                                                                                                                                                            alertDialogg.dismiss();
+                                                                                                                                                        }
+                                                                                                                                                    } );
+                                                                                                                                                    if (tipo.equals( "Prezzo" )) {
+                                                                                                                                                        title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                                                                                    } else {
+                                                                                                                                                        title.setText( prezzo + " % " + getString( R.string.discontosu ) );
+                                                                                                                                                    }
+                                                                                                                                                    if (prodotti.equals( "Tutti" )) {
+                                                                                                                                                        prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                                                                                    } else {
+                                                                                                                                                        prodotto.setText( prodotti );
+                                                                                                                                                    }
 
 
-                                                                                                                                    alertDialog.dismiss();
+                                                                                                                                                    alertDialog.dismiss();
+                                                                                                                                                }
+                                                                                                                                            } );
+
+
+
+
+
+
                                                                                                                                 }
                                                                                                                             } );
                                                                                                                         }
@@ -686,6 +705,10 @@ public class HomePage extends AppCompatActivity {
                         break;
                     case R.id.profil_page:
                         startActivity( new Intent( getApplicationContext(), Profile_bottom.class ) );
+                        finish();
+                        break;
+                    case R.id.recensioniBotton:
+                        startActivity( new Intent( getApplicationContext(), Recensioni_Bottom.class ) );
                         finish();
                         break;
                 }
