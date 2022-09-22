@@ -247,7 +247,7 @@
     <string name="divisiteinmeno">di visite in meno rispetto alla data selezionata</string>
     <string name="recensioniInPiu">recensioni in più rispetto alla data selezionata</string>
     <string name="followerInMeno">di follower in meno rispetto alla data selezionata</string>
-    <string name="followerinPiu" >di follower in più rispetto alla data selezionata</string>
+    <string name="followerinPiu">di follower in più rispetto alla data selezionata</string>
     <string name="recensioniinMeno">recensioni in meno rispetto alla data selezionata</string>
     <string name="Lamediae">La media è cresciuta del</string>
     <string name="Lamediae2">La media è diminuita del</string>
@@ -255,4 +255,13 @@
     <string name="usati">Usati</string>
     <string name="dicouponinpiu">di coupon in più rispetto alla data selezionata</string>
     <string name="dicouponinmeno">di coupon in meno rispetto alla data selezionata</string>
+    <string name="cellulare">Cellulare</string>
+    <string name="salva">Salva</string>
+    <string name="modificanome">Modifica nome</string>
+    <string name="inserisciunnome">Inserisci un nome</string>
+    <string name="nomemodificato">Nome modificato con successo</string>
+    <string name="modificacell">Modifica cellulare</string>
+    <string name="modificacogn">Modifica cognome</string>
+    <string name="inseriscicognom">Inserisci un cognome</string>
+    <string name="inseriscicell">Inserisci un cellulare</string>
 </resources>

@@ -60,6 +60,7 @@ import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
+import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -121,6 +122,7 @@ public class HomePage extends AppCompatActivity {
         creaArticolo();
         setImageButtonCategoria();
         setAutoCLick();
+        setMenuLaterale();
 
         startService(new Intent(getApplicationContext(),MyFirebaseMessagingService.class));
 
@@ -135,6 +137,39 @@ public class HomePage extends AppCompatActivity {
             }
         } );
         setImageSlider();
+    }
+
+
+    NavigationView navigationView;
+    private void setMenuLaterale() {
+        navigationView = (NavigationView) findViewById( R.id.menulaterale );
+        View header = navigationView.getHeaderView(0);
+        TextView text = (TextView) header.findViewById(R.id.textView21);
+        firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
+                        if(documentSnapshot.getString( "email" ).equals( email )){
+                            text.setText(documentSnapshot.getString( "nome" ) + " " + documentSnapshot.getString( "cognome" ));
+                        }
+                    }
+                }
+            }
+        } );
+        navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                int id = item.getItemId();
+
+                if (id == R.id.menu_lat_profilo) {
+                    // DO your stuff
+                    startActivity( new Intent(getApplicationContext(), profileMenu.class) );
+
+                }
+                return true;
+            }
+        } );
     }
 
 
