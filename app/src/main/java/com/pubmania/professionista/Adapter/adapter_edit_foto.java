@@ -120,6 +120,7 @@ public class adapter_edit_foto extends ArrayAdapter<String> {
 
                                 }
 
+
                                 maintitle.remove( position );
                                 notifyDataSetChanged();
                                 fotoEliIntiger +=1;
