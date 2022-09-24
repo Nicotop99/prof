@@ -1618,29 +1618,41 @@ public class HomePage extends AppCompatActivity {
                                                                         case DialogInterface.BUTTON_POSITIVE:
                                                                             //Yes button clicked
 
-                                                                            for (int i = 0; i<listImage.size(); i++){
-                                                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                                            StorageReference photoRef = firebaseStorage.getReferenceFromUrl( String.valueOf( listImage.get( i ) ) );
-                                                                            photoRef.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                @Override
-                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                    in += 1;
-                                                                                    if(in == listImage.size()){
-                                                                                        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                                                                        DocumentReference documentReference = firebaseFirestore.collection( email ).document(nomeee);
-                                                                                        documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                            @Override
-                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                dialog.dismiss();
-                                                                                                startActivity( new Intent(getApplicationContext(),HomePage.class) );
-                                                                                                finish();
+                                                                            if(listImage.size() > 0) {
+                                                                                for (int i = 0; i < listImage.size(); i++) {
+                                                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                                    StorageReference photoRef = firebaseStorage.getReferenceFromUrl( String.valueOf( listImage.get( i ) ) );
+                                                                                    photoRef.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                            listImage.remove( 0 );
+                                                                                            if (listImage.size() == 0) {
+                                                                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                                                DocumentReference documentReference = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                                documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                        dialog.dismiss();
+                                                                                                        startActivity( new Intent( getApplicationContext(), HomePage.class ) );
+                                                                                                        finish();
+                                                                                                    }
+                                                                                                } );
                                                                                             }
-                                                                                        } );
-                                                                                    }
+                                                                                        }
+                                                                                    } );
                                                                                 }
-                                                                            } );
-                                                                        }
-
+                                                                            }else{
+                                                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                                DocumentReference documentReference = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                        dialog.dismiss();
+                                                                                        startActivity( new Intent( getApplicationContext(), HomePage.class ) );
+                                                                                        finish();
+                                                                                    }
+                                                                                } );
+                                                                            }
 
 
 

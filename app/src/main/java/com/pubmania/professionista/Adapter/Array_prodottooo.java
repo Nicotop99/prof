@@ -121,7 +121,7 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
                         switch (which){
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button clicked
-
+                                if(dataModal.getFoto().size() >0){
                                 for (int i = 0; i<dataModal.getFoto().size(); i++){
                                     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                                     StorageReference photoRef = firebaseStorage.getReferenceFromUrl(dataModal.getFoto().get( i ));
@@ -144,7 +144,19 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
                                         }
                                     } );
                                 }
+                                }else{
+                                    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                    DocumentReference documentReference = firebaseFirestore.collection( email ).document( dataModal.getNome() );
+                                    documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            dialog.dismiss();
+                                           context. startActivity( new Intent( context, HomePage.class ) );
 
+                                            ((Activity)context).finish();
+                                        }
+                                    } );
+                                }
 
 
 
