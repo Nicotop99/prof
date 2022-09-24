@@ -114,7 +114,11 @@ public class adapter_edit_foto extends ArrayAdapter<String> {
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button clicked
                                 Log.d( "fsdfo", String.valueOf( maintitle.get( position ) ) );
-                                arrayFotoDaEliminare.add( maintitle.get( position ).toString() );
+                                if(Patterns.WEB_URL.matcher(String.valueOf( maintitle.get( position ))).matches()){
+                                    arrayFotoDaEliminare.add( maintitle.get( position ).toString() );
+
+
+                                }
 
                                 maintitle.remove( position );
                                 notifyDataSetChanged();

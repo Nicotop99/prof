@@ -264,4 +264,8 @@
     <string name="modificacogn">Modifica cognome</string>
     <string name="inseriscicognom">Inserisci un cognome</string>
     <string name="inseriscicell">Inserisci un cellulare</string>
+    <string name="nonhaipubblicatococktail">Nessun Cocktail pubblicato</string>
+    <string name="nessundocle">Nessun Dolce pubblicato</string>
+    <string name="nessunsalato">Nessun Salato pubblicato</string>
+    <string name="nessunabevanda">Nessuna Bevanda pubblicata</string>
 </resources>

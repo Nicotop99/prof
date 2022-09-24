@@ -79,13 +79,13 @@ public class couponActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
-        setContentView( R.layout.layout_coupon );
+        setContentView( R.layout.activity_coupon );
         email = "oliverio.enicola@gmail.com";
         setcreaNuovoCoupon();
         getToken();
         generaListView();
         setMenuBasso();
-        openMenuDestra();
+
         filtri();
     }
     ImageButton piuusato,menousato,piurecente,menorecente;
@@ -130,6 +130,7 @@ public class couponActivity extends AppCompatActivity {
                 prova.clear();
                 provaCheck.clear();
                 array_list_coupon = null;
+                arrayListCoupon.clear();
                 listView.setAdapter( array_list_coupon );
                 piuusato.setImageResource( R.drawable.back_filtro_select );
                 menorecente.setImageResource( R.drawable.back_filtro_non_select );
@@ -168,6 +169,8 @@ public class couponActivity extends AppCompatActivity {
                 prova.clear();
                 provaCheck.clear();
                 array_list_coupon = null;
+                arrayListCoupon.clear();
+
                 listView.setAdapter( array_list_coupon );
                 Log.d( "fmdskfmosdk","pd,sòk,òds" );
                 arrayList.clear();
@@ -220,10 +223,8 @@ public class couponActivity extends AppCompatActivity {
                             for (int i = 0; i < prova.size() ; i++) {
                                 int finalI = i;
                                 Log.d( "kfmsdklmf", String.valueOf( i ) + " " +prova.size() );
-                                firebaseFirestore.collection( email + "Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        if (queryDocumentSnapshots != null) {
+                                int finalI1 = i;
+
                                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                             for (DocumentSnapshot doc : list) {
                                                 StringCoupon stringCoupon1 = doc.toObject( StringCoupon.class );
@@ -237,18 +238,25 @@ public class couponActivity extends AppCompatActivity {
                                                         Date date2 = simpleDateFormat.parse( stringCoupon1.getOra() );
 
                                                         int different = (int) (date1.getTime() - date2.getTime());
-
+                                                        Log.d( "fkmdskfm","prmo" );
 
                                                         if (provaCheck.size() > 0) {
+                                                            Log.d( "fkmdskfm","2" );
+                                                            Log.d( "kfmdskmfks",different + " " + prova.get( finalI ) );
                                                             if (different == prova.get( finalI )) {
+                                                                Log.d( "fkmdskfm","3" );
+
                                                                 provaCheck.remove( 0 );
                                                                 arrayListCoupon.add( stringCoupon1 );
                                                             }
 
                                                         } else {
+                                                            Log.d( "fkmdskfm","4" );
 
-                                                            if (arrayList.size() > 0) {
 
+                                                            if (arrayListCoupon.size() > 0) {
+
+                                                                Log.d( "fkmdskfm","5" );
 
                                                                 array_list_coupon = new array_list_coupon( couponActivity.this, arrayListCoupon );
 
@@ -266,9 +274,7 @@ public class couponActivity extends AppCompatActivity {
 
                                                 }
                                             }
-                                        }
-                                    }
-                                } );
+
                             }
 
                         }
@@ -289,6 +295,8 @@ public class couponActivity extends AppCompatActivity {
             public void onClick(View view) {
                 prova.clear();
                 provaCheck.clear();
+                arrayListCoupon.clear();
+
                 array_list_coupon = null;
                 listView.setAdapter( array_list_coupon );
                 Log.d( "fmdskfmosdk","pd,sòk,òds" );
@@ -341,6 +349,7 @@ public class couponActivity extends AppCompatActivity {
                             for (int i = 0; i < prova.size() ; i++) {
                                 int finalI = i;
                                 Log.d( "kfmsdklmf", String.valueOf( i ) + " " +prova.size() );
+                                int finalI1 = i;
                                 firebaseFirestore.collection( email + "Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -368,7 +377,7 @@ public class couponActivity extends AppCompatActivity {
 
                                                         } else {
 
-                                                            if (arrayList.size() > 0) {
+                                                            if (arrayListCoupon.size() > 0) {
 
 
                                                                 array_list_coupon = new array_list_coupon( couponActivity.this, arrayListCoupon );
@@ -416,6 +425,8 @@ public class couponActivity extends AppCompatActivity {
                 arrayList.clear();
                 prova.clear();
                 array_list_coupon = null;
+                arrayListCoupon.clear();
+
                 listView.setAdapter( array_list_coupon );
                 piuusato.setImageResource( R.drawable.back_filtro_non_select );
                 menorecente.setImageResource( R.drawable.back_filtro_non_select );
@@ -447,20 +458,6 @@ public class couponActivity extends AppCompatActivity {
 
     }
 
-    ImageButton menuSlider;
-    DrawerLayout drawerLayout;
-    private void openMenuDestra() {
-        menuSlider = (ImageButton) findViewById( R.id.imageButton24 );
-        drawerLayout = (DrawerLayout ) findViewById( R.id.drawMene     );
-
-        menuSlider.setOnClickListener( new View.OnClickListener() {
-            @SuppressLint("WrongConstant")
-            @Override
-            public void onClick(View view) {
-                drawerLayout.openDrawer( Gravity.LEFT );
-            }
-        } );
-    }
 
     ListView listView;
     TextView text1,text2;
@@ -1000,6 +997,8 @@ public class couponActivity extends AppCompatActivity {
             }
         } );
         bottomAppBar = (BottomNavigationView) findViewById( R.id.bottomNavView );
+        bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
+
         bottomAppBar.setSelectedItemId(R.id.couponBotton);
         Menu menu = bottomAppBar.getMenu();
         firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
@@ -1047,7 +1046,7 @@ public class couponActivity extends AppCompatActivity {
     AlertDialog alertDialogg;
     ImageButton creaCoupon;
     public static Group group;
-    ArrayList<ArrayProdotto> arrayList;
+    ArrayList<ArrayProdotto> arrayList = new ArrayList<>();
 
     public static TextInputEditText t_search;
     public static Spinner spinnerProdotto;

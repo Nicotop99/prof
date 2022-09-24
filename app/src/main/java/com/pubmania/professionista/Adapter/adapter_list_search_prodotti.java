@@ -42,17 +42,10 @@ public class adapter_list_search_prodotti extends ArrayAdapter<StringRegistrazio
 
         // initializing our UI components of list view item.
         TextView nameTV = listitemView.findViewById(R.id.textView27);
+        TextView idPost = listitemView.findViewById( R.id.textView135 );
+        idPost.setText( dataModal.getId() );
         nameTV.setText( dataModal.getId() );
-        // below line is use to add item click listener
-        // for our item of list view.
-        listitemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // on the item click on our list view.
-                // we are displaying a toast message.
-                Log.d("kfkfkfkfk",dataModal.getId());
-            }
-        });
+
         return listitemView;
     }
 }

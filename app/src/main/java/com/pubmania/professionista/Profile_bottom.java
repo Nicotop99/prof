@@ -240,6 +240,8 @@ public class Profile_bottom extends AppCompatActivity {
     FloatingActionButton floatingActionButton;
     private void setMenuBasso() {
         bottomAppBar = (BottomNavigationView) findViewById( R.id.bottomNavView );
+        bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
+
         floatingActionButton = (FloatingActionButton) findViewById( R.id.floatBotton );
         floatingActionButton.setOnClickListener( new View.OnClickListener() {
             @Override

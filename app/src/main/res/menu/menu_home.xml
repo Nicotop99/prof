@@ -10,6 +10,7 @@
         android:icon="@drawable/coupon_icon"/>
 
     <item android:id="@+id/nullable"
+
         android:title=""/>
 
     <item android:id="@+id/recensioniBotton"
