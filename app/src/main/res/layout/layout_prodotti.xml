@@ -21,52 +21,39 @@
         android:id="@+id/textView40"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/bahiama"
         android:text="@string/ingredienti"
         android:textColor="@color/black"
         android:textSize="24dp"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
+        app:layout_constraintStart_toStartOf="@+id/textView39"
         app:layout_constraintTop_toBottomOf="@+id/textView39" />
 
     <TextView
         android:id="@+id/textView39"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/bahiama"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
+        app:layout_constraintStart_toStartOf="@+id/textView38"
         app:layout_constraintTop_toBottomOf="@+id/textView38" />
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/profile_image"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/immage_prova"
-        app:circularflow_radiusInDP="100dp"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="2dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView38"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/bahiama"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="28dp"
-        app:layout_constraintStart_toEndOf="@+id/profile_image"
-        app:layout_constraintTop_toTopOf="@+id/profile_image" />
+        app:layout_constraintStart_toEndOf="@+id/listviewImage"
+        app:layout_constraintTop_toTopOf="parent" />
 
 
     <ListView
@@ -75,35 +62,67 @@
         android:layout_height="wrap_content"
         android:listSelector="@android:color/transparent"
         android:divider="@null"
-        android:dividerHeight="3dp"
+        android:dividerHeight="-3dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView40"
         app:layout_constraintTop_toBottomOf="@+id/textView40" />
 
-    <ImageButton
-        android:id="@+id/imageButton20"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:backgroundTint="@android:color/transparent"
-        android:scaleType="centerInside"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton21"
-        app:layout_constraintTop_toBottomOf="@+id/list_prodotti"
-        app:srcCompat="@drawable/edit_prodotto_icon" />
-
-    <ImageButton
-        android:id="@+id/imageButton21"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
-        android:backgroundTint="@android:color/transparent"
-        android:scaleType="centerInside"
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/list_prodotti"
-        app:srcCompat="@drawable/delete_prodotto_icon" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/list_prodotti">
+
+        <ImageView
+            android:id="@+id/imageButton24"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/show_finish3" />
+        <androidx.legacy.widget.Space
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/imageButton20"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/editfinish" />
+        <androidx.legacy.widget.Space
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"/>
+
+        <ImageView
+            android:id="@+id/imageButton21"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@android:color/transparent"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/delete_finish3" />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/listviewImage"
+        android:layout_width="96dp"
+        android:layout_height="200dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView38" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

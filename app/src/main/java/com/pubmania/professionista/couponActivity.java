@@ -138,7 +138,7 @@ public class couponActivity extends AppCompatActivity {
                 piurecente.setImageResource( R.drawable.back_filtro_non_select );
 
                 firebaseFirestore.collection( email+"Post" )
-                        .orderBy( "volteUtilizzate", Query.Direction.DESCENDING ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                        .orderBy( "quanteVolte", Query.Direction.DESCENDING ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if (queryDocumentSnapshots != null) {
@@ -433,7 +433,7 @@ public class couponActivity extends AppCompatActivity {
                 menousato.setImageResource( R.drawable.back_filtro_select );
                 piurecente.setImageResource( R.drawable.back_filtro_non_select );
                 firebaseFirestore.collection( email+"Post" )
-                        .orderBy( "volteUtilizzate", Query.Direction.ASCENDING ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                        .orderBy( "quanteVolte", Query.Direction.ASCENDING ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots != null){
@@ -469,7 +469,8 @@ public class couponActivity extends AppCompatActivity {
         listView = (ListView) findViewById( R.id.listHomeCoupon );
         text1 = (TextView) findViewById( R.id.textView47 );
         text2 = (TextView) findViewById( R.id.textView48 );
-        firebaseFirestore.collection( email+"Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+        firebaseFirestore.collection( email+"Post" )
+                .orderBy( "quanteVolte", Query.Direction.DESCENDING ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                 if(queryDocumentSnapshots.size()>0){

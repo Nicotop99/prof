@@ -792,8 +792,8 @@ public class HomePage extends AppCompatActivity {
         salatiImageButon = (ImageButton) findViewById( R.id.imageButton13 );
         benvandeImageButton = (ImageButton) findViewById( R.id.imageButton14 );
         listProdottiCocktail = (ListView) findViewById( R.id.list_cockta );
-        listProdottiCocktail.setFocusableInTouchMode( false );
         listProdottiCocktail.setFocusable( false );
+        listProdottiCocktail.setFocusableInTouchMode( false );
         cockatailImageButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -830,6 +830,12 @@ public class HomePage extends AppCompatActivity {
                                     // class we are setting our adapter to our list view.
                                     listProdottiCocktail.setAdapter( adapter );
                                     adapter.notifyDataSetChanged();
+                                    listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            Log.d( "lfsldfn","okmsdlkd" );
+                                        }
+                                    } );
                                 }
                             }
                             if(arrayProd.size() == 0){
@@ -885,6 +891,12 @@ public class HomePage extends AppCompatActivity {
                                     // after passing this array list to our adapter
                                     // class we are setting our adapter to our list view.
                                     listProdottiCocktail.setAdapter( adapter );
+                                    listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            Toast.makeText( getApplicationContext(),"prova",Toast.LENGTH_LONG ).show();
+                                        }
+                                    } );
                                 }
                             }
                             if(arrayProd.size() == 0){
@@ -941,6 +953,12 @@ public class HomePage extends AppCompatActivity {
                                     // after passing this array list to our adapter
                                     // class we are setting our adapter to our list view.
                                     listProdottiCocktail.setAdapter( adapter );
+                                    listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            Toast.makeText( getApplicationContext(),"prova",Toast.LENGTH_LONG ).show();
+                                        }
+                                    } );
                                 }
                             }
                             if(arrayProd.size() == 0){
@@ -994,6 +1012,12 @@ public class HomePage extends AppCompatActivity {
                                     // after passing this array list to our adapter
                                     // class we are setting our adapter to our list view.
                                     listProdottiCocktail.setAdapter( adapter );
+                                    listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            Toast.makeText( getApplicationContext(),"prova",Toast.LENGTH_LONG ).show();
+                                        }
+                                    } );
                                 }
                             }
                             if(arrayProd.size() == 0){
@@ -1422,10 +1446,7 @@ public class HomePage extends AppCompatActivity {
                         maintitle.remove( positionnn );
                     }
                     maintitle.add( "vuoto" );
-
                     adapterr.notifyDataSetChanged();
-
-
                 }
             }
         }
@@ -1780,7 +1801,7 @@ public class HomePage extends AppCompatActivity {
                                                                         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
                                                                         DocumentReference documentReference = firebaseFirestore.collection( email ).document( nome );
 
-                                                                        creaArticolo.setClickable( false );
+
                                                                         ArrayProdotto arrayProdotto = new ArrayProdotto();
 
                                                                         String[] arr = (String[]) arraylisttt.toArray( new String[arraylisttt.size()] );
@@ -1799,7 +1820,7 @@ public class HomePage extends AppCompatActivity {
                                                                         arrayProdotto.setOra( currentDateandTime );
                                                                         ArrayList<String> uriArray = new ArrayList<>();
 
-                                                                        alertDialog.dismiss();
+
                                                                         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this, R.style.MyDialogTheme );
 // ...Irrelevant code for customizing the buttons and title
                                                                         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -1817,7 +1838,10 @@ public class HomePage extends AppCompatActivity {
                                                                         if (listImage != null) {
                                                                             arrayList = listImage;
                                                                         }
-                                                                        arrayList.add( "vuoto" );
+                                                                        if(!arrayList.contains( "vuoto" )) {
+                                                                            arrayList.add( "vuoto" );
+                                                                        }
+
                                                                         adapterr = new adapter_edit_foto( HomePage.this, arrayList );
                                                                         Log.d( "fkldsmf", String.valueOf( arrayList ) );
                                                                         // after passing this array list to our adapter
@@ -2051,10 +2075,7 @@ public class HomePage extends AppCompatActivity {
                                                                                 }
 
 
-                                                                                else{
-
-
-
+                                                                                else {
 
 
                                                                                     Log.d( "asfdasfasfasfasf", String.valueOf( finalArrayList ) );
@@ -2068,58 +2089,208 @@ public class HomePage extends AppCompatActivity {
                                                                                     } else {
                                                                                         maintitle.remove( positionnnt );
                                                                                     }
-                                                                                    for (int i = 0; i < maintitle.size(); i++) {
-                                                                                        Log.d( "asfdasfasfasfasf", String.valueOf( maintitle.get( i ) ) );
-                                                                                        Log.d( "asfdasfasfasfasf", String.valueOf( maintitle.size() ) );
-                                                                                        if (Patterns.WEB_URL.matcher( String.valueOf( maintitle.get( i ) ) ).matches()) {
-                                                                                            uriArray.add( String.valueOf( maintitle.get( i ) ) );
-                                                                                            immaginiCaricate = uriArray.size();
-                                                                                            Log.d( "lkmdslfmsd",i + " " + maintitle.size() );
-                                                                                            if(maintitle.size() == i +1){
-                                                                                                String[] arr = uriArray.toArray( new String[uriArray.size()] );
-                                                                                                List<String> listIngg = Arrays.asList( arr );
-                                                                                                arrayProdotto.setFoto( listIngg );
-                                                                                                firebaseFirestore.collection( email ).document(nome).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                    if (maintitle.size() > 0) {
+                                                                                        for (int i = 0; i < maintitle.size(); i++) {
+                                                                                            Log.d( "asfdasfasfasfasf", String.valueOf( maintitle.get( i ) ) );
+                                                                                            Log.d( "asfdasfasfasfasf", String.valueOf( maintitle.size() ) );
+                                                                                            if (Patterns.WEB_URL.matcher( String.valueOf( maintitle.get( i ) ) ).matches()) {
+                                                                                                uriArray.add( String.valueOf( maintitle.get( i ) ) );
+                                                                                                immaginiCaricate = uriArray.size();
+                                                                                                Log.d( "lkmdslfmsd", i + " " + maintitle.size() );
+                                                                                                if (maintitle.size() == i + 1) {
+                                                                                                    String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                                    List<String> listIngg = Arrays.asList( arr );
+                                                                                                    arrayProdotto.setFoto( listIngg );
+                                                                                                    firebaseFirestore.collection( email ).document( nome ).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                @Override
+                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                                                    documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                        @Override
+                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                @Override
+                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                    Intent intent = new Intent( getApplicationContext(), HomePage.class );
+                                                                                                                                    startActivity( intent );
+                                                                                                                                    finish();
+
+                                                                                                                                    Log.d( "okfmodkmsfm", "lfòsmòòòòòòòòòòòòòò" );
+                                                                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onClick(View view) {
+                                                                                                                                                    //portalo al prodotto
+                                                                                                                                                }
+                                                                                                                                            } )
+
+                                                                                                                                            .show();
+                                                                                                                                }
+                                                                                                                            } );
+                                                                                                                        }
+                                                                                                                    } );
+
+                                                                                                                }
+                                                                                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                @Override
+                                                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                                                    progressGroup.setVisibility( View.GONE );
+                                                                                                                    progressImage.setVisibility( View.VISIBLE );
+                                                                                                                    Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                                }
+                                                                                                            } );
+                                                                                                        }
+                                                                                                    } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                        @Override
+                                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                                            progressGroup.setVisibility( View.GONE );
+                                                                                                            progressImage.setVisibility( View.VISIBLE );
+                                                                                                            Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                        }
+                                                                                                    } );
+                                                                                                }
+
+                                                                                            } else {
+                                                                                                Log.d( "asfdasfasfasfasf", "fkmlkd" );
+                                                                                                StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
+                                                                                                storagee.putFile( (Uri) maintitle.get( i ) ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                                                                     @Override
-                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                        firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                                                        Log.d( "asfdasfasfasfasf", "fkmasdasdasdasdlkd" );
+                                                                                                        storagee.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
                                                                                                             @Override
-                                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                DocumentReference documentReference1 = firebaseFirestore.collection( email ).document(nomeee);
-                                                                                                                documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                    @Override
-                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                        firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                            @Override
-                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                Intent intent = new Intent( getApplicationContext(), HomePage.class );
-                                                                                                                                startActivity( intent );
-                                                                                                                                finish();
+                                                                                                            public void onSuccess(Uri uri) {
+                                                                                                                uriArray.add( uri.toString() );
+                                                                                                                if (uriArray.size() > immaginiCaricate) {
+                                                                                                                    immaginiCaricate += 1;
+                                                                                                                    Log.d( "asfdasfasfasfasf", "sizeewwwwwwwwwwww" );
 
-                                                                                                                                Log.d( "okfmodkmsfm","lfòsmòòòòòòòòòòòòòò" );
-                                                                                                                                Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
-                                                                                                                                        .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
-                                                                                                                                            @Override
-                                                                                                                                            public void onClick(View view) {
-                                                                                                                                                //portalo al prodotto
-                                                                                                                                            }
-                                                                                                                                        } )
+                                                                                                                }
+                                                                                                                Log.d( "asfdasfasfasfasf", uriArray.size() + " " + immaginiCaricate + " " + maintitle.size() );
 
-                                                                                                                                        .show();
-                                                                                                                            }
-                                                                                                                        } );
-                                                                                                                    }
-                                                                                                                } );
+                                                                                                                if (maintitle.size() == immaginiCaricate) {
+                                                                                                                    Log.d( "asfdasfasfasfasf", "sizee" );
 
+                                                                                                                    immaginiCaricate = 1;
+                                                                                                                    FirebaseFirestore firebaseFirestore1 = FirebaseFirestore.getInstance();
+                                                                                                                    DocumentReference documentReference = firebaseFirestore1.collection( email ).document( nome );
+
+                                                                                                                    String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                                                    List<String> listIngg = Arrays.asList( arr );
+
+                                                                                                                    arrayProdotto.setFoto( listIngg );
+
+                                                                                                                    firebaseFirestore.collection( email ).document( nome ).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                        @Override
+                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                @Override
+                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                                                                    documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                        @Override
+                                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                    Intent intent = new Intent( getApplicationContext(), HomePage.class );
+                                                                                                                                                    startActivity( intent );
+                                                                                                                                                    finish();
+
+                                                                                                                                                    Log.d( "okfmodkmsfm", "lfòsmòòòòòòòòòòòòòò" );
+                                                                                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                                                                @Override
+                                                                                                                                                                public void onClick(View view) {
+                                                                                                                                                                    //portalo al prodotto
+                                                                                                                                                                }
+                                                                                                                                                            } )
+
+                                                                                                                                                            .show();
+                                                                                                                                                }
+                                                                                                                                            } );
+                                                                                                                                        }
+                                                                                                                                    } );
+
+                                                                                                                                }
+                                                                                                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                                @Override
+                                                                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                                                                    progressGroup.setVisibility( View.GONE );
+                                                                                                                                    progressImage.setVisibility( View.VISIBLE );
+                                                                                                                                    Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                                                }
+                                                                                                                            } );
+                                                                                                                        }
+                                                                                                                    } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                        @Override
+                                                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                                                            progressGroup.setVisibility( View.GONE );
+                                                                                                                            progressImage.setVisibility( View.VISIBLE );
+                                                                                                                            Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                                        }
+                                                                                                                    } );
+
+
+                                                                                                                }
                                                                                                             }
                                                                                                         } ).addOnFailureListener( new OnFailureListener() {
                                                                                                             @Override
                                                                                                             public void onFailure(@NonNull Exception e) {
                                                                                                                 progressGroup.setVisibility( View.GONE );
                                                                                                                 progressImage.setVisibility( View.VISIBLE );
-                                                                                                                Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                                                Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
                                                                                                             }
                                                                                                         } );
+                                                                                                    }
+                                                                                                } ).addOnProgressListener( new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                                                                    @Override
+                                                                                                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                                                                                                    }
+                                                                                                } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                    @Override
+                                                                                                    public void onFailure(@NonNull Exception e) {
+                                                                                                        progressGroup.setVisibility( View.GONE );
+                                                                                                        progressImage.setVisibility( View.VISIBLE );
+                                                                                                        Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+
+                                                                                                    }
+                                                                                                } );
+
+                                                                                            }
+                                                                                        }
+                                                                                    }else{
+                                                                                        String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                        List<String> listIngg = Arrays.asList( arr );
+
+                                                                                        arrayProdotto.setFoto( listIngg );
+
+                                                                                        firebaseFirestore.collection( email ).document(nome).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                        Intent intent = new Intent( getApplicationContext(), HomePage.class );
+
+                                                                                                        startActivity( intent );
+                                                                                                        finish();
+
+
+                                                                                                        Log.d( "okfmodkmsfm","lfòsmòòòòòòòòòòòòòò" );
+                                                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                    @Override
+                                                                                                                    public void onClick(View view) {
+                                                                                                                        //portalo al prodotto
+                                                                                                                    }
+                                                                                                                } )
+
+                                                                                                                .show();
                                                                                                     }
                                                                                                 } ).addOnFailureListener( new OnFailureListener() {
                                                                                                     @Override
@@ -2130,117 +2301,14 @@ public class HomePage extends AppCompatActivity {
                                                                                                     }
                                                                                                 } );
                                                                                             }
-
-                                                                                        }
-                                                                                        else {
-                                                                                            Log.d( "asfdasfasfasfasf", "fkmlkd" );
-                                                                                            StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
-                                                                                            storagee.putFile( (Uri) maintitle.get( i ) ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                                                                                                @Override
-                                                                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                                                                                    Log.d( "asfdasfasfasfasf", "fkmasdasdasdasdlkd" );
-                                                                                                    storagee.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
-                                                                                                        @Override
-                                                                                                        public void onSuccess(Uri uri) {
-                                                                                                            uriArray.add( uri.toString() );
-                                                                                                            if (uriArray.size() > immaginiCaricate) {
-                                                                                                                immaginiCaricate += 1;
-                                                                                                                Log.d( "asfdasfasfasfasf", "sizeewwwwwwwwwwww" );
-
-                                                                                                            }
-                                                                                                            Log.d( "asfdasfasfasfasf", uriArray.size() + " " + immaginiCaricate + " " + maintitle.size() );
-
-                                                                                                            if (maintitle.size() == immaginiCaricate) {
-                                                                                                                Log.d( "asfdasfasfasfasf", "sizee" );
-
-                                                                                                                immaginiCaricate = 1;
-                                                                                                                FirebaseFirestore firebaseFirestore1 = FirebaseFirestore.getInstance();
-                                                                                                                DocumentReference documentReference = firebaseFirestore1.collection( email ).document( nome );
-
-                                                                                                                String[] arr = uriArray.toArray( new String[uriArray.size()] );
-                                                                                                                List<String> listIngg = Arrays.asList( arr );
-
-                                                                                                                arrayProdotto.setFoto( listIngg );
-
-                                                                                                                firebaseFirestore.collection( email ).document(nome).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                    @Override
-                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                        firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                            @Override
-                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                DocumentReference documentReference1 = firebaseFirestore.collection( email ).document(nomeee);
-                                                                                                                                documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                                    @Override
-                                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                        firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                                            @Override
-                                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                                Intent intent = new Intent( getApplicationContext(), HomePage.class );
-                                                                                                                                                startActivity( intent );
-                                                                                                                                                finish();
-
-                                                                                                                                                Log.d( "okfmodkmsfm","lfòsmòòòòòòòòòòòòòò" );
-                                                                                                                                                Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
-                                                                                                                                                        .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
-                                                                                                                                                            @Override
-                                                                                                                                                            public void onClick(View view) {
-                                                                                                                                                                //portalo al prodotto
-                                                                                                                                                            }
-                                                                                                                                                        } )
-
-                                                                                                                                                        .show();
-                                                                                                                                            }
-                                                                                                                                        } );
-                                                                                                                                    }
-                                                                                                                                } );
-
-                                                                                                                            }
-                                                                                                                        } ).addOnFailureListener( new OnFailureListener() {
-                                                                                                                            @Override
-                                                                                                                            public void onFailure(@NonNull Exception e) {
-                                                                                                                                progressGroup.setVisibility( View.GONE );
-                                                                                                                                progressImage.setVisibility( View.VISIBLE );
-                                                                                                                                Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
-                                                                                                                            }
-                                                                                                                        } );
-                                                                                                                    }
-                                                                                                                } ).addOnFailureListener( new OnFailureListener() {
-                                                                                                                    @Override
-                                                                                                                    public void onFailure(@NonNull Exception e) {
-                                                                                                                        progressGroup.setVisibility( View.GONE );
-                                                                                                                        progressImage.setVisibility( View.VISIBLE );
-                                                                                                                        Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
-                                                                                                                    }
-                                                                                                                } );
-
-
-                                                                                                            }
-                                                                                                        }
-                                                                                                    } ).addOnFailureListener( new OnFailureListener() {
-                                                                                                        @Override
-                                                                                                        public void onFailure(@NonNull Exception e) {
-                                                                                                            progressGroup.setVisibility( View.GONE );
-                                                                                                            progressImage.setVisibility( View.VISIBLE );
-                                                                                                            Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
-                                                                                                        }
-                                                                                                    } );
-                                                                                                }
-                                                                                            } ).addOnProgressListener( new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                                                                                @Override
-                                                                                                public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-
-                                                                                                }
-                                                                                            } ).addOnFailureListener( new OnFailureListener() {
-                                                                                                @Override
-                                                                                                public void onFailure(@NonNull Exception e) {
-                                                                                                    progressGroup.setVisibility( View.GONE );
-                                                                                                    progressImage.setVisibility( View.VISIBLE );
-                                                                                                    Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
-
-                                                                                                }
-                                                                                            } );
-
-                                                                                        }
+                                                                                        } ).addOnFailureListener( new OnFailureListener() {
+                                                                                            @Override
+                                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                                progressGroup.setVisibility( View.GONE );
+                                                                                                progressImage.setVisibility( View.VISIBLE );
+                                                                                                Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                            }
+                                                                                        } );
                                                                                     }
                                                                                 }
 
@@ -2309,6 +2377,796 @@ public class HomePage extends AppCompatActivity {
                                             // after passing this array list to our adapter
                                             // class we are setting our adapter to our list view.
                                             list_ricerca.setAdapter( adapter );
+                                            list_ricerca.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+                                                @Override
+                                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                                    TextView idText = (TextView) view.findViewById( R.id.textView135 );
+                                                    String idPost = idText.getText().toString();
+                                                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this,R.style.MyDialogTheme );
+// ...Irrelevant code for customizing the buttons and title
+                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                    View viewView = inflater.inflate( R.layout.click_item_list_prodotti, null );
+                                                    dialogBuilder.setView( viewView );
+                                                    AlertDialog alertDialogg = dialogBuilder.create();
+                                                    alertDialogg.show();
+                                                    TextView titolo = (TextView) viewView.findViewById( R.id.textView36 );
+                                                    TextView prezzo = (TextView) viewView.findViewById( R.id.textView41 );
+                                                    Spinner spinner = (Spinner) viewView.findViewById( R.id.spinner );
+                                                    ImageView elimia = (ImageView) viewView.findViewById( R.id.imageView58 );
+                                                    ImageView modifica = (ImageView) viewView.findViewById( R.id.imageView57 );
+                                                    spinner.setEnabled( false );
+                                                    ListView listngredienti = (ListView) viewView.findViewById( R.id.listingr );
+                                                    ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.image_slider );
+                                                    TextView ing = (TextView) viewView.findViewById( R.id.textView43);
+                                                    firebaseFirestore.collection( email ).document(idPost).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                            if(task.isSuccessful()){
+                                                                listImage.clear();
+                                                                Log.d( "fjfndsjlj", String.valueOf( listImage ) );
+                                                                titolo.setText(task.getResult().getString( "nome" ));
+                                                                nomeee = task.getResult().getString( "nome" );
+                                                                prezzooo = task.getResult().getString( "prezzo" );
+                                                                categoriaaa = task.getResult().getString( "categoria" );
+                                                                prezzo.setText( task.getResult().getString( "prezzo" ) + " ,00€" );
+                                                                if(task.getResult().getString( "categoria" ).equals( "Cocktail" )){
+                                                                }else if(task.getResult().getString( "categoria" ).equals( "Bevande" )){
+                                                                    spinner.setSelection( 3 );
+                                                                }
+                                                                else if(task.getResult().getString( "categoria" ).equals( "Dolci" )){
+                                                                    spinner.setSelection( 1 );
+                                                                }
+                                                                else if(task.getResult().getString( "categoria" ).equals( "Salati" )){
+                                                                    spinner.setSelection( 2 );
+                                                                }
+                                                                ArrayList<String> group = (ArrayList<String>) task.getResult().get("ingredienti");
+                                                                ArrayList<String> fotoList = (ArrayList<String>) task.getResult().get("foto");
+                                                                ArrayList<SlideModel> arrMod = new ArrayList<>();
+                                                                ingredientiList =(ArrayList<String>)  task.getResult().get( "ingredienti" );
+
+                                                                Log.d( "mldkmkdmd", String.valueOf( task.getResult().get("ingredienti") ) );
+
+                                                                if (group != null) {
+                                                                    if(group.size() >0){
+                                                                        ArrayIngredienti arraySearchprodotti = new ArrayIngredienti( HomePage.this, group );
+                                                                        listngredienti.setAdapter( arraySearchprodotti );
+                                                                    }else {
+                                                                        listngredienti.setVisibility( View.GONE );
+                                                                        ing.setVisibility( View.GONE );
+                                                                    }
+
+                                                                } else {
+                                                                    listngredienti.setVisibility( View.GONE );
+                                                                    ing.setVisibility( View.GONE );
+                                                                }
+
+
+                                                                if (fotoList != null) {
+                                                                    if(fotoList.size() >0) {
+                                                                        for (int i = 0; i < fotoList.size(); i++) {
+                                                                            listImage.add( fotoList.get( i ) );
+                                                                            arrMod.add( new SlideModel( fotoList.get( i ), ScaleTypes.CENTER_CROP ) );
+                                                                        }
+                                                                        imageSlider.setImageList( arrMod );
+
+                                                                    }
+                                                                    else {
+                                                                        imageSlider.setVisibility( View.GONE );
+                                                                    }
+                                                                } else {
+                                                                    imageSlider.setVisibility( View.GONE );
+                                                                }
+                                                            }
+                                                        }
+                                                    } );
+
+                                                    elimia.setOnClickListener( new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+                                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                    switch (which){
+                                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                                            //Yes button clicked
+
+                                                                            if(listImage.size() > 0) {
+                                                                                for (int i = 0; i < listImage.size(); i++) {
+                                                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                                    StorageReference photoRef = firebaseStorage.getReferenceFromUrl( String.valueOf( listImage.get( i ) ) );
+                                                                                    photoRef.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                            listImage.remove( 0 );
+                                                                                            if (listImage.size() == 0) {
+                                                                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                                                DocumentReference documentReference = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                                documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                        dialog.dismiss();
+                                                                                                        startActivity( new Intent( getApplicationContext(), HomePage.class ) );
+                                                                                                        finish();
+                                                                                                    }
+                                                                                                } );
+                                                                                            }
+                                                                                        }
+                                                                                    } );
+                                                                                }
+                                                                            }else{
+                                                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                                DocumentReference documentReference = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                    @Override
+                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                        dialog.dismiss();
+                                                                                        startActivity( new Intent( getApplicationContext(), HomePage.class ) );
+                                                                                        finish();
+                                                                                    }
+                                                                                } );
+                                                                            }
+
+
+
+                                                                            break;
+
+                                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                                            //No button clicked
+
+                                                                            dialog.dismiss();
+
+                                                                            break;
+                                                                    }
+                                                                }
+                                                            };
+
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this);
+                                                            builder.setMessage(getString( R.string.seisicurodivolereliminareilprodotto )).setPositiveButton(getString( R.string.si ), dialogClickListener)
+                                                                    .setNegativeButton(getString( R.string.no ), dialogClickListener).show();
+                                                        }
+                                                    } );
+
+                                                    modifica.setOnClickListener( new View.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(View view) {
+
+                                                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this, R.style.MyDialogTheme );
+// ...Irrelevant code for customizing the buttons and title
+
+                                                            LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                            View viewView = inflater.inflate( R.layout.layout_crea_nuovo_prodotto, null );
+                                                            TextInputEditText T_ingredienti = (TextInputEditText) viewView.findViewById( R.id.textIngrediente1 );
+
+                                                            TextInputLayout l_ingredienti = (TextInputLayout) viewView.findViewById( R.id.textLayoutingrdiete1 );
+                                                            ImageButton creaArticolo = (ImageButton) viewView.findViewById( R.id.imageButton15 );
+                                                            lista_ingredienti = (ListView) viewView.findViewById( R.id.listCreaIngrediente );
+                                                            arraylisttt = new ArrayList<String>();
+                                                            final String[][] ingredientiString = new String[1][1];
+                                                            TextInputLayout l_nomeArt = (TextInputLayout) viewView.findViewById( R.id.textLayoutNome );
+                                                            TextInputLayout l_prezzoArt = (TextInputLayout) viewView.findViewById( R.id.textLayoutPrezzo );
+                                                            TextInputEditText t_nomeArt = (TextInputEditText) viewView.findViewById( R.id.textNome );
+                                                            TextInputEditText t_prezzoArt = (TextInputEditText) viewView.findViewById( R.id.textPrezzo );
+                                                            Spinner spinner = (Spinner) viewView.findViewById( R.id.spinner );
+                                                            dialogBuilder.setView( viewView );
+                                                            AlertDialog alertDialog = dialogBuilder.create();
+
+                                                            t_nomeArt.setText( nomeee );
+                                                            t_prezzoArt.setText( prezzooo);
+                                                            if (categoriaaa.equals( getString( R.string.cocktail ) )) {
+                                                                spinner.setSelection( 1 );
+                                                            } else if (categoriaaa.equals( getString( R.string.dolci ) )) {
+                                                                spinner.setSelection( 2 );
+                                                            } else if (categoriaaa.equals( getString( R.string.salati ) )) {
+                                                                spinner.setSelection( 3 );
+                                                            } else if (categoriaaa.equals( getString( R.string.bevande ) )) {
+                                                                spinner.setSelection( 4 );
+                                                            }
+                                                            arraylisttt = ingredientiList;
+                                                            try_adapter adapter = new try_adapter( HomePage.this, arraylisttt );
+                                                            lista_ingredienti.setAdapter( adapter );
+                                                            adapter.notifyDataSetChanged();
+                                                            T_ingredienti.addTextChangedListener( new TextWatcher() {
+                                                                @Override
+                                                                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                                                                    l_ingredienti.setError( null );
+                                                                    Log.d( "kfkfkkfkf", "lllll" );
+                                                                }
+
+                                                                @Override
+                                                                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                                                                }
+
+                                                                @Override
+                                                                public void afterTextChanged(Editable editable) {
+
+                                                                }
+                                                            } );
+                                                            l_ingredienti.setEndIconOnClickListener( new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View view) {
+                                                                    String ingrediente = T_ingredienti.getText().toString();
+
+
+                                                                    if (arrayList.contains( ingrediente )) {
+                                                                        l_ingredienti.setError( getString( R.string.ingredientegiainserito ) );
+
+                                                                    } else if (ingrediente.isEmpty()) {
+                                                                        l_ingredienti.setError( getString( R.string.ingredientegiainserito ) );
+                                                                    } else {
+                                                                        T_ingredienti.setText( null );
+                                                                        arraylisttt.add( ingrediente );
+                                                                        try_adapter adapter = new try_adapter( HomePage.this, arraylisttt );
+                                                                        lista_ingredienti.setAdapter( adapter );
+                                                                        adapter.notifyDataSetChanged();
+                                                                    }
+
+
+                                                                }
+                                                            } );
+                                                            creaArticolo.setOnClickListener( new View.OnClickListener() {
+                                                                @Override
+                                                                public void onClick(View view) {
+
+                                                                    ingredientiString[0] = new String[]{String.valueOf( arrayList )};
+
+
+                                                                    creaArticolo.setClickable( true );
+                                                                    String nome = t_nomeArt.getText().toString();
+                                                                    String prezzo = t_prezzoArt.getText().toString();
+                                                                    String categoria = spinner.getSelectedItem().toString();
+                                                                    l_nomeArt.setError( null );
+                                                                    l_prezzoArt.setError( null );
+                                                                    if (nome.isEmpty()) {
+                                                                        l_nomeArt.setError( getString( R.string.nomearticolononinserito ) );
+                                                                    } else if (prezzo.isEmpty()) {
+                                                                        l_prezzoArt.setError( getString( R.string.prezzononinserito ) );
+                                                                    } else if (categoria.equals( getString( R.string.selezionacategoria ) )) {
+                                                                        l_nomeArt.setError( getString( R.string.categorianonselezionata ) );
+                                                                    }
+                                                                    else {
+
+
+
+
+                                                                        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                        DocumentReference documentReference = firebaseFirestore.collection( email ).document( nome );
+
+
+                                                                        ArrayProdotto arrayProdotto = new ArrayProdotto();
+
+                                                                        String[] arr = (String[]) arraylisttt.toArray( new String[arraylisttt.size()] );
+                                                                        List<String> listIng = Arrays.asList( arr );
+                                                                        arrayProdotto.setIngredienti( listIng );
+                                                                        arrayProdotto.setNome( nome );
+                                                                        arrayProdotto.setId( nome );
+                                                                        arrayProdotto.setCategoria( categoria );
+                                                                        arrayProdotto.setEmail( email );
+                                                                        arrayProdotto.setPrezzo( prezzo );
+                                                                        Calendar cal = Calendar.getInstance();
+                                                                        arrayProdotto.setGiorno( String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ) );
+                                                                        arrayProdotto.setMese( String.valueOf( cal.get( Calendar.MONTH ) ) );
+                                                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                                                                        String currentDateandTime = sdf.format(new Date());
+                                                                        arrayProdotto.setOra( currentDateandTime );
+                                                                        ArrayList<String> uriArray = new ArrayList<>();
+
+
+                                                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this, R.style.MyDialogTheme );
+// ...Irrelevant code for customizing the buttons and title
+                                                                        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                        View viewView = inflater.inflate( R.layout.layout_edit_image, null );
+                                                                        dialogBuilder.setView( viewView );
+                                                                        AlertDialog alertDialogg = dialogBuilder.create();
+                                                                        alertDialogg.show();
+                                                                        ImageButton imageButton = viewView.findViewById( R.id.imageButton22 );
+                                                                        GridView listPhotoEdit = (GridView) viewView.findViewById( R.id.listEdit );
+                                                                        androidx.constraintlayout.widget.Group progressGroup = (androidx.constraintlayout.widget.Group) viewView.findViewById( R.id.groupProgress );
+                                                                        androidx.constraintlayout.widget.Group progressImage = (androidx.constraintlayout.widget.Group) viewView.findViewById( R.id.groupImage );
+                                                                        List<String> arrayList = new ArrayList<String>();
+                                                                        arrayList.clear();
+                                                                        Log.d( "pkfdslkf", String.valueOf( listImage ) );
+                                                                        if (listImage != null) {
+                                                                            arrayList = listImage;
+                                                                        }
+                                                                        if(!arrayList.contains( "vuoto" )) {
+                                                                            arrayList.add( "vuoto" );
+                                                                        }
+
+                                                                        adapterr = new adapter_edit_foto( HomePage.this, arrayList );
+                                                                        Log.d( "fkldsmf", String.valueOf( arrayList ) );
+                                                                        // after passing this array list to our adapter
+                                                                        // class we are setting our adapter to our list view.
+                                                                        listPhotoEdit.setAdapter( adapterr );
+                                                                        image_prdotto_slide = (ImageSlider) viewView.findViewById( R.id.image_slider );
+
+
+                                                                        List<String> finalArrayList = arrayList;
+                                                                        imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(View view) {
+                                                                                progressGroup.setVisibility( View.VISIBLE );
+                                                                                progressImage.setVisibility( View.GONE );
+                                                                                if (adapter_edit_foto.arrayFotoDaEliminare.size() > 0) {
+                                                                                    for (int in = 0; in< adapter_edit_foto.arrayFotoDaEliminare.size();in++){
+
+
+                                                                                        if (Patterns.WEB_URL.matcher( String.valueOf( maintitle.get( i ) ) ).matches()) {
+                                                                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                                            Log.d( "dfsdfsd", String.valueOf( arrayFotoDaEliminare.get( in )  ) );
+                                                                                            StorageReference storageReference = firebaseStorage.getReferenceFromUrl( String.valueOf(  arrayFotoDaEliminare.get( in ) ) );
+                                                                                            int finalIn = in;
+                                                                                            int finalIn1 = in;
+                                                                                            storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                                    Log.d( "sdòfds",finalIn + " " + arrayFotoDaEliminare.size() );
+                                                                                                    adapter_edit_foto.arrayFotoDaEliminare.remove( 0);
+                                                                                                    if(arrayFotoDaEliminare.size() == 0){
+
+
+
+
+                                                                                                        Log.d( "kfmdskmf", String.valueOf( finalArrayList ) );
+
+
+                                                                                                        FirebaseStorage storage = FirebaseStorage.getInstance();
+                                                                                                        StorageReference storageRef = storage.getReference();
+
+                                                                                                        int positionnn = -1;
+                                                                                                        positionnn = maintitle.indexOf( "vuoto" );
+                                                                                                        if (positionnn == -1) {
+                                                                                                            maintitle.remove( positionnn );
+                                                                                                        } else {
+                                                                                                            maintitle.remove( positionnn );
+                                                                                                        }
+
+                                                                                                        for (int i = 0; i < maintitle.size(); i++) {
+                                                                                                            Log.d( "kfkfldldl", String.valueOf( maintitle.get( i ) ) );
+                                                                                                            Log.d( "kfkfldldl", String.valueOf( maintitle.size() ) );
+                                                                                                            if (Patterns.WEB_URL.matcher( String.valueOf( maintitle.get( i ) ) ).matches()) {
+                                                                                                                uriArray.add( String.valueOf( maintitle.get( i ) ) );
+                                                                                                                immaginiCaricate = uriArray.size();
+                                                                                                                Log.d( "lkmdslfmsd",i + " " + maintitle.size() );
+                                                                                                                if(maintitle.size() == i +1){
+                                                                                                                    String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                                                    List<String> listIngg = Arrays.asList( arr );
+                                                                                                                    arrayProdotto.setFoto( listIngg );
+                                                                                                                    firebaseFirestore.collection( email ).document(nome).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                        @Override
+                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                            DocumentReference documentReference1 = firebaseFirestore.collection( email ).document(nomeee);
+                                                                                                                            documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                @Override
+                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                    firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                        @Override
+                                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                            Intent intent = new Intent( getApplicationContext(), HomePage.class );
+                                                                                                                                            startActivity( intent );
+                                                                                                                                            finish();
+
+                                                                                                                                            Log.d( "okfmodkmsfm","lfòsmòòòòòòòòòòòòòò" );
+                                                                                                                                            Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                                                    .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                                                        @Override
+                                                                                                                                                        public void onClick(View view) {
+                                                                                                                                                            //portalo al prodotto
+                                                                                                                                                        }
+                                                                                                                                                    } )
+
+                                                                                                                                                    .show();
+                                                                                                                                        }
+                                                                                                                                    } );
+                                                                                                                                }
+                                                                                                                            } );
+
+                                                                                                                        }
+                                                                                                                    } );
+                                                                                                                }
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                Log.d( "okfmodkmsfm", "fkmlkd" );
+                                                                                                                StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
+                                                                                                                storagee.putFile( (Uri) maintitle.get( i ) ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                                                                                    @Override
+                                                                                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                                                                        Log.d( "okfmodkmsfm", "fkmasdasdasdasdlkd" );
+                                                                                                                        storagee.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                                                                                                            @Override
+                                                                                                                            public void onSuccess(Uri uri) {
+                                                                                                                                uriArray.add( uri.toString() );
+                                                                                                                                if (uriArray.size() > immaginiCaricate) {
+                                                                                                                                    immaginiCaricate += 1;
+                                                                                                                                    Log.d( "okfmodkmsfm", "sizeewwwwwwwwwwww" );
+
+                                                                                                                                }
+                                                                                                                                Log.d( "okfmodkmsfm", uriArray.size() + " " + immaginiCaricate + " " + maintitle.size() );
+
+                                                                                                                                if (maintitle.size() == immaginiCaricate) {
+                                                                                                                                    Log.d( "okfmodkmsfm", "sizee" );
+
+                                                                                                                                    immaginiCaricate = 1;
+                                                                                                                                    FirebaseFirestore firebaseFirestore1 = FirebaseFirestore.getInstance();
+
+                                                                                                                                    String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                                                                    List<String> listIngg = Arrays.asList( arr );
+                                                                                                                                    arrayProdotto.setFoto( listIngg );
+
+                                                                                                                                    firebaseFirestore.collection( email ).document(nome).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                        @Override
+                                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection( email ).document(nomeee);
+                                                                                                                                                    documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                        @Override
+                                                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                                @Override
+                                                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                                    Intent intent = new Intent( getApplicationContext(), HomePage.class );
+                                                                                                                                                                    startActivity( intent );
+                                                                                                                                                                    finish();
+
+                                                                                                                                                                    Log.d( "okfmodkmsfm","lfòsmòòòòòòòòòòòòòò" );
+                                                                                                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                                                                                @Override
+                                                                                                                                                                                public void onClick(View view) {
+                                                                                                                                                                                    //portalo al prodotto
+                                                                                                                                                                                }
+                                                                                                                                                                            } )
+
+                                                                                                                                                                            .show();
+                                                                                                                                                                }
+                                                                                                                                                            } );
+                                                                                                                                                        }
+                                                                                                                                                    } );
+
+                                                                                                                                                }
+                                                                                                                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                                                                                    progressGroup.setVisibility( View.GONE );
+                                                                                                                                                    progressImage.setVisibility( View.VISIBLE );
+                                                                                                                                                    Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                                                                                }
+                                                                                                                                            } );
+                                                                                                                                        }
+                                                                                                                                    } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                                        @Override
+                                                                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                                                                            progressGroup.setVisibility( View.GONE );
+                                                                                                                                            progressImage.setVisibility( View.VISIBLE );
+                                                                                                                                            Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                                                                        }
+                                                                                                                                    } );
+
+
+
+
+
+
+
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                            @Override
+                                                                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                                                                progressGroup.setVisibility( View.GONE );
+                                                                                                                                progressImage.setVisibility( View.VISIBLE );
+                                                                                                                                Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                                                            }
+                                                                                                                        } );
+                                                                                                                    }
+                                                                                                                } ).addOnProgressListener( new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                                                                                    @Override
+                                                                                                                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                                                                                                                    }
+                                                                                                                } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                    @Override
+                                                                                                                    public void onFailure(@NonNull Exception e) {
+                                                                                                                        progressGroup.setVisibility( View.GONE );
+                                                                                                                        progressImage.setVisibility( View.VISIBLE );
+                                                                                                                        Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+
+                                                                                                                    }
+                                                                                                                } );
+
+                                                                                                            }
+
+                                                                                                        }
+
+
+                                                                                                    }
+                                                                                                    else{
+                                                                                                        Log.d( "lksdmflksdmlfmsdlk","Pfdk"   );
+                                                                                                    }
+                                                                                                }
+                                                                                            } )
+                                                                                                    .addOnFailureListener( new OnFailureListener() {
+                                                                                                        @Override
+                                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                                            progressGroup.setVisibility( View.GONE );
+                                                                                                            progressImage.setVisibility( View.VISIBLE );
+                                                                                                            Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                                        }
+                                                                                                    } );
+                                                                                        } else {
+                                                                                        }
+
+                                                                                    }
+
+
+                                                                                }
+
+
+                                                                                else {
+
+
+                                                                                    Log.d( "asfdasfasfasfasf", String.valueOf( finalArrayList ) );
+                                                                                    FirebaseStorage storage = FirebaseStorage.getInstance();
+                                                                                    StorageReference storageRef = storage.getReference();
+
+                                                                                    int positionnnt = -1;
+                                                                                    positionnnt = maintitle.indexOf( "vuoto" );
+                                                                                    if (positionnnt == -1) {
+                                                                                        maintitle.remove( positionnnt );
+                                                                                    } else {
+                                                                                        maintitle.remove( positionnnt );
+                                                                                    }
+                                                                                    if (maintitle.size() > 0) {
+                                                                                        for (int i = 0; i < maintitle.size(); i++) {
+                                                                                            Log.d( "asfdasfasfasfasf", String.valueOf( maintitle.get( i ) ) );
+                                                                                            Log.d( "asfdasfasfasfasf", String.valueOf( maintitle.size() ) );
+                                                                                            if (Patterns.WEB_URL.matcher( String.valueOf( maintitle.get( i ) ) ).matches()) {
+                                                                                                uriArray.add( String.valueOf( maintitle.get( i ) ) );
+                                                                                                immaginiCaricate = uriArray.size();
+                                                                                                Log.d( "lkmdslfmsd", i + " " + maintitle.size() );
+                                                                                                if (maintitle.size() == i + 1) {
+                                                                                                    String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                                    List<String> listIngg = Arrays.asList( arr );
+                                                                                                    arrayProdotto.setFoto( listIngg );
+                                                                                                    firebaseFirestore.collection( email ).document( nome ).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                        @Override
+                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                @Override
+                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                                                    documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                        @Override
+                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                @Override
+                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                    Intent intent = new Intent( getApplicationContext(), HomePage.class );
+                                                                                                                                    startActivity( intent );
+                                                                                                                                    finish();
+
+                                                                                                                                    Log.d( "okfmodkmsfm", "lfòsmòòòòòòòòòòòòòò" );
+                                                                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onClick(View view) {
+                                                                                                                                                    //portalo al prodotto
+                                                                                                                                                }
+                                                                                                                                            } )
+
+                                                                                                                                            .show();
+                                                                                                                                }
+                                                                                                                            } );
+                                                                                                                        }
+                                                                                                                    } );
+
+                                                                                                                }
+                                                                                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                @Override
+                                                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                                                    progressGroup.setVisibility( View.GONE );
+                                                                                                                    progressImage.setVisibility( View.VISIBLE );
+                                                                                                                    Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                                }
+                                                                                                            } );
+                                                                                                        }
+                                                                                                    } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                        @Override
+                                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                                            progressGroup.setVisibility( View.GONE );
+                                                                                                            progressImage.setVisibility( View.VISIBLE );
+                                                                                                            Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                        }
+                                                                                                    } );
+                                                                                                }
+
+                                                                                            } else {
+                                                                                                Log.d( "asfdasfasfasfasf", "fkmlkd" );
+                                                                                                StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
+                                                                                                storagee.putFile( (Uri) maintitle.get( i ) ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                                                                    @Override
+                                                                                                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                                                                        Log.d( "asfdasfasfasfasf", "fkmasdasdasdasdlkd" );
+                                                                                                        storagee.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                                                                                            @Override
+                                                                                                            public void onSuccess(Uri uri) {
+                                                                                                                uriArray.add( uri.toString() );
+                                                                                                                if (uriArray.size() > immaginiCaricate) {
+                                                                                                                    immaginiCaricate += 1;
+                                                                                                                    Log.d( "asfdasfasfasfasf", "sizeewwwwwwwwwwww" );
+
+                                                                                                                }
+                                                                                                                Log.d( "asfdasfasfasfasf", uriArray.size() + " " + immaginiCaricate + " " + maintitle.size() );
+
+                                                                                                                if (maintitle.size() == immaginiCaricate) {
+                                                                                                                    Log.d( "asfdasfasfasfasf", "sizee" );
+
+                                                                                                                    immaginiCaricate = 1;
+                                                                                                                    FirebaseFirestore firebaseFirestore1 = FirebaseFirestore.getInstance();
+                                                                                                                    DocumentReference documentReference = firebaseFirestore1.collection( email ).document( nome );
+
+                                                                                                                    String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                                                    List<String> listIngg = Arrays.asList( arr );
+
+                                                                                                                    arrayProdotto.setFoto( listIngg );
+
+                                                                                                                    firebaseFirestore.collection( email ).document( nome ).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                        @Override
+                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                @Override
+                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                    DocumentReference documentReference1 = firebaseFirestore.collection( email ).document( nomeee );
+                                                                                                                                    documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                        @Override
+                                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                            firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                    Intent intent = new Intent( getApplicationContext(), HomePage.class );
+                                                                                                                                                    startActivity( intent );
+                                                                                                                                                    finish();
+
+                                                                                                                                                    Log.d( "okfmodkmsfm", "lfòsmòòòòòòòòòòòòòò" );
+                                                                                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                                                                @Override
+                                                                                                                                                                public void onClick(View view) {
+                                                                                                                                                                    //portalo al prodotto
+                                                                                                                                                                }
+                                                                                                                                                            } )
+
+                                                                                                                                                            .show();
+                                                                                                                                                }
+                                                                                                                                            } );
+                                                                                                                                        }
+                                                                                                                                    } );
+
+                                                                                                                                }
+                                                                                                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                                @Override
+                                                                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                                                                    progressGroup.setVisibility( View.GONE );
+                                                                                                                                    progressImage.setVisibility( View.VISIBLE );
+                                                                                                                                    Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                                                }
+                                                                                                                            } );
+                                                                                                                        }
+                                                                                                                    } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                                        @Override
+                                                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                                                            progressGroup.setVisibility( View.GONE );
+                                                                                                                            progressImage.setVisibility( View.VISIBLE );
+                                                                                                                            Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                                        }
+                                                                                                                    } );
+
+
+                                                                                                                }
+                                                                                                            }
+                                                                                                        } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                            @Override
+                                                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                                                progressGroup.setVisibility( View.GONE );
+                                                                                                                progressImage.setVisibility( View.VISIBLE );
+                                                                                                                Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+                                                                                                            }
+                                                                                                        } );
+                                                                                                    }
+                                                                                                } ).addOnProgressListener( new OnProgressListener<UploadTask.TaskSnapshot>() {
+                                                                                                    @Override
+                                                                                                    public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
+
+                                                                                                    }
+                                                                                                } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                    @Override
+                                                                                                    public void onFailure(@NonNull Exception e) {
+                                                                                                        progressGroup.setVisibility( View.GONE );
+                                                                                                        progressImage.setVisibility( View.VISIBLE );
+                                                                                                        Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+
+                                                                                                    }
+                                                                                                } );
+
+                                                                                            }
+                                                                                        }
+                                                                                    }else{
+                                                                                        String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                                                        List<String> listIngg = Arrays.asList( arr );
+
+                                                                                        arrayProdotto.setFoto( listIngg );
+
+                                                                                        firebaseFirestore.collection( email ).document(nome).delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                firebaseFirestore.collection( email ).document( nome ).set( arrayProdotto ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                    @Override
+                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                        Intent intent = new Intent( getApplicationContext(), HomePage.class );
+
+                                                                                                        startActivity( intent );
+                                                                                                        finish();
+
+
+                                                                                                        Log.d( "okfmodkmsfm","lfòsmòòòòòòòòòòòòòò" );
+                                                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                                .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                                    @Override
+                                                                                                                    public void onClick(View view) {
+                                                                                                                        //portalo al prodotto
+                                                                                                                    }
+                                                                                                                } )
+
+                                                                                                                .show();
+                                                                                                    }
+                                                                                                } ).addOnFailureListener( new OnFailureListener() {
+                                                                                                    @Override
+                                                                                                    public void onFailure(@NonNull Exception e) {
+                                                                                                        progressGroup.setVisibility( View.GONE );
+                                                                                                        progressImage.setVisibility( View.VISIBLE );
+                                                                                                        Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                                    }
+                                                                                                } );
+                                                                                            }
+                                                                                        } ).addOnFailureListener( new OnFailureListener() {
+                                                                                            @Override
+                                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                                progressGroup.setVisibility( View.GONE );
+                                                                                                progressImage.setVisibility( View.VISIBLE );
+                                                                                                Toast.makeText( getApplicationContext(),getString( R.string.erroreriprovapiutardi ),Toast.LENGTH_LONG).show();
+                                                                                            }
+                                                                                        } );
+                                                                                    }
+                                                                                }
+
+
+
+                                                                            }
+                                                                        } );
+
+
+                                                                        alertDialogg.show();
+                                                                    }
+
+                                                                }
+                                                            } );
+
+
+
+
+
+
+                                                            alertDialog.show();
+                                                        }
+                                                    } );
+
+                                                }
+                                            } );
+
                                         } else {
                                             // if the snapshot is empty we are displaying a toast message.
 

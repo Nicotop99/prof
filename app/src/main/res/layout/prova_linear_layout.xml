@@ -37,6 +37,6 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView33"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView33"
-        app:srcCompat="@drawable/delete_icon" />
+        app:srcCompat="@android:drawable/ic_delete" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,7 @@ public class array_list_coupon extends ArrayAdapter<StringCoupon> {
             textView1.setVisibility( View.GONE );
         }
 
-        quantePersone.setText( stringCoupon.getVolteUtilizzate() +" " + context.getString( R.string.volteutilizzato ) );
+        quantePersone.setText( stringCoupon.getQuanteVolte() +" " + context.getString( R.string.volteutilizzato ) );
 
         Log.d( "kfmdskfmksd",arrayList.get( 0 ).getPrezzo() );
         Log.d( "kmfdlksmfs", String.valueOf( position ) );
@@ -79,40 +79,20 @@ public class array_list_coupon extends ArrayAdapter<StringCoupon> {
                         switch (which) {
                             case DialogInterface.BUTTON_POSITIVE:
                                 //Yes button clicked
-
                                 FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                firebaseFirestore.collection( email+"Coupon" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                                DocumentReference documentReference1 = firebaseFirestore.collection( email+"Post" ).document(stringCoupon.getId());
+                                documentReference1.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task != null){
-                                            for (QueryDocumentSnapshot documentSnapshot:task.getResult()){
-                                                if(documentSnapshot.getId().equals( stringCoupon.getId() )){
-                                                    DocumentReference documentReference = firebaseFirestore.collection( email+"Coupon" ).document(stringCoupon.getId());
-                                                    documentReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-
-                                                        }
-                                                    } );
-                                                }
-                                                else if(documentSnapshot.getString("titolo").equals( stringCoupon.getTitolo()) && documentSnapshot.getString( "ora" ).equals( stringCoupon.getOra())){
-                                                    DocumentReference documentReference = firebaseFirestore.collection( email+"Coupon" ).document(documentSnapshot.getId());
-                                                    documentReference.delete().addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
-                                                        }
-                                                    } );
-                                                }
-                                            }
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        arrayList.remove( position );
+                                        if(arrayList.size() == 0){
+                                            textView.setVisibility( View.VISIBLE );
+                                            textView1.setVisibility( View.VISIBLE );
                                         }
+                                        notifyDataSetChanged();
                                     }
                                 } );
-                                arrayList.remove( position );
-                                if(arrayList.size() == 0){
-                                    textView.setVisibility( View.VISIBLE );
-                                    textView1.setVisibility( View.VISIBLE );
-                                }
-                                notifyDataSetChanged();
+
 
 
 
