@@ -60,11 +60,12 @@
         android:id="@+id/list_prodotti"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:listSelector="@android:color/transparent"
+        android:backgroundTint="#FFFFFF"
         android:divider="@null"
         android:dividerHeight="-3dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:listSelector="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/textView40"
         app:layout_constraintTop_toBottomOf="@+id/textView40" />
@@ -87,10 +88,13 @@
             android:layout_marginBottom="8dp"
             android:backgroundTint="@android:color/transparent"
             android:scaleType="centerInside"
+            android:visibility="gone"
             app:srcCompat="@drawable/show_finish3" />
+
         <androidx.legacy.widget.Space
             android:layout_width="15dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
 
         <ImageView
             android:id="@+id/imageButton20"
@@ -116,7 +120,7 @@
             app:srcCompat="@drawable/delete_finish3" />
     </LinearLayout>
 
-    <com.denzcoskun.imageslider.ImageSlider
+    <ImageView
         android:id="@+id/listviewImage"
         android:layout_width="96dp"
         android:layout_height="0dp"
@@ -124,10 +128,6 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/rectangle_72"
         android:backgroundTint="#7AFFFFFF"
-        app:iss_auto_cycle="true"
-        app:iss_period="1000"
-        app:iss_selected_dot="@drawable/trans_drawable"
-        app:iss_unselected_dot="@drawable/trans_drawable"
         app:layout_constraintBottom_toBottomOf="@+id/textView40"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView38" />

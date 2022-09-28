@@ -1431,7 +1431,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                 }
                 else{
                     for (int i = 0;i<stringRec.getArrayList().size();i++) {
-                        arraySlider.add( new SlideModel( String.valueOf( stringRec.getArrayList().get(i)), ScaleTypes.CENTER_INSIDE ) );
+                        arraySlider.add( new SlideModel( String.valueOf( stringRec.getArrayList().get(i)), null ) );
 
                         if(i + 1 == stringRec.getArrayList().size()){
                             imageSlider.setImageList(arraySlider);

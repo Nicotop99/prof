@@ -37,11 +37,8 @@ public class Adape_ingredienti extends ArrayAdapter<String> {
     public View getView(int position, View view, ViewGroup parent) {
         LayoutInflater inflater=context.getLayoutInflater();
         View rowView=inflater.inflate(R.layout.layout_ingredienti, null,true);
-
         TextView titleText = (TextView) rowView.findViewById(R.id.textView41);
         titleText.setText( "- " + String.valueOf(  maintitle.get( position )) );
-
-
         return rowView;
 
     };

@@ -347,7 +347,7 @@ public class Profile_bottom extends AppCompatActivity {
                                                 ArrayPost arrayPost = documentSnapshot.toObject( ArrayPost.class );
                                                 ArrayList<SlideModel> arrayList = new ArrayList<>();
                                                 for (int i = 0;i<arrayPost.getFoto().size();i++){
-                                                    arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ), ScaleTypes.CENTER_INSIDE ) );
+                                                    arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ),null ) );
                                                     uriArr.add( arrayPost.getFoto().get( i ) );
                                                 }
                                                 imageSlider.setImageList( arrayList );
@@ -530,14 +530,14 @@ public class Profile_bottom extends AppCompatActivity {
                         ClipData.Item item = selectedimg.getItemAt( i );
                         Log.d( "kfkdksllsl", String.valueOf( item.getUri() ) );
                         imageListPath.add( item.getUri() );
-                        slideModels.add( new SlideModel( String.valueOf( item.getUri() ), ScaleTypes.CENTER_INSIDE ) );
+                        slideModels.add( new SlideModel( String.valueOf( item.getUri() ), null ) );
                         if (i < selectedimg.getItemCount() + 1) {
                             imageSlider.setImageList( slideModels );
                         }
                     }
                 } else {
                     imageListPath.add( data.getData() );
-                    slideModels.add( new SlideModel( String.valueOf( data.getData() ), ScaleTypes.CENTER_INSIDE ) );
+                    slideModels.add( new SlideModel( String.valueOf( data.getData() ), null ) );
                     imageSlider.setImageList( slideModels );
                 }
 

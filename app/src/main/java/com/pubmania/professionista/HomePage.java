@@ -38,6 +38,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -193,7 +194,7 @@ public class HomePage extends AppCompatActivity {
                         if (arrayPost.getCategoria().equals( "Post" )) {
                             if (arrayPost.getPinnato().equals( "si" )) {
                                 for (int i = 0; i < arrayPost.getFoto().size(); i++) {
-                                    arrayModel.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ), ScaleTypes.CENTER_INSIDE ) );
+                                    arrayModel.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ), null ) );
                                     imageSlider.setImageList( arrayModel );
                                     Log.d("ksmflkdsm", String.valueOf( arrayModel.size() ) );
                                 }
@@ -805,6 +806,7 @@ public class HomePage extends AppCompatActivity {
                 l_categorie.setVisibility( View.GONE );
                 plusButton.setVisibility( View.GONE );
                 listProdottiCocktail.setAdapter( null );
+                arrayList.clear();
 
                 textBottonMenu.setText( getText( R.string.menuPrincipale ) );
                 l_cocktail.setVisibility( View.VISIBLE );
@@ -833,7 +835,10 @@ public class HomePage extends AppCompatActivity {
                                     listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            Log.d( "lfsldfn","okmsdlkd" );
+
+                                            ImageView imageView = view.findViewById( R.id.imageButton24 );
+                                            imageView.performClick();
+
                                         }
                                     } );
                                 }
@@ -858,6 +863,7 @@ public class HomePage extends AppCompatActivity {
             public void onClick(View view) {
                 cat = "Dolci";
                 arrayProd.clear();
+                arrayList.clear();
 
                 titolo.setText( getString( R.string.dolci ) );
                 categoriaSelezionata = getString( R.string.dolci );
@@ -894,7 +900,8 @@ public class HomePage extends AppCompatActivity {
                                     listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            Toast.makeText( getApplicationContext(),"prova",Toast.LENGTH_LONG ).show();
+                                            ImageView imageView = view.findViewById( R.id.imageButton24 );
+                                            imageView.performClick();
                                         }
                                     } );
                                 }
@@ -924,6 +931,7 @@ public class HomePage extends AppCompatActivity {
                 titolo.setText( getString( R.string.salati ) );
                 categoriaSelezionata = getString( R.string.salati );
                 arrayProd.clear();
+                arrayList.clear();
 
                 arrayProd = new ArrayList<>();
                 l_categorie.setVisibility( View.GONE );
@@ -956,7 +964,8 @@ public class HomePage extends AppCompatActivity {
                                     listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            Toast.makeText( getApplicationContext(),"prova",Toast.LENGTH_LONG ).show();
+                                            ImageView imageView = view.findViewById( R.id.imageButton24 );
+                                            imageView.performClick();
                                         }
                                     } );
                                 }
@@ -979,6 +988,7 @@ public class HomePage extends AppCompatActivity {
         benvandeImageButton.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                arrayList.clear();
                 cat = "Bevande";
                 arrayProd.clear();
                 listProdottiCocktail.setAdapter( null );
@@ -1015,7 +1025,12 @@ public class HomePage extends AppCompatActivity {
                                     listProdottiCocktail.setOnItemClickListener( new AdapterView.OnItemClickListener() {
                                         @Override
                                         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                            Toast.makeText( getApplicationContext(),"prova",Toast.LENGTH_LONG ).show();
+                                            ImageView imageView = view.findViewById( R.id.imageButton24 );
+                                            imageView.performClick();
+
+
+
+
                                         }
                                     } );
                                 }
@@ -1401,14 +1416,14 @@ public class HomePage extends AppCompatActivity {
                         ClipData.Item item = selectedimg.getItemAt( i );
                         Log.d( "kfkdksllsl", String.valueOf( item.getUri() ) );
                         imageListPath.add( item.getUri() );
-                        slideModels.add( new SlideModel( String.valueOf( item.getUri() ), ScaleTypes.CENTER_INSIDE ) );
+                        slideModels.add( new SlideModel( String.valueOf( item.getUri() ), null ) );
                         if (i < selectedimg.getItemCount() + 1) {
                             image_prdotto_slide.setImageList( slideModels );
                         }
                     }
                 } else {
                     imageListPath.add( data.getData() );
-                    slideModels.add( new SlideModel( String.valueOf( data.getData() ), ScaleTypes.CENTER_INSIDE ) );
+                    slideModels.add( new SlideModel( String.valueOf( data.getData() ), null ) );
                     image_prdotto_slide.setImageList( slideModels );
                 }
             } else if (requestCode == 2) {
@@ -1454,7 +1469,7 @@ public class HomePage extends AppCompatActivity {
     ImageButton search;
     TextInputLayout l_search;
     TextInputEditText t_search;
-    ArrayList<StringRegistrazione> arrayList;
+    ArrayList<StringRegistrazione> arrayList = new ArrayList<>();
     ImageView sfondoList;
     ArrayList listImage = new ArrayList();
     String nomeee;
@@ -1614,7 +1629,7 @@ public class HomePage extends AppCompatActivity {
                                                                     if(fotoList.size() >0) {
                                                                         for (int i = 0; i < fotoList.size(); i++) {
                                                                             listImage.add( fotoList.get( i ) );
-                                                                            arrMod.add( new SlideModel( fotoList.get( i ), ScaleTypes.CENTER_CROP ) );
+                                                                            arrMod.add( new SlideModel( fotoList.get( i ),null) );
                                                                         }
                                                                         imageSlider.setImageList( arrMod );
 
@@ -2445,7 +2460,7 @@ public class HomePage extends AppCompatActivity {
                                                                     if(fotoList.size() >0) {
                                                                         for (int i = 0; i < fotoList.size(); i++) {
                                                                             listImage.add( fotoList.get( i ) );
-                                                                            arrMod.add( new SlideModel( fotoList.get( i ), ScaleTypes.CENTER_CROP ) );
+                                                                            arrMod.add( new SlideModel( fotoList.get( i ), null ) );
                                                                         }
                                                                         imageSlider.setImageList( arrMod );
 

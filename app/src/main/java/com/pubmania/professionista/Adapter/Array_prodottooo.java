@@ -18,17 +18,20 @@ import android.widget.ArrayAdapter;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -51,6 +54,7 @@ import com.pubmania.professionista.HomePage;
 import com.pubmania.professionista.R;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
 import com.pubmania.professionista.StringAdapter.StringRegistrazione;
+import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -119,11 +123,15 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
         TextView prezzo = listitemView.findViewById( R.id.textView39 );
         ImageView show = (ImageView) listitemView.findViewById( R.id.imageButton24 );
         title.setText( dataModal.getNome() );
-        ImageSlider listImageListVieww = (ImageSlider) listitemView.findViewById( R.id.listviewImage );
+        ImageView listImageListVieww = (ImageView) listitemView.findViewById( R.id.listviewImage );
         prezzo.setText( dataModal.getPrezzo() + ",00 €" );
         TextView ingredienti = listitemView.findViewById( R.id.textView40 );
         listView = listitemView.findViewById( R.id.list_prodotti );
+
         listView.setFocusable( false );
+        listView.setFocusableInTouchMode( false );
+        listView.setClickable( false );
+        listView.setEnabled( false );
         listView.setClickable( false );
         if (dataModal.getIngredienti().size() == 0) {
             ingredienti.setVisibility( View.GONE );
@@ -133,23 +141,38 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
             Adape_ingredienti adapterr = new Adape_ingredienti( context, dataModal.getIngredienti() );
             listView.setAdapter( adapterr );
 
+            Log.d( "kmfdsklfmlksdm", String.valueOf( adapterr.getCount() ) );
+            int totalHeight = 0;
+            for (int i = 0; i < listView.getCount(); i++) {
+                View listItem = adapterr.getView(i, null, listView);
+                listItem.measure(0, 0);
+                totalHeight += listItem.getMeasuredHeight();
+            }
+
+            ViewGroup.LayoutParams params = listView.getLayoutParams();
+            params.height = totalHeight
+                    + (listView.getDividerHeight() * (adapterr.getCount() - 1));
+            listView.setLayoutParams(params);
+            listView.requestLayout();
+
+       /*
             if(dataModal.getIngredienti().size() > 8){
-                listView.getLayoutParams().height = (8 * 150);
+                listView.removeAllViews();
+                listView.refreshDrawableState();
 
             }else{
-                listView.getLayoutParams().height = (dataModal.getIngredienti().size() * 150);
+                listView.removeAllViews();
+                listView.refreshDrawableState();
+
 
             }
 
-            listView.requestLayout();
+             */
+            Log.d( "fkms.dmfsdm", String.valueOf( dataModal.getIngredienti().size() ) );
+
         }
         if(dataModal.getFoto().size() >0){
-
-            for(int i = 0;i<dataModal.getFoto().size();i++){
-                arrayListProva.add( new SlideModel( dataModal.getFoto().get( i ),null ) );
-                Log.d( "ofklsdfksd","ifdskf" );
-            }
-            listImageListVieww.setImageList( arrayListProva );
+            Picasso.get().load( dataModal.getFoto().get( 0   ) ).into( listImageListVieww );
         }else{
             listImageListVieww.setVisibility( View.GONE );
         }
@@ -897,7 +920,7 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
                                 if(fotoList.size() >0) {
                                     for (int i = 0; i < fotoList.size(); i++) {
                                         listImage.add( fotoList.get( i ) );
-                                        arrMod.add( new SlideModel( fotoList.get( i ), ScaleTypes.CENTER_CROP ) );
+                                        arrMod.add( new SlideModel( fotoList.get( i ), null ) );
                                     }
                                     imageSlider.setImageList( arrMod );
 
