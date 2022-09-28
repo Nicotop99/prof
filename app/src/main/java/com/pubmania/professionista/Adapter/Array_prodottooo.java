@@ -110,6 +110,8 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
         if (listitemView == null) {
             listitemView = LayoutInflater.from(getContext()).inflate( R.layout.layout_prodotti, parent, false);
         }
+        arrayListProva.clear();
+        notifyDataSetChanged();
         in = 1;
         email = "oliverio.enicola@gmail.com";
         ArrayProdotto dataModal = getItem(position);
@@ -117,7 +119,7 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
         TextView prezzo = listitemView.findViewById( R.id.textView39 );
         ImageView show = (ImageView) listitemView.findViewById( R.id.imageButton24 );
         title.setText( dataModal.getNome() );
-        RecyclerView listImageListVieww = (RecyclerView) listitemView.findViewById( R.id.listviewImage );
+        ImageSlider listImageListVieww = (ImageSlider) listitemView.findViewById( R.id.listviewImage );
         prezzo.setText( dataModal.getPrezzo() + ",00 €" );
         TextView ingredienti = listitemView.findViewById( R.id.textView40 );
         listView = listitemView.findViewById( R.id.list_prodotti );
@@ -143,20 +145,11 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
         }
         if(dataModal.getFoto().size() >0){
 
-            adapter_image adapter_image = new adapter_image( context,dataModal.getFoto() );
-            Log.d( "oifdslfjlsdk", String.valueOf( dataModal.getFoto() ) );
-            listImageListVieww.setAdapter( adapter_image );
-            if(dataModal.getFoto().size() > 2){
-                listImageListVieww.getLayoutParams().height = (2 * 300);
-                Log.d("lfmdfsdmlf","jfnljnslnfldsflk");
-
-            }else{
-                listImageListVieww.getLayoutParams().height = (dataModal.getFoto().size() * 300);
-                Log.d("lfmdfsdmlf","jfnljnslnfldsflssssssssssk");
-
+            for(int i = 0;i<dataModal.getFoto().size();i++){
+                arrayListProva.add( new SlideModel( dataModal.getFoto().get( i ),null ) );
+                Log.d( "ofklsdfksd","ifdskf" );
             }
-            listImageListVieww.requestLayout();
-
+            listImageListVieww.setImageList( arrayListProva );
         }else{
             listImageListVieww.setVisibility( View.GONE );
         }
@@ -1629,4 +1622,9 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
         return listitemView;
     }
     public static adapter_edit_foto adapterr;
+
+    @Override
+    public int getCount() {
+        return list.size();
+    }
 }

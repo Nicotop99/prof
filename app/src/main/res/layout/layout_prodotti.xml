@@ -116,11 +116,19 @@
             app:srcCompat="@drawable/delete_finish3" />
     </LinearLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
+    <com.denzcoskun.imageslider.ImageSlider
         android:id="@+id/listviewImage"
         android:layout_width="96dp"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/rectangle_72"
+        android:backgroundTint="#7AFFFFFF"
+        app:iss_auto_cycle="true"
+        app:iss_period="1000"
+        app:iss_selected_dot="@drawable/trans_drawable"
+        app:iss_unselected_dot="@drawable/trans_drawable"
+        app:layout_constraintBottom_toBottomOf="@+id/textView40"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView38" />
 
