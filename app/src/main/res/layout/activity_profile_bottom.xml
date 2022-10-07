@@ -279,6 +279,7 @@
         app:layout_constraintStart_toEndOf="@+id/circleImageView"
         app:srcCompat="@drawable/bottoneditphotohome" />
 
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
 
@@ -286,7 +287,8 @@
         android:layout_height="match_parent"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
-        tools:layout_editor_absoluteY="111dp">
+        tools:layout_editor_absoluteY="111dp"
+        tools:visibility="gone">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"

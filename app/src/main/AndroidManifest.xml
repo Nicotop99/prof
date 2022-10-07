@@ -18,15 +18,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PubMania"
         android:usesCleartextTraffic="true">
-        <activity android:name=".profileMenu"></activity>
+        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".profileMenu" />
         <activity
             android:name=".Recensioni_Bottom"
-            android:exported="true"></activity>
+            android:exported="true" />
         <activity android:name=".ProfiloPub" />
         <activity android:name=".Profile_bottom" />
         <activity
             android:name=".couponActivity"
-            android:exported="true"></activity>
+            android:exported="true" />
 
         <receiver
             android:name=".BootReceiver"
@@ -51,8 +52,8 @@
 
         <activity
             android:name=".HomePage"
-            android:windowSoftInputMode="adjustPan"
-            android:exported="true">
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

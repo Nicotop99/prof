@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.denzcoskun.imageslider.ImageSlider;
@@ -234,6 +235,7 @@ public class Profile_bottom extends AppCompatActivity {
                 }
             }
         } );
+
     }
 
     BottomNavigationView bottomAppBar;
@@ -294,7 +296,9 @@ public class Profile_bottom extends AppCompatActivity {
     ArrayList<ArrayPost> arrayPost;
     Adapter_Profile_bottom adapter_profile_bottom;
     Group group;
+    
     private void setGridView() {
+
         arrayPost = new ArrayList<>();
         gridView = (GridView) findViewById( R.id.gridProfilo );
         group = (Group) findViewById( R.id.group );
@@ -314,6 +318,7 @@ public class Profile_bottom extends AppCompatActivity {
                             arrayPost.add( arr );
                             adapter_profile_bottom = new Adapter_Profile_bottom( Profile_bottom.this, arrayPost );
                             gridView.setAdapter( adapter_profile_bottom );
+
                             gridView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
                                 @Override
                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {

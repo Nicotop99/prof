@@ -174,6 +174,8 @@ public class HomePage extends AppCompatActivity {
                     // DO your stuff
                     startActivity( new Intent(getApplicationContext(), profileMenu.class) );
 
+                }else if(id == R.id.menu_lat_impo){
+                    startActivity( new Intent(getApplicationContext(),SettingActivity.class) );
                 }
                 return true;
             }
