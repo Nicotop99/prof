@@ -131,7 +131,13 @@ public class HomePage extends AppCompatActivity {
         setImageButtonCategoria();
         setAutoCLick();
         setMenuLaterale();
-
+        DocumentReference documentReference = firebaseFirestore.collection(email).document("Birra al belvedere");
+        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                Log.d("KJnfjndjfn", String.valueOf(task.getResult()));
+            }
+        });
         startService(new Intent(getApplicationContext(),MyFirebaseMessagingService.class));
 
         imageSlider = (ImageSlider) findViewById( R.id.image_slider );
@@ -1007,7 +1013,7 @@ public class HomePage extends AppCompatActivity {
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.size() > 0){
                             vuoto.setVisibility( View.GONE );
-
+                            Log.d("jnfdjksnfkjsnd", String.valueOf(queryDocumentSnapshots.getDocuments()));
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot d : list) {
 
@@ -1042,12 +1048,18 @@ public class HomePage extends AppCompatActivity {
                                 vuoto.setVisibility( View.VISIBLE );
                             }
                         }else{
+                            Log.d("hdbhksabdkbasd","emnpty");
                             vuoto.setText( getString( R.string.nessunabevanda ) );
                             vuoto.setVisibility( View.VISIBLE );
 
                         }
                     }
-                } );
+                } ).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        Log.d("ojfndskjnf", String.valueOf(task.getResult().size()));
+                    }
+                });
 
             }
         } );
@@ -1211,7 +1223,7 @@ public class HomePage extends AppCompatActivity {
 
                             arrayProdotto.setIngredienti( listIng );
                             arrayProdotto.setNome( nome );
-                            arrayProdotto.setId( nome );
+                            arrayProdotto.setId( nome.replace(" ", "") );
                             arrayProdotto.setCategoria( categoria );
                             arrayProdotto.setEmail( email );
                             arrayProdotto.setPrezzo( prezzo );
