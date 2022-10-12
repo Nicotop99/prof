@@ -1,33 +1,78 @@
 {
   "project_info": {
-    "project_number": "891813146423",
-    "project_id": "pubmania-404db",
-    "storage_bucket": "pubmania-404db.appspot.com"
+    "project_number": "469869579645",
+    "project_id": "pub-mania",
+    "storage_bucket": "pub-mania.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:891813146423:android:c1948311da6a90da42b4b2",
+        "mobilesdk_app_id": "1:469869579645:android:2195cfd5b2775410a99014",
         "android_client_info": {
-          "package_name": "com.pubmania.professionista"
+          "package_name": "com.pubmania.Pubblico"
         }
       },
       "oauth_client": [
         {
-          "client_id": "891813146423-mm1qgbbl3lnldngcv1j5s8si4pngeqjc.apps.googleusercontent.com",
+          "client_id": "469869579645-507t00b61cm6l7t74gfvg96r2qddktoo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pubmania.Pubblico",
+            "certificate_hash": "fd50e11408c536da526844f4baebb8c84ec97241"
+          }
+        },
+        {
+          "client_id": "469869579645-h8jfllpvrgifs6ghsi792uluh9h6q9q2.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDAUmNDGd_R0RNG0oS0Hnl2mZMtxhkrqLQ"
+          "current_key": "AIzaSyC2MJJ11SGC1FiC6KirpIb4lRU5ciSfKgs"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "891813146423-mm1qgbbl3lnldngcv1j5s8si4pngeqjc.apps.googleusercontent.com",
+              "client_id": "469869579645-h8jfllpvrgifs6ghsi792uluh9h6q9q2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:469869579645:android:344765f0439eb00fa99014",
+        "android_client_info": {
+          "package_name": "com.pubmania.professionista"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "469869579645-icvv60n7bqctu43ehakamgj31avgsqg4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pubmania.professionista",
+            "certificate_hash": "fd50e11408c536da526844f4baebb8c84ec97241"
+          }
+        },
+        {
+          "client_id": "469869579645-h8jfllpvrgifs6ghsi792uluh9h6q9q2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC2MJJ11SGC1FiC6KirpIb4lRU5ciSfKgs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "469869579645-h8jfllpvrgifs6ghsi792uluh9h6q9q2.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
