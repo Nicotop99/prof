@@ -183,6 +183,9 @@ public class HomePage extends AppCompatActivity {
                 }else if(id == R.id.menu_lat_impo){
                     startActivity( new Intent(getApplicationContext(),SettingActivity.class) );
                 }
+                else if(id == R.id.notificheLato){
+                    startActivity(new Intent(getApplicationContext(),Notification_botton.class));
+                }
                 return true;
             }
         } );
