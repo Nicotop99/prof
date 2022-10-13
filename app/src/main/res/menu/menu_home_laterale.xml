@@ -8,6 +8,9 @@
     <item android:title="@string/impostazioni"
         android:icon="@drawable/impos_icon"
         android:id="@+id/menu_lat_impo"/>
+    <item android:title="@string/notifiche"
+        android:id="@+id/notificheLato"
+        android:icon="@drawable/notifiche_icon"/>
 
 
 </menu>

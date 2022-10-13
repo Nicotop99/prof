@@ -25,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.pubmania.professionista.StringAdapter.StringRegistrazione;
 
 import java.util.regex.Matcher;
@@ -44,8 +45,30 @@ public class Registrazione extends AppCompatActivity {
         setId();
         setRegistrati();
         setEdittext();
+        getToken();
     }
+    String token;
 
+    void getToken() {
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+                        token = task.getResult();
+
+                        // Log and toast
+                        Log.d("fndlsjfl", token);
+
+
+                    }
+                });
+    }
     private void setEdittext() {
     }
 
@@ -110,6 +133,8 @@ public class Registrazione extends AppCompatActivity {
 
                                                 StringRegistrazione stringRegistrazione = new StringRegistrazione();
                                                 stringRegistrazione.setCognome( cognome );
+                                                stringRegistrazione.setToken(token);
+
                                                 stringRegistrazione.setFollower( "0" );
                                                 stringRegistrazione.setFotoProfilo( "https://firebasestorage.googleapis.com/v0/b/pubmania-404db.appspot.com/o/download%20(5).jfif?alt=media&token=9fbd065e-5e01-445c-a9fe-60a02bbbfcca" );
                                                 stringRegistrazione.setEmail( email );

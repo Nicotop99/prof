@@ -373,10 +373,7 @@ public class HomePage extends AppCompatActivity {
                                                     documentReference.update( String.valueOf( countI ), emailCliente ).addOnSuccessListener( new OnSuccessListener<Void>() {
                                                         @Override
                                                         public void onSuccess(Void aVoid) {
-                                                            firebaseFirestore.collection( emailCliente+"Coupon" ).get().
-                                                                    addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
 
                                                                             Log.d( "pkfmdsòkmòks","sec" );
                                                                             Map<String, Object> user = new HashMap<>();
@@ -534,8 +531,7 @@ public class HomePage extends AppCompatActivity {
                                                                                             Log.d("lflsdnf",e.getMessage());
                                                                                         }
                                                                                     });
-                                                                        }
-                                                                    } );
+
 
 
 
@@ -1876,7 +1872,6 @@ public class HomePage extends AppCompatActivity {
                                                                         // after passing this array list to our adapter
                                                                         // class we are setting our adapter to our list view.
                                                                         listPhotoEdit.setAdapter( adapterr );
-                                                                        image_prdotto_slide = (ImageSlider) viewView.findViewById( R.id.image_slider );
 
 
                                                                         List<String> finalArrayList = arrayList;
@@ -2707,9 +2702,6 @@ public class HomePage extends AppCompatActivity {
                                                                         // after passing this array list to our adapter
                                                                         // class we are setting our adapter to our list view.
                                                                         listPhotoEdit.setAdapter( adapterr );
-                                                                        image_prdotto_slide = (ImageSlider) viewView.findViewById( R.id.image_slider );
-
-
                                                                         List<String> finalArrayList = arrayList;
                                                                         imageButton.setOnClickListener( new View.OnClickListener() {
                                                                             @Override

@@ -10,14 +10,15 @@ public class StringRegistrazione {
     public String partitaIva;
     public String follower;
     public String fotoProfilo;
-
+    public String token;
 
     public StringRegistrazione(){
 
     }
 
-    public StringRegistrazione(String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo) {
+    public StringRegistrazione(String token, String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo) {
         this.email = email;
+        this.token = token;
         this.nome = nome;
         this.cognome = cognome;
         this.numero = numero;
@@ -27,6 +28,13 @@ public class StringRegistrazione {
         this.fotoProfilo = fotoProfilo;
     }
 
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getFotoProfilo() {
         return fotoProfilo;
