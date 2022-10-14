@@ -25,6 +25,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 
+import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,7 +35,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.pubmania.professionista.R;
-import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -75,7 +75,8 @@ public class adapter_edit_foto extends ArrayAdapter<String> {
         if(!maintitle.get( position ).equals( "vuoto" )) {
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver() , Uri.parse(  maintitle.get( position ).toString()));
-                Picasso.get().load( String.valueOf( bitmap ) ).into( image );
+
+                Glide.with(context).load(String.valueOf(bitmap)).into(image);
                 Log.d( "kfmdlksmf", String.valueOf( bitmap ) );
             } catch (IOException e) {
                 e.printStackTrace();
@@ -85,7 +86,7 @@ public class adapter_edit_foto extends ArrayAdapter<String> {
             }
             Log.d( "kfmdlksmf", "fdsfsdf" );
 
-            Picasso.get().load( String.valueOf( maintitle.get( position ) ) ).into( image );
+            Glide.with(context).load(String.valueOf(maintitle.get(position))).into(image);
         }else{
             delete.setVisibility( View.GONE );
             vuotoInt = position;

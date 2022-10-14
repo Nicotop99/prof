@@ -25,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
@@ -49,7 +50,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pubmania.professionista.Adapter.Adapter_Profile_bottom;
 import com.pubmania.professionista.StringAdapter.ArrayPost;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -101,7 +101,7 @@ public class Profile_bottom extends AppCompatActivity {
                         if(task != null){
                             for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
                                 if(documentSnapshot.getString( "email" ).equals( email )) {
-                                    Picasso.get().load( documentSnapshot.getString( "fotoProfilo" ) ).into( imageView );
+                                    Glide.with(Profile_bottom.this).load(documentSnapshot.getString("fotoProfilo")).into(imageView);
                                     idEmail = documentSnapshot.getId();
                                 }
                             }
@@ -144,8 +144,8 @@ public class Profile_bottom extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(Uri uri) {
                                         DocumentReference documentReference = firebaseFirestore.collection( "Professionisti" ).document(idEmail);
-                                        Picasso.get().load( uri ).into( photoProfilo );
 
+                                        Glide.with(Profile_bottom.this).load(uri).into(photoProfilo);
                                         documentReference.update( "fotoProfilo", String.valueOf( uri ) ).addOnSuccessListener( new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
@@ -219,7 +219,7 @@ public class Profile_bottom extends AppCompatActivity {
                         if(documentSnapshot.getString( "email" ).equals( email )){
                             nomePub.setText( documentSnapshot.getString( "nomeLocale" ) );
                             followe.setText( documentSnapshot.getString( "follower" ) );
-                            Picasso.get().load( documentSnapshot.getString( "fotoProfilo" ) ).into( photoProfilo );
+                            Glide.with(Profile_bottom.this).load(documentSnapshot.getString("fotoProfilo")).into(photoProfilo);
 
                         }
                     }
@@ -695,7 +695,8 @@ public class Profile_bottom extends AppCompatActivity {
             }
             else if(requestCode == 4){
                 uriFotoProfilo = data.getData();
-                Picasso.get().load( data.getData() ).into( imageView );
+
+                Glide.with(Profile_bottom.this).load(data.getData()).into(imageView);
                 salvaChangeFoto.setVisibility( View.VISIBLE );
                 salvaChangeFotoText.setVisibility( View.VISIBLE );
             }

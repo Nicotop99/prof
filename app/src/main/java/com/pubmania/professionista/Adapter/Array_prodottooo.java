@@ -54,7 +54,6 @@ import com.pubmania.professionista.HomePage;
 import com.pubmania.professionista.R;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
 import com.pubmania.professionista.StringAdapter.StringRegistrazione;
-import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -172,7 +171,8 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
 
         }
         if(dataModal.getFoto().size() >0){
-            Picasso.get().load( dataModal.getFoto().get( 0   ) ).into( listImageListVieww );
+
+            Glide.with(context).load(dataModal.getFoto().get(0)).into(listImageListVieww);
         }else{
             listImageListVieww.setVisibility( View.GONE );
         }

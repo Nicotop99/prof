@@ -19,6 +19,7 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,6 +51,10 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.artjimlop.altex.AltexImageDownloader;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
@@ -87,10 +92,9 @@ import com.pubmania.professionista.Adapter.try_adapter;
 import com.pubmania.professionista.StringAdapter.ArrayPost;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
 import com.pubmania.professionista.StringAdapter.StringCoupon;
+import com.pubmania.professionista.StringAdapter.StringNotifiche;
 import com.pubmania.professionista.StringAdapter.StringRecensioni;
 import com.pubmania.professionista.StringAdapter.StringRegistrazione;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
 import java.io.File;
 import java.io.IOException;
@@ -113,6 +117,9 @@ import static com.pubmania.professionista.Adapter.Array_prodottooo.adapterr;
 import static com.pubmania.professionista.Adapter.adapter_edit_foto.arrayFotoDaEliminare;
 import static com.pubmania.professionista.Adapter.adapter_edit_foto.maintitle;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class HomePage extends AppCompatActivity {
 
     ImageButton menuSlider;
@@ -129,6 +136,8 @@ public class HomePage extends AppCompatActivity {
         setMenuBasso();
         creaArticolo();
         setImageButtonCategoria();
+        SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
+        Log.d("kdjnakjsndjna",sharedPreferences.getString("s5","ddd"));
         setAutoCLick();
 
         FirebaseMessaging.getInstance().getToken()
@@ -258,9 +267,11 @@ public class HomePage extends AppCompatActivity {
     String nomePub;
     boolean exist = false;
     boolean exist2 = false;
+    String idPost;
     int size = 0;
+    String nomeCliente;
     CodeScannerView codeScannerView;
-    String tipo,prezzo,prodotti,tokenn;
+    String tipo,prezzo,prodotti,tokenn,emailCliente;
     private void setMenuBasso() {
         scanQR = (FloatingActionButton) findViewById( R.id.floatBotton );
         scanQR.setOnClickListener( new View.OnClickListener() {
@@ -298,9 +309,7 @@ public class HomePage extends AppCompatActivity {
                             usate = 1;
                             entrato  = false;
                             String[] separated = result.getText().split(":");
-                            Log.d( "omsodfsdm",separated[0] );//emailcliente
-                            Log.d( "omsodfsdm",separated[1] );//idPost
-                            String idPost = separated[1];
+                            idPost = separated[1];
                             prodotti = separated[6];
                             tipo = separated[3];
                             prezzo = separated[4];
@@ -310,8 +319,9 @@ public class HomePage extends AppCompatActivity {
                                 Log.d( "omfodsfm", String.valueOf( quanteVolte ) );
 
                             }
-                            String emailCliente = separated[0];
+                            emailCliente = separated[0];
                             tokenn = separated[7] + ":" + separated[8];
+                            nomeCliente = separated[9];
                             Log.d( "omfodsfm",idPost );
                             countI = 1;
                             firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
@@ -409,134 +419,206 @@ public class HomePage extends AppCompatActivity {
                                                                                         public void onComplete(@NonNull Task<DocumentReference> task) {
 
 
+
+
+
                                                                                             firebaseFirestore.collection( emailCliente+"Rec" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                                                                                 @Override
                                                                                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                                                                                     Log.d("oijflsdjfl","kkkasdasdasdsad");
 
-                                                                                                    if(task != null){
+                                                                                                    if(task.getResult().size() > 0){
                                                                                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                                                                            Log.d("oijflsdjfl","unoo");
 
-                                                                                                            if(documentSnapshot.getString( "emailPub" ).equals( email )){
-                                                                                                                exist = true;
-                                                                                                                Log.d("oijflsdjfl","kkk");
-                                                                                                            }
+                                                                                                            if(!documentSnapshot.getString( "emailPub" ).equals( email )){
+                                                                                                                Log.d("mflkfskfmksd","uno");
+                                                                                                                StringRecensioni stringRecensioni = new StringRecensioni();
+                                                                                                                stringRecensioni.setEmailCliente( emailCliente );
+                                                                                                                stringRecensioni.setEmailPub( email );
+                                                                                                                stringRecensioni.setNomeLocale( nomePub );
+                                                                                                                stringRecensioni.setToken(token);
+                                                                                                                stringRecensioni.setIdPost( idPost );
+                                                                                                                stringRecensioni.setUrlFotoProfilo( urlFotoProfilo );
+                                                                                                                firebaseFirestore.collection( emailCliente+"Rec" ).add( stringRecensioni )
+                                                                                                                        .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                                                                                                                            @Override
+                                                                                                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                                                Log.d("mflkfskfmksd","due");
 
-                                                                                                        }
-                                                                                                        if(exist == false){
-                                                                                                            Log.d("mflkfskfmksd","uno");
-                                                                                                            StringRecensioni stringRecensioni = new StringRecensioni();
-                                                                                                            stringRecensioni.setEmailCliente( emailCliente );
-                                                                                                            stringRecensioni.setEmailPub( email );
-                                                                                                            stringRecensioni.setNomeLocale( nomePub );
-                                                                                                            stringRecensioni.setToken(tokenn);
-                                                                                                            stringRecensioni.setIdPost( idPost );
-                                                                                                            stringRecensioni.setUrlFotoProfilo( urlFotoProfilo );
-                                                                                                            firebaseFirestore.collection( emailCliente+"Rec" ).add( stringRecensioni )
-                                                                                                                    .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
-                                                                                                                        @Override
-                                                                                                                        public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                                                                                            Log.d("mflkfskfmksd","due");
+                                                                                                                                DocumentReference documentReference1 = firebaseFirestore.collection( emailCliente+"Rec" ).document(task.getResult().getId());
+                                                                                                                                documentReference1.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                    @Override
+                                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
 
-                                                                                                                            DocumentReference documentReference1 = firebaseFirestore.collection( emailCliente+"Rec" ).document(task.getResult().getId());
-                                                                                                                            documentReference1.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                                @Override
-                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                                                                                                                                        String currentDateandTime = sdf.format(new Date());
+                                                                                                                                        Map<String, Object> user = new HashMap<>();
+                                                                                                                                        user.put("emailPub", email);
+                                                                                                                                        user.put("emailCliente", emailCliente);
+                                                                                                                                        user.put("ora", currentDateandTime);
+                                                                                                                                        firebaseFirestore.collection( email+"couponUtilizzati" ).add( user )
+                                                                                                                                                .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                                                                                                                                                    @Override
+                                                                                                                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                                                                        AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
+                                                                                                                                                        //dddddddddddd
 
-                                                                                                                                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-                                                                                                                                    String currentDateandTime = sdf.format(new Date());
-                                                                                                                                    Map<String, Object> user = new HashMap<>();
-                                                                                                                                    user.put("emailPub", email);
-                                                                                                                                    user.put("emailCliente", emailCliente);
-                                                                                                                                    user.put("ora", currentDateandTime);
-                                                                                                                                    firebaseFirestore.collection( email+"couponUtilizzati" ).add( user )
-                                                                                                                                            .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
-                                                                                                                                                @Override
-                                                                                                                                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                                                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
-// ...Irrelevant code for customizing the buttons and title
+                                                                                                                                                        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                                                                        View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
 
+                                                                                                                                                        dialogBuilderr.setView( viewView );
 
-                                                                                                                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                                                                                                                                                    View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
-
-                                                                                                                                                    dialogBuilderr.setView( viewView );
-
-                                                                                                                                                    AlertDialog alertDialogg = dialogBuilderr.create();
-                                                                                                                                                    alertDialogg.show();
-                                                                                                                                                    TextView title = (TextView) viewView.findViewById( R.id.textView75 );
-                                                                                                                                                    TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
-                                                                                                                                                    ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
-                                                                                                                                                    imageButton.setOnClickListener( new View.OnClickListener() {
-                                                                                                                                                        @Override
-                                                                                                                                                        public void onClick(View view) {
-                                                                                                                                                            alertDialogg.dismiss();
+                                                                                                                                                        AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                                                                                        alertDialogg.show();
+                                                                                                                                                        TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                                                                                        TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                                                                                        ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                                                                                        imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                                                                                            @Override
+                                                                                                                                                            public void onClick(View view) {
+                                                                                                                                                                alertDialogg.dismiss();
+                                                                                                                                                            }
+                                                                                                                                                        } );
+                                                                                                                                                        if (tipo.equals( "Prezzo" )) {
+                                                                                                                                                            title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                                                                                        } else {
+                                                                                                                                                            title.setText( prezzo + " % " + getString( R.string.discontosu ) );
                                                                                                                                                         }
-                                                                                                                                                    } );
-                                                                                                                                                    if (tipo.equals( "Prezzo" )) {
-                                                                                                                                                        title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
-                                                                                                                                                    } else {
-                                                                                                                                                        title.setText( prezzo + " % " + getString( R.string.discontosu ) );
+                                                                                                                                                        if (prodotti.equals( "Tutti" )) {
+                                                                                                                                                            prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                                                                                        } else {
+                                                                                                                                                            prodotto.setText( prodotti );
+                                                                                                                                                        }
+
+
+                                                                                                                                                        alertDialog.dismiss();
                                                                                                                                                     }
-                                                                                                                                                    if (prodotti.equals( "Tutti" )) {
-                                                                                                                                                        prodotto.setText( getText( R.string.sututtolimporto ) );
-                                                                                                                                                    } else {
-                                                                                                                                                        prodotto.setText( prodotti );
-                                                                                                                                                    }
-
-
-                                                                                                                                                    alertDialog.dismiss();
-                                                                                                                                                }
-                                                                                                                                            } );
+                                                                                                                                                } );
 
 
 
 
 
 
-                                                                                                                                }
-                                                                                                                            } );
-                                                                                                                        }
-                                                                                                                    } );
-                                                                                                        }
-                                                                                                        else{
-                                                                                                            AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
+                                                                                                                                    }
+                                                                                                                                } );
+                                                                                                                            }
+                                                                                                                        } );
+                                                                                                            }else{
+                                                                                                                Log.d("jndkjasnkdj","njkanajs");
+                                                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 
 
-                                                                                                            LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                                                                                                            View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+                                                                                                                LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                                View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
 
-                                                                                                            dialogBuilderr.setView( viewView );
+                                                                                                                dialogBuilderr.setView( viewView );
 
-                                                                                                            AlertDialog alertDialogg = dialogBuilderr.create();
-                                                                                                            alertDialogg.show();
-                                                                                                            TextView title = (TextView) viewView.findViewById( R.id.textView75 );
-                                                                                                            TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
-                                                                                                            ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
-                                                                                                            imageButton.setOnClickListener( new View.OnClickListener() {
-                                                                                                                @Override
-                                                                                                                public void onClick(View view) {
-                                                                                                                    alertDialogg.dismiss();
+                                                                                                                AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                                                alertDialogg.show();
+                                                                                                                TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                                                TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                                                ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                                                imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                                                    @Override
+                                                                                                                    public void onClick(View view) {
+                                                                                                                        alertDialogg.dismiss();
+                                                                                                                    }
+                                                                                                                } );
+                                                                                                                if (tipo.equals( "Prezzo" )) {
+                                                                                                                    title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                                                } else {
+                                                                                                                    title.setText( prezzo + " % " + getString( R.string.discontosu ) );
                                                                                                                 }
-                                                                                                            } );
-                                                                                                            if (tipo.equals( "Prezzo" )) {
-                                                                                                                title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
-                                                                                                            } else {
-                                                                                                                title.setText( prezzo + " % " + getString( R.string.discontosu ) );
-                                                                                                            }
-                                                                                                            if (prodotti.equals( "Tutti" )) {
-                                                                                                                prodotto.setText( getText( R.string.sututtolimporto ) );
-                                                                                                            } else {
-                                                                                                                prodotto.setText( prodotti );
-                                                                                                            }
+                                                                                                                if (prodotti.equals( "Tutti" )) {
+                                                                                                                    prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                                                } else {
+                                                                                                                    prodotto.setText( prodotti );
+                                                                                                                }
 
 
-                                                                                                            alertDialog.dismiss();
+                                                                                                                alertDialog.dismiss();
+                                                                                                            }
+
                                                                                                         }
+
                                                                                                     }
                                                                                                     else{
-                                                                                                        Log.d("mfldsfksd","okfdslmf");
+                                                                                                        Log.d("mflkfskfmksd","uno");
+                                                                                                        StringRecensioni stringRecensioni = new StringRecensioni();
+                                                                                                        stringRecensioni.setEmailCliente( emailCliente );
+                                                                                                        stringRecensioni.setEmailPub( email );
+                                                                                                        stringRecensioni.setNomeLocale( nomePub );
+                                                                                                        stringRecensioni.setToken(token);
+                                                                                                        stringRecensioni.setIdPost( idPost );
+                                                                                                        stringRecensioni.setUrlFotoProfilo( urlFotoProfilo );
+                                                                                                        firebaseFirestore.collection( emailCliente+"Rec" ).add( stringRecensioni )
+                                                                                                                .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                                                                                                                    @Override
+                                                                                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                                        Log.d("mflkfskfmksd","due");
+
+                                                                                                                        DocumentReference documentReference1 = firebaseFirestore.collection( emailCliente+"Rec" ).document(task.getResult().getId());
+                                                                                                                        documentReference1.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                            @Override
+                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                                                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                                                                                                                                String currentDateandTime = sdf.format(new Date());
+                                                                                                                                Map<String, Object> user = new HashMap<>();
+                                                                                                                                user.put("emailPub", email);
+                                                                                                                                user.put("emailCliente", emailCliente);
+                                                                                                                                user.put("ora", currentDateandTime);
+                                                                                                                                firebaseFirestore.collection( email+"couponUtilizzati" ).add( user )
+                                                                                                                                        .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                                                                                                                                            @Override
+                                                                                                                                            public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                                                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
+                                                                                                                                                //dddddddddddd
+
+                                                                                                                                                LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                                                                View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+
+                                                                                                                                                dialogBuilderr.setView( viewView );
+
+                                                                                                                                                AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                                                                                alertDialogg.show();
+                                                                                                                                                TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                                                                                TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                                                                                ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                                                                                imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                                                                                    @Override
+                                                                                                                                                    public void onClick(View view) {
+                                                                                                                                                        alertDialogg.dismiss();
+                                                                                                                                                    }
+                                                                                                                                                } );
+                                                                                                                                                if (tipo.equals( "Prezzo" )) {
+                                                                                                                                                    title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                                                                                } else {
+                                                                                                                                                    title.setText( prezzo + " % " + getString( R.string.discontosu ) );
+                                                                                                                                                }
+                                                                                                                                                if (prodotti.equals( "Tutti" )) {
+                                                                                                                                                    prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                                                                                } else {
+                                                                                                                                                    prodotto.setText( prodotti );
+                                                                                                                                                }
+
+
+                                                                                                                                                alertDialog.dismiss();
+                                                                                                                                            }
+                                                                                                                                        } );
+
+
+
+
+
+
+                                                                                                                            }
+                                                                                                                        } );
+                                                                                                                    }
+                                                                                                                } );
                                                                                                     }
                                                                                                 }
                                                                                             } );
@@ -676,6 +758,11 @@ public class HomePage extends AppCompatActivity {
                                                         @Override
                                                         public void onComplete(@NonNull Task<Void> task) {
 
+
+
+                                                            propvaNotifica(token,idPost);
+
+
                                                             //coupon utilizzato
                                                             AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this,R.style.MyDialogThemeeee  );
 // ...Irrelevant code for customizing the buttons and title
@@ -730,6 +817,10 @@ public class HomePage extends AppCompatActivity {
                                                         }
                                                     } );
                                         }
+                                        else{
+                                            propvaNotifica(token,idPost);
+
+                                        }
                                     }
                                     else{
                                     }
@@ -758,11 +849,13 @@ public class HomePage extends AppCompatActivity {
                             menu.findItem(R.id.profil_page).setTitle( documentSnapshot.getString( "nome" ) );
                             nomePub = documentSnapshot.getString( "nomeLocale" );
                             urlFotoProfilo = documentSnapshot.getString( "fotoProfilo" );
+                            token = documentSnapshot.getString("token");
                         }
                     }
                 }
             }
         } );
+
         bottomAppBar.setOnItemSelectedListener( new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -791,7 +884,99 @@ public class HomePage extends AppCompatActivity {
 
 
     }
+    String nomeCognome,uriProfilo;
+    final private String FCM_API = "https://fcm.googleapis.com/fcm/send";
+    final private String serverKey = "key=" + "AAAAbWZozX0:APA91bElDXMdAF898t_M5ai0z5cCTkG9po-deDqqirLm5zL9FI_UgxdQtlUdH0k7fToZIClrylH5LXbEZeVXsXpbr1rpYj6FpD20mFTLOVot-YbiYjhSf85Ca7qbHI9zzCCh0nCktwYF";
+    final private String contentType = "application/json";
+    final String TAG = "NOTIFICATION TAG";
+    String TOPIC,token;
+    private void propvaNotifica(String token, String idPosttt) {
 
+        TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+        Log.d("jndjakndj",token);
+        Log.d("kjndjkankjansj","djndjsandfa");
+        JSONObject notification = new JSONObject();
+        JSONObject notifcationBody = new JSONObject();
+        try {
+            notifcationBody.put("title",nomeCliente + " " +  getString(R.string.hausatouncoupon)  );
+            notifcationBody.put("message", getString(R.string.cliccalanotifica));
+            notifcationBody.put("tipo","Coupon");
+            notifcationBody.put("idPost",idPosttt);
+            notification.put("to", token);
+            notification.put("data", notifcationBody);
+        } catch (JSONException e) {
+            Log.e(TAG, "onCreate: " + e.getMessage() );
+        }
+        sendNotification(notification,idPosttt);
+
+
+
+
+    }
+
+    private void sendNotification(JSONObject notification,String idPostt) {
+        Log.d("kjndjkankjansj","222");
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("kjndjkankjansj","333");
+
+                        StringNotifiche stringNotifiche = new StringNotifiche();
+                        stringNotifiche.setCategoria("Coupon");
+                        stringNotifiche.setVisualizzato("false");
+                        stringNotifiche.setEmailCliente(email);
+                        stringNotifiche.setEmailPub(email);
+                        stringNotifiche.setFotoProfilo(urlFotoProfilo);
+                        stringNotifiche.setIdPost(idPostt);
+                        stringNotifiche.setNomecognomeCliente(nomeCliente);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                        String currentDateandTime = sdf.format(new Date());
+                        stringNotifiche.setOra(currentDateandTime);
+                        firebaseFirestore.collection(email+"Notifiche").add(stringNotifiche)
+                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                        if(task.isSuccessful()){
+                                            DocumentReference documentReference = task.getResult();
+                                            documentReference.update("id",task.getResult().getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                }
+                                            });
+                                        }
+                                    }
+                                });
+
+
+
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("kjndjkankjansj","4444");
+
+                        propvaNotifica(token, idPostt);
+                        Log.d("onfljdsnfl",error.getMessage() + " ciao");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+    }
 
     String urlFotoProfilo;
     ImageButton cockatailImageButton;

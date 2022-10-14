@@ -26,7 +26,6 @@ import com.bumptech.glide.request.target.Target;
 import com.pubmania.professionista.R;
 import com.pubmania.professionista.StringAdapter.ArrayPost;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
-import com.squareup.picasso.Picasso;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;

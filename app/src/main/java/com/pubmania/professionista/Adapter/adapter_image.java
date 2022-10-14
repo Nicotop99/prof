@@ -13,8 +13,8 @@ import android.widget.ListView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.pubmania.professionista.R;
-import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +46,8 @@ public class adapter_image extends RecyclerView.Adapter<adapter_image.ViewHolder
 
         Log.d("lfmdfsdmlf","binddd");
 
-        Picasso.get().load( String.valueOf( listdata.get( position ) ) ).into( holder.imageView );
+
+        Glide.with(holder.itemView).load(String.valueOf(listdata.get(position))).into(holder.imageView);
     }
 
     /**

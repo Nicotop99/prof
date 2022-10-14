@@ -18,6 +18,7 @@ public class gestione_notifiche extends AppCompatActivity {
         setS1();
         sets2();
         setS3();
+        setS4();
         sets5();
     }
 
@@ -35,6 +36,25 @@ public class gestione_notifiche extends AppCompatActivity {
                     SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
                     SharedPreferences.Editor myEdit = sharedPreferences.edit();
                     myEdit.putString("s5", "true");
+                    myEdit.commit();
+                }
+            }
+        });
+    }
+    private void setS4() {
+        s5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b == true){
+                    Log.d("jfnkssdnfsj","nfjkldsnf");
+                    SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                    myEdit.putString("s4", "false");
+                    myEdit.commit();
+                }else{
+                    SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
+                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                    myEdit.putString("s4", "true");
                     myEdit.commit();
                 }
             }

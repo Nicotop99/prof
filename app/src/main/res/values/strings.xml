@@ -277,4 +277,6 @@
     <string name="notifichenuovofollower">Notifiche nuovo follower</string>
     <string name="notifichenuovocou">Notifiche nuovo coupon usato</string>
     <string name="notifichenuovarecensuiine">Notifiche nuova recensione</string>
+    <string name="hausatouncoupon">ha usato un coupon</string>
+    <string name="cliccalanotifica">Clicca la notifica per ulteriori dettagli</string>
 </resources>

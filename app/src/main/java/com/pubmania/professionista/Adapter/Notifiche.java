@@ -54,6 +54,8 @@ public class Notifiche extends ArrayAdapter<StringNotifiche> {
             titolo.setText(stringNotifiche.getNomecognomeCliente() + " " + context.getString(R.string.hainiziatoaseguirti));
         }else if(stringNotifiche.getCategoria().equals("Recensione")){
             titolo.setText(stringNotifiche.getNomecognomeCliente() + " " + context.getString(R.string.hafattounarecensione));
+        }else if(stringNotifiche.getCategoria().equals("Coupon")){
+            titolo.setText(stringNotifiche.getNomecognomeCliente() + " " + context.getString(R.string.hausatouncoupon));
         }
         FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
         DocumentReference documentReference = firebaseFirestore.collection(email+"Notifiche").document(stringNotifiche.getId());

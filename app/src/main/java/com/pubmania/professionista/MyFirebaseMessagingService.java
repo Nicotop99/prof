@@ -31,9 +31,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     String tipo;
     Uri notificationSoundUri;
     String idPost;
+    int notificationID;
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
+        notificationID = new Random().nextInt(3000);
 
         tipo = remoteMessage.getData().get("tipo");
         idPost = remoteMessage.getData().get("idPost");
@@ -56,7 +58,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
         to at least one of them. Therefore, confirm if version is Oreo or higher, then setup notification channel
       */
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     setupChannels(notificationManager);
                 }
 
@@ -65,10 +67,10 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                         PendingIntent.FLAG_ONE_SHOT);
 
                 Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.coupon_icon);
+                        R.drawable.review_icon);
 
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, String.valueOf(12))
-                        .setSmallIcon(R.drawable.coupon_icon)
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, String.valueOf(notificationID))
+                        .setSmallIcon(R.drawable.review_icon)
                         .setLargeIcon(largeIcon)
                         .setContentTitle(remoteMessage.getData().get("title"))
                         .setContentText(remoteMessage.getData().get("message"))
@@ -86,13 +88,12 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Log.d("nfjn","djsfjs");
                 final Intent intent = new Intent(this, MainActivity.class);
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                int notificationID = new Random().nextInt(3000);
 
       /*
         Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
         to at least one of them. Therefore, confirm if version is Oreo or higher, then setup notification channel
       */
-                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                     setupChannels(notificationManager);
                     Log.d("jdnasldna","dmoaslmkdk");
                 }
@@ -104,17 +105,52 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
                         R.drawable.follow_icon);
 
-                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, String.valueOf(12))
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, String.valueOf(notificationID))
                         .setSmallIcon(R.drawable.follow_icon)
                         .setLargeIcon(largeIcon)
                         .setContentTitle(remoteMessage.getData().get("title"))
                         .setContentText(remoteMessage.getData().get("message"))
                         .setAutoCancel(true)
-                        .setSound(null)
-                        .setVibrate(new long[]{Long.parseLong("0")})
                         .setContentIntent(pendingIntent);
 
                 notificationManager.notify(notificationID, notificationBuilder.build());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                }
+            }
+            else if (tipo.equals("Coupon") && sharedPreferences.getString("s4","true").equals("true")) {
+                Log.d("nfjn","djsfjs");
+                final Intent intent = new Intent(this, MainActivity.class);
+                NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+      /*
+        Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
+        to at least one of them. Therefore, confirm if version is Oreo or higher, then setup notification channel
+      */
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    setupChannels(notificationManager);
+                    Log.d("jdnasldna","dmoaslmkdk");
+                }
+
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
+                        PendingIntent.FLAG_ONE_SHOT);
+
+                Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
+                        R.drawable.coupon_notifi_icon);
+
+                NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, String.valueOf(notificationID))
+                        .setSmallIcon(R.drawable.coupon_notifi_icon)
+                        .setLargeIcon(largeIcon)
+                        .setContentTitle(remoteMessage.getData().get("title"))
+                        .setContentText(remoteMessage.getData().get("message"))
+                        .setAutoCancel(true)
+                        .setContentIntent(pendingIntent);
+
+                notificationManager.notify(notificationID, notificationBuilder.build());
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+                }
             }
         }
 
@@ -125,15 +161,42 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         String adminChannelDescription = "Device to devie notificationzxczxcxz";
         SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
         String s2 = sharedPreferences.getString("s2","true");
+        String s4 = sharedPreferences.getString("s4","true");
         NotificationChannel adminChannel;
-        adminChannel = new NotificationChannel(idPost, tipo, NotificationManager.IMPORTANCE_DEFAULT);
-        adminChannel.setShowBadge(false);
-        adminChannel.enableLights(false);
-        if(s2.equals("false")){
+        adminChannel = new NotificationChannel(String.valueOf(notificationID), "tipo", NotificationManager.IMPORTANCE_HIGH);
+
+
+        if(tipo.equals("Follower")){
+        if(s2.equals("true")){
+            adminChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+            Log.d("kjanfda","Higjt");
+        }else{
+            adminChannel.setImportance(NotificationManager.IMPORTANCE_LOW);
             adminChannel.setSound(null,null);
+            Log.d("kjanfda","Low");
+
+
         }
+        }else if(tipo.equals("Coupon")){
+            if(s4.equals("true")){
+                adminChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+                Log.d("kjanfda","Higjt");
+            }else{
+                adminChannel.setImportance(NotificationManager.IMPORTANCE_LOW);
+                Log.d("kjanfda","Low");
+                adminChannel.setSound(null,null);
+
+
+
+            }
+        }
+
+
+        adminChannel.setShowBadge(true);
+        adminChannel.enableLights(true);
+
         adminChannel.setLightColor(Color.RED);
-        adminChannel.enableVibration(false);
+        adminChannel.enableVibration(true);
         if (notificationManager != null) {
             notificationManager.createNotificationChannel(adminChannel);
         }
