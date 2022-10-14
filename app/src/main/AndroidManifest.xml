@@ -19,6 +19,13 @@
         android:theme="@style/Theme.PubMania"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".gestione_notifiche"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".Notification_botton"
             android:exported="false">
             <meta-data

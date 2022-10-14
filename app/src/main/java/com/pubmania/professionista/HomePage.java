@@ -130,6 +130,26 @@ public class HomePage extends AppCompatActivity {
         creaArticolo();
         setImageButtonCategoria();
         setAutoCLick();
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                            return;
+                        }
+
+                        // Get new FCM registration token
+
+
+                        // Log and toast
+                        Log.d("fndlsjfl",task.getResult());
+
+
+                    }
+                });
+
         setMenuLaterale();
         DocumentReference documentReference = firebaseFirestore.collection(email).document("Birra al belvedere");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

@@ -272,4 +272,9 @@
     <string name="esci">Esci</string>
     <string name="hainiziatoaseguirti">ha iniziato a seguirti</string>
     <string name="hafattounarecensione">ha fatto una recensione</string>
+    <string name="disattivanotifiche">Disattive notifiche</string>
+    <string name="silenzianotifiche">Silenzia notifiche</string>
+    <string name="notifichenuovofollower">Notifiche nuovo follower</string>
+    <string name="notifichenuovocou">Notifiche nuovo coupon usato</string>
+    <string name="notifichenuovarecensuiine">Notifiche nuova recensione</string>
 </resources>

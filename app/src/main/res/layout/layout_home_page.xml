@@ -7,24 +7,7 @@
     android:layout_height="match_parent"
     tools:context=".HomePage">
 
-    <ProgressBar
-        android:id="@+id/progressBar4"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="55dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="55dp"
-        android:backgroundTint="@color/giallochiaro"
-        android:indeterminateTint="@color/giallochiaro"
-        android:progressTint="@color/gialloScuro"
-        android:secondaryProgressTint="@color/gialloScuro"
-        app:layout_constraintBottom_toTopOf="@+id/textView70"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.565"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 
     <ImageView
         android:id="@+id/imageView19"
