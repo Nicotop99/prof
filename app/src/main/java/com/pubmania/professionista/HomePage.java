@@ -140,25 +140,8 @@ public class HomePage extends AppCompatActivity {
         Log.d("kdjnakjsndjna",sharedPreferences.getString("s5","ddd"));
         setAutoCLick();
 
-        FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
-                        if (!task.isSuccessful()) {
-                            Log.w("TAG", "Fetching FCM registration token failed", task.getException());
-                            return;
-                        }
 
-                        // Get new FCM registration token
-
-
-                        // Log and toast
-                        Log.d("fndlsjfl",task.getResult());
-
-
-                    }
-                });
-
+        setNewToken();
         setMenuLaterale();
         DocumentReference documentReference = firebaseFirestore.collection(email).document("Birra al belvedere");
         documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -180,6 +163,68 @@ public class HomePage extends AppCompatActivity {
             }
         } );
         setImageSlider();
+    }
+
+
+    private void setNewToken() {
+        SharedPreferences sharedPreferencess = getSharedPreferences("token",MODE_PRIVATE);
+        if(sharedPreferencess.getString("token","notEnable").equals("notEnable")){
+            Log.d("fndlsjfl","noToken");
+            SharedPreferences.Editor s = sharedPreferencess.edit();
+            s.putString("token","enable");
+            s.commit();
+            FirebaseMessaging.getInstance().getToken()
+                    .addOnCompleteListener(new OnCompleteListener<String>() {
+                        @Override
+                        public void onComplete(@NonNull Task<String> task) {
+                            if (!task.isSuccessful()) {
+                                Log.w("TAG", "Fetching FCM registration token failed", task.getException());
+                                return;
+                            }
+
+                            // Get new FCM registration token
+
+
+                            // Log and toast
+                            Log.d("fndlsjfl",task.getResult());
+                            firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> taskg) {
+                                    if(task.isSuccessful()){
+                                        Log.d("lmdsadnmam", String.valueOf("ciaoooo"));
+
+                                        for (QueryDocumentSnapshot documentSnapshot : taskg.getResult()){
+                                            if(documentSnapshot.getString("email").equals(email)){
+                                                Log.d("jnfskdjnfjsd","dddddd");
+
+                                                ArrayList<String> tokenString = (ArrayList<String>) documentSnapshot.get("token");
+                                                tokenString.add(task.getResult());
+                                                String[] arr = tokenString.toArray( new String[tokenString.size()] );
+                                                List<String> listIng = Arrays.asList( arr );
+                                                DocumentReference d = firebaseFirestore.collection("Professionisti").document(documentSnapshot.getId());
+                                                d.update("token",listIng).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                        Log.d("jnfskdjnfjsd","complete");
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    }else{
+                                        Log.d("lmdsadnmam", String.valueOf("2222222"));
+
+                                    }
+                                }
+                            });
+
+
+                        }
+                    });
+        }
+        else{
+            Log.d("fndlsjfl","toskskskksskkss");
+
+        }
     }
 
 
@@ -259,10 +304,12 @@ public class HomePage extends AppCompatActivity {
     BottomNavigationView bottomAppBar;
     FloatingActionButton scanQR;
     AlertDialog alertDialog;
+    List<String> arrayToken;
     CodeScanner codeScanner;
     int countI,usate;
     int quanteVolte;
     DocumentSnapshot documentSnapshott;
+    ArrayList<String>tokenList = new ArrayList<>();
     boolean entrato = false;
     String nomePub;
     boolean exist = false;
@@ -306,22 +353,31 @@ public class HomePage extends AppCompatActivity {
                         @Override
                         public void onDecoded(@NonNull Result result) {
                             Log.d( "òfksdòfk",result.getText() );
+                            String[] splitvirgola = result.getText().split(";");
+                            String[] splitList = splitvirgola[1].split(",");
+                            Log.d("ffjndaskjfn", String.valueOf(splitList.length));
+                            for (int i = 0;i< splitList.length;i++){
+                                Log.d("njkjnas","fnkjdnfaj");
+                                Log.d("njkjnas",splitList[i]);
+                            }
+                            Log.d("ajkndasd",splitvirgola[1]);
+                            Log.d("jfnsadjkfn",splitvirgola[1]);
+                            tokenList = new ArrayList<String>(Arrays.asList(splitList));
                             usate = 1;
                             entrato  = false;
-                            String[] separated = result.getText().split(":");
+                            String[] separated = splitvirgola[0].split(":");
                             idPost = separated[1];
                             prodotti = separated[6];
                             tipo = separated[3];
                             prezzo = separated[4];
-                            Log.d( "kmflsdmf",separated[2] );
                             if(!separated[2].equals( "Sempre" )) {
                                 quanteVolte = Integer.parseInt( separated[2] );
                                 Log.d( "omfodsfm", String.valueOf( quanteVolte ) );
 
                             }
                             emailCliente = separated[0];
-                            tokenn = separated[7] + ":" + separated[8];
-                            nomeCliente = separated[9];
+                            nomeCliente = separated[7];
+
                             Log.d( "omfodsfm",idPost );
                             countI = 1;
                             firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
@@ -437,7 +493,7 @@ public class HomePage extends AppCompatActivity {
                                                                                                                 stringRecensioni.setEmailCliente( emailCliente );
                                                                                                                 stringRecensioni.setEmailPub( email );
                                                                                                                 stringRecensioni.setNomeLocale( nomePub );
-                                                                                                                stringRecensioni.setToken(token);
+                                                                                                                stringRecensioni.setToken("token");
                                                                                                                 stringRecensioni.setIdPost( idPost );
                                                                                                                 stringRecensioni.setUrlFotoProfilo( urlFotoProfilo );
                                                                                                                 firebaseFirestore.collection( emailCliente+"Rec" ).add( stringRecensioni )
@@ -551,7 +607,7 @@ public class HomePage extends AppCompatActivity {
                                                                                                         stringRecensioni.setEmailCliente( emailCliente );
                                                                                                         stringRecensioni.setEmailPub( email );
                                                                                                         stringRecensioni.setNomeLocale( nomePub );
-                                                                                                        stringRecensioni.setToken(token);
+                                                                                                        stringRecensioni.setToken("token");
                                                                                                         stringRecensioni.setIdPost( idPost );
                                                                                                         stringRecensioni.setUrlFotoProfilo( urlFotoProfilo );
                                                                                                         firebaseFirestore.collection( emailCliente+"Rec" ).add( stringRecensioni )
@@ -760,7 +816,22 @@ public class HomePage extends AppCompatActivity {
 
 
 
-                                                            propvaNotifica(token,idPost);
+                                                            for (int i = 0;i<tokenList.size();i++){
+                                                                if(i== 0){
+                                                                    propvaNotifica(tokenList.get(0).replace("[",""),idPost);
+
+                                                                }else if(i == tokenList.size() -1){
+                                                                    propvaNotifica(tokenList.get(i).replace("]",""),idPost);
+
+                                                                }
+
+                                                                else{
+                                                                    propvaNotifica(tokenList.get(i),idPost);
+
+                                                                }
+
+                                                            }
+                                                            Log.d("kjfnaskjfnjans","fuoriiii");
 
 
                                                             //coupon utilizzato
@@ -818,7 +889,22 @@ public class HomePage extends AppCompatActivity {
                                                     } );
                                         }
                                         else{
-                                            propvaNotifica(token,idPost);
+                                            for (int i = 0;i<tokenList.size();i++){
+                                                if(i== 0){
+                                                    propvaNotifica(tokenList.get(0).replace("[",""),idPost);
+
+                                                }else if(i == tokenList.size() -1){
+                                                    propvaNotifica(tokenList.get(i).replace("]",""),idPost);
+
+                                                }
+
+                                                else{
+                                                    propvaNotifica(tokenList.get(i),idPost);
+
+                                                }
+
+                                            }
+                                            Log.d("kjfnaskjfnjans","fuoriiii");
 
                                         }
                                     }
@@ -849,7 +935,7 @@ public class HomePage extends AppCompatActivity {
                             menu.findItem(R.id.profil_page).setTitle( documentSnapshot.getString( "nome" ) );
                             nomePub = documentSnapshot.getString( "nomeLocale" );
                             urlFotoProfilo = documentSnapshot.getString( "fotoProfilo" );
-                            token = documentSnapshot.getString("token");
+                            arrayToken = (List<String>) documentSnapshot.get("token");
                         }
                     }
                 }
@@ -962,8 +1048,21 @@ public class HomePage extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("kjndjkankjansj","4444");
+                        for (int i = 0;i<tokenList.size();i++){
+                            if(i== 0){
+                                propvaNotifica(tokenList.get(0).replace("[",""),idPost);
 
-                        propvaNotifica(token, idPostt);
+                            }else if(i == tokenList.size() -1){
+                                propvaNotifica(tokenList.get(i).replace("]",""),idPost);
+
+                            }
+
+                            else{
+                                propvaNotifica(tokenList.get(i),idPost);
+
+                            }
+
+                        }
                         Log.d("onfljdsnfl",error.getMessage() + " ciao");
                     }
                 }){

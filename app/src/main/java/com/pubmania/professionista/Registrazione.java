@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -28,6 +29,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.pubmania.professionista.StringAdapter.StringRegistrazione;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,9 +51,12 @@ public class Registrazione extends AppCompatActivity {
         setEdittext();
         getToken();
     }
-    String token;
+    ArrayList<String> token;
 
     void getToken() {
+
+
+
         FirebaseMessaging.getInstance().getToken()
                 .addOnCompleteListener(new OnCompleteListener<String>() {
                     @Override
@@ -60,10 +67,10 @@ public class Registrazione extends AppCompatActivity {
                         }
 
                         // Get new FCM registration token
-                        token = task.getResult();
+                        token.add(task.getResult());
 
                         // Log and toast
-                        Log.d("fndlsjfl", token);
+
 
 
                     }
@@ -130,11 +137,17 @@ public class Registrazione extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if (task.isSuccessful()) {
-
+                                                SharedPreferences sharedPreferences = getSharedPreferences("token",MODE_PRIVATE);
+                                                SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                                myEdit.putString("token", "enable");
+                                                myEdit.commit();
                                                 StringRegistrazione stringRegistrazione = new StringRegistrazione();
                                                 stringRegistrazione.setCognome( cognome );
-                                                stringRegistrazione.setToken(token);
 
+                                                String[] arr = token.toArray( new String[token.size()] );
+                                                List<String> listIng = Arrays.asList( arr );
+
+                                                stringRegistrazione.setToken(listIng);
                                                 stringRegistrazione.setFollower( "0" );
                                                 stringRegistrazione.setFotoProfilo( "https://firebasestorage.googleapis.com/v0/b/pubmania-404db.appspot.com/o/download%20(5).jfif?alt=media&token=9fbd065e-5e01-445c-a9fe-60a02bbbfcca" );
                                                 stringRegistrazione.setEmail( email );

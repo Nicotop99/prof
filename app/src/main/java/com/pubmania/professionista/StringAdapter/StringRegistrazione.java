@@ -1,5 +1,7 @@
 package com.pubmania.professionista.StringAdapter;
 
+import java.util.List;
+
 public class StringRegistrazione {
 
     public String email;
@@ -10,13 +12,13 @@ public class StringRegistrazione {
     public String partitaIva;
     public String follower;
     public String fotoProfilo;
-    public String token;
+    public List<String> token;
 
     public StringRegistrazione(){
 
     }
 
-    public StringRegistrazione(String token, String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo) {
+    public StringRegistrazione(List<String> token, String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo) {
         this.email = email;
         this.token = token;
         this.nome = nome;
@@ -28,11 +30,11 @@ public class StringRegistrazione {
         this.fotoProfilo = fotoProfilo;
     }
 
-    public String getToken() {
+    public List<String> getToken() {
         return token;
     }
 
-    public void setToken(String token) {
+    public void setToken(List<String> token) {
         this.token = token;
     }
 
