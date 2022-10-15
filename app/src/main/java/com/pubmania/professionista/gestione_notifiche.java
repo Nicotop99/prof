@@ -42,7 +42,7 @@ public class gestione_notifiche extends AppCompatActivity {
         });
     }
     private void setS4() {
-        s5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        s4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if(b == true){
@@ -126,5 +126,26 @@ public class gestione_notifiche extends AppCompatActivity {
         s3 = (Switch) findViewById(R.id.switch4);
         s4 = (Switch) findViewById(R.id.switch5);
         s5 = (Switch) findViewById(R.id.switch7);
+
+        SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
+        if(sharedPreferences.getString("s1","true").equals("false")){
+            s1.setChecked(true);
+        }
+        if(sharedPreferences.getString("s2","true").equals("false")){
+            s2.setChecked(true);
+        }
+        if(sharedPreferences.getString("s3","true").equals("false")){
+            s3.setChecked(true);
+        }
+        if(sharedPreferences.getString("s4","true").equals("false")){
+            s4.setChecked(true);
+        }
+        if(sharedPreferences.getString("s5","true").equals("false")){
+            s5.setChecked(true);
+        }
+
+
+
+
     }
 }
