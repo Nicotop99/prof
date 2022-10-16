@@ -14,14 +14,18 @@ import android.graphics.Color;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Looper;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -36,23 +40,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         super.onMessageReceived(remoteMessage);
         notificationID = new Random().nextInt(3000);
-
         tipo = remoteMessage.getData().get("tipo");
+
+
         idPost = remoteMessage.getData().get("idPost");
         Log.d("ofnsdonf",tipo);
+
         SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
         String s1 = sharedPreferences.getString("s1","true");
-        String s2 = sharedPreferences.getString("s2","true");
-        if(s2.equals("true")) {
-            notificationSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        }else{
-            notificationSoundUri = null;
-        }
+
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            public void run() {
+                Toast.makeText(getApplicationContext(), tipo + " " + sharedPreferences.getString("s3","ciaoo"), Toast.LENGTH_SHORT).show();
+            }
+        });
         if(s1.equals("true")) {
             if (tipo.equals("Recensione")&& sharedPreferences.getString("s5","true").equals("true")) {
                 final Intent intent = new Intent(this, MainActivity.class);
                 NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-                int notificationID = new Random().nextInt(3000);
 
       /*
         Apps targeting SDK 26 or above (Android O) must implement notification channels and add its notifications
@@ -177,7 +183,21 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
 
         }
-        }else if(tipo.equals("Coupon")){
+        }
+        else if(tipo.equals("Coupon")){
+            if(s4.equals("true")){
+                adminChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
+                Log.d("kjanfda","Higjt");
+            }else{
+                adminChannel.setImportance(NotificationManager.IMPORTANCE_LOW);
+                Log.d("kjanfda","Low");
+                adminChannel.setSound(null,null);
+
+
+
+            }
+        }
+        else if(tipo.equals("Recensione")){
             if(s4.equals("true")){
                 adminChannel.setImportance(NotificationManager.IMPORTANCE_HIGH);
                 Log.d("kjanfda","Higjt");

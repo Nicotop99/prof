@@ -77,6 +77,8 @@ public class Adapter_Profile_bottom extends ArrayAdapter<ArrayPost> {
                     }
                 } )
                 .into(imageView);
+
+        Log.d("nkjsdfnsjn",dataModal.getPinnato());
         if(dataModal.getPinnato().equals( "si" )){
             pin.setVisibility( View.VISIBLE );
         }

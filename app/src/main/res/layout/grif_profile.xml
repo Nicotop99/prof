@@ -38,7 +38,7 @@
             android:layout_gravity="bottom|right"
             android:scaleType="centerInside"
             android:visibility="gone"
-            app:srcCompat="@drawable/pinicon" />
+            app:srcCompat="@drawable/pinned_icon_yellow" />
     </androidx.cardview.widget.CardView>
 
     <ProgressBar

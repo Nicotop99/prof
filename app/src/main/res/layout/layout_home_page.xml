@@ -38,6 +38,139 @@
 
     </com.denzcoskun.imageslider.ImageSlider>
 
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/conPinned"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="-1dp"
+        android:background="@drawable/back_pinnato"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/imageView11"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView140"
+            android:layout_width="8dp"
+            android:layout_height="wrap_content"
+            android:text="t"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/textView139"
+            app:layout_constraintEnd_toStartOf="@+id/textView139" />
+
+        <TextView
+            android:id="@+id/textView142"
+            android:layout_width="8dp"
+            android:layout_height="wrap_content"
+            android:text="t"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/textView139"
+            app:layout_constraintStart_toEndOf="@+id/textView139" />
+
+        <TextView
+            android:id="@+id/textView139"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/pinnailprimopost"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView54" />
+
+        <ImageView
+            android:id="@+id/imageView54"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/pinned_icon_yellow" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/conNessunPost"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/back_pinnato"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/imageView11"
+        app:layout_constraintEnd_toEndOf="@+id/image_slider"
+        app:layout_constraintStart_toStartOf="@+id/image_slider"
+        app:layout_constraintTop_toTopOf="@+id/image_slider">
+
+        <TextView
+            android:id="@+id/textView145"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/premendoquestotasto"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView144" />
+
+        <TextView
+            android:id="@+id/textView143"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/Nonhaiancoranessunafoto"
+            android:textColor="@color/black"
+            android:textSize="28dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView144"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/caricaneunaoa"
+            android:textColor="@color/black"
+            android:textSize="18dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView143" />
+
+        <ImageButton
+            android:id="@+id/imageButton39"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginStart="70dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="70dp"
+            android:backgroundTint="@android:color/transparent"
+            android:scaleType="fitXY"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView145"
+            app:srcCompat="@drawable/botton_creaprodotto" />
+
+        <TextView
+            android:id="@+id/textView146"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/creailtuoprimopost"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            app:layout_constraintBottom_toBottomOf="@+id/imageButton39"
+            app:layout_constraintEnd_toEndOf="@+id/imageButton39"
+            app:layout_constraintStart_toStartOf="@+id/imageButton39"
+            app:layout_constraintTop_toTopOf="@+id/imageButton39" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ImageView
         android:id="@+id/imageView18"
         android:layout_width="0dp"
@@ -243,7 +376,7 @@
         app:layout_constraintEnd_toEndOf="parent"
 
         app:layout_constraintStart_toStartOf="parent"
-        tools:visibility="visible">
+        tools:visibility="gone">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"

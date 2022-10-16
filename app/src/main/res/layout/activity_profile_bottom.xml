@@ -56,7 +56,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="textView64,imageButton6,textView65,textView19,textView18" />
+        app:constraint_referenced_ids="textView64,imageButton6,textView65,textView19,textView18"
+        tools:visibility="visible" />
 
     <ImageButton
         android:id="@+id/imageButton6"
@@ -142,10 +143,11 @@
         android:id="@+id/textView61"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="-4dp"
         android:fontFamily="@font/baloo"
         android:text="12 recensioni"
         android:textColor="@color/black"
-        android:textSize="8dp"
+        android:textSize="16dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView36"
         app:layout_constraintStart_toStartOf="@+id/imageView32"
         app:layout_constraintTop_toBottomOf="@+id/imageView34" />
@@ -156,8 +158,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView32"
-        app:layout_constraintTop_toTopOf="@+id/textView59"
-        app:srcCompat="@drawable/ballrecensionegiallo" />
+        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <ImageView
         android:id="@+id/imageView34"
@@ -165,8 +166,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView33"
-        app:layout_constraintTop_toTopOf="@+id/textView59"
-        app:srcCompat="@drawable/ballrecensionegiallo" />
+        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <ImageView
         android:id="@+id/imageView35"
@@ -174,8 +174,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView34"
-        app:layout_constraintTop_toTopOf="@+id/textView59"
-        app:srcCompat="@drawable/ballrecensionegiallo" />
+        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <ImageView
         android:id="@+id/imageView36"
@@ -183,8 +182,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView35"
-        app:layout_constraintTop_toTopOf="@+id/textView59"
-        app:srcCompat="@drawable/ballrecensionegiallo" />
+        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <TextView
         android:id="@+id/textView60"
@@ -216,7 +214,7 @@
         android:id="@+id/textView58"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/bahiama"
         android:text="@string/follower"
@@ -230,7 +228,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -253,8 +251,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toStartOf="@+id/textView60"
-        app:layout_constraintTop_toTopOf="@+id/textView59"
-        app:srcCompat="@drawable/ballrecensionegiallo" />
+        app:layout_constraintTop_toTopOf="@+id/textView59" />
 
     <View
         android:id="@+id/view"
@@ -273,7 +270,8 @@
         android:id="@+id/imageButton31"
         android:layout_width="34dp"
         android:layout_height="30dp"
-        android:layout_marginStart="-8dp"
+        android:layout_marginStart="-2dp"
+        android:layout_marginBottom="-2dp"
         android:backgroundTint="@android:color/transparent"
         app:layout_constraintBottom_toBottomOf="@+id/circleImageView"
         app:layout_constraintStart_toEndOf="@+id/circleImageView"

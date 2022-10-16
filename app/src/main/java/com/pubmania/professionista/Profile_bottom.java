@@ -201,8 +201,12 @@ public class Profile_bottom extends AppCompatActivity {
     TextView coupon;
     ImageView rec1,rec2,rec3,rec4,rec5;
     CircleImageView photoProfilo;
+    int countMedia;
+    int intTotRec;
+    TextView countRec;
     private void setTopActivity() {
         nomePub = (TextView) findViewById( R.id.textView57 );
+        countRec = (TextView) findViewById(R.id.textView61);
         followe = (TextView) findViewById( R.id.textView59 );
         coupon = (TextView) findViewById( R.id.textView63 );
         rec1 = (ImageView) findViewById( R.id.imageView32 );
@@ -235,7 +239,53 @@ public class Profile_bottom extends AppCompatActivity {
                 }
             }
         } );
+        firebaseFirestore.collection(email+"Rec").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        countMedia += Integer.parseInt(documentSnapshot.getString("media"));
 
+                    }
+                    countRec.setText(task.getResult().size() + " " + getString(R.string.recensioni));
+                    int tot = countMedia / task.getResult().size();
+                    if(tot == 1){
+                        rec1.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec2.setImageResource(R.drawable.ballrecensionebianco);
+                        rec3.setImageResource(R.drawable.ballrecensionebianco);
+                        rec4.setImageResource(R.drawable.ballrecensionebianco);
+                        rec5.setImageResource(R.drawable.ballrecensionebianco);
+                    }else if(tot == 2){
+                        rec1.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec2.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec3.setImageResource(R.drawable.ballrecensionebianco);
+                        rec4.setImageResource(R.drawable.ballrecensionebianco);
+                        rec5.setImageResource(R.drawable.ballrecensionebianco);
+                    }
+                    else if(tot == 3){
+                        rec1.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec2.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec3.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec4.setImageResource(R.drawable.ballrecensionebianco);
+                        rec5.setImageResource(R.drawable.ballrecensionebianco);
+                    }
+                    else if(tot == 4){
+                        rec1.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec2.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec3.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec4.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec5.setImageResource(R.drawable.ballrecensionebianco);
+                    }
+                    else if(tot == 5){
+                        rec1.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec2.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec3.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec4.setImageResource(R.drawable.ballrecensionegiallo);
+                        rec5.setImageResource(R.drawable.ballrecensionegiallo);
+                    }
+                }
+            }
+        });
     }
 
     BottomNavigationView bottomAppBar;

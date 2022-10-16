@@ -1,6 +1,7 @@
 package com.pubmania.professionista;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -23,6 +24,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -39,6 +41,7 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -59,6 +62,7 @@ import com.artjimlop.altex.AltexImageDownloader;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
+import com.bumptech.glide.Glide;
 import com.denzcoskun.imageslider.ImageSlider;
 import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
@@ -77,6 +81,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -85,6 +90,7 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.google.zxing.Result;
+import com.pubmania.professionista.Adapter.Adapter_Profile_bottom;
 import com.pubmania.professionista.Adapter.Array_prodottooo;
 import com.pubmania.professionista.Adapter.adapter_edit_foto;
 import com.pubmania.professionista.Adapter.adapter_list_search_prodotti;
@@ -137,19 +143,22 @@ public class HomePage extends AppCompatActivity {
         creaArticolo();
         setImageButtonCategoria();
         SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
-        Log.d("kdjnakjsndjna",sharedPreferences.getString("s5","ddd"));
+        Log.d("kdjnakjsndjna",sharedPreferences.getString("s1","true"));
         setAutoCLick();
 
 
-        setNewToken();
-        setMenuLaterale();
-        DocumentReference documentReference = firebaseFirestore.collection(email).document("Birra al belvedere");
-        documentReference.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+        firebaseFirestore.collection(email).document("birra alla spine").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                Log.d("KJnfjndjfn", String.valueOf(task.getResult()));
+                Log.d("jsandfjas", String.valueOf(task));
+                Log.d("jsandfjas", String.valueOf(task.getResult()));
+                Log.d("jsandfjas", String.valueOf(task.getResult().getData()));
             }
         });
+
+        setNewToken();
+        setMenuLaterale();
+
         startService(new Intent(getApplicationContext(),MyFirebaseMessagingService.class));
 
         imageSlider = (ImageSlider) findViewById( R.id.image_slider );
@@ -167,6 +176,16 @@ public class HomePage extends AppCompatActivity {
 
 
     private void setNewToken() {
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(!task.isSuccessful()){
+                    return;
+                }
+                Log.d("fndlsjfl",task.getResult());
+
+            }
+        });
         SharedPreferences sharedPreferencess = getSharedPreferences("token",MODE_PRIVATE);
         if(sharedPreferencess.getString("token","notEnable").equals("notEnable")){
             Log.d("fndlsjfl","noToken");
@@ -265,10 +284,16 @@ public class HomePage extends AppCompatActivity {
         } );
     }
 
-
+    int intl = 0;
     ArrayList<SlideModel> arrayModel = new ArrayList<>();
-
+    ConstraintLayout constraintLayout;
+    ConstraintLayout constraintLayoutNewPost;
     private void setImageSlider() {
+        constraintLayout = (ConstraintLayout) findViewById(R.id.conPinned);
+        constraintLayoutNewPost = (ConstraintLayout) findViewById(R.id.conNessunPost);
+        constraintLayoutNewPost.setVisibility(View.GONE);
+        constraintLayout.setVisibility(View.GONE);
+        imageSlider.setVisibility(View.VISIBLE);
         firebaseFirestore.collection( email+"Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
             @Override
             public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
@@ -276,7 +301,9 @@ public class HomePage extends AppCompatActivity {
                     List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                     for (DocumentSnapshot l : list) {
                         ArrayPost arrayPost = l.toObject( ArrayPost.class );
+
                         if (arrayPost.getCategoria().equals( "Post" )) {
+                            intl +=1;
                             if (arrayPost.getPinnato().equals( "si" )) {
                                 for (int i = 0; i < arrayPost.getFoto().size(); i++) {
                                     arrayModel.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ), null ) );
@@ -285,6 +312,19 @@ public class HomePage extends AppCompatActivity {
                                 }
                             }
                         }
+
+                    }
+                    if(arrayModel.size() ==0 && intl >0){
+                        constraintLayout.setVisibility(View.VISIBLE);
+                        Log.d("fjondsjfnjs","1111");
+
+                        imageSlider.setVisibility(View.GONE);
+                    }else if(arrayModel.size() == 0 && intl == 0){
+                        Log.d("fjondsjfnjs","0000");
+                        constraintLayoutNewPost.setVisibility(View.VISIBLE);
+
+                    }else{
+                        Log.d("fjondsjfnjs","22222");
 
                     }
 
@@ -299,6 +339,263 @@ public class HomePage extends AppCompatActivity {
 
             }
         } );
+        setConstract();
+
+        setNewPost();
+    }
+
+
+
+    ImageView creaPrimoPost;
+    private void setNewPost() {
+        creaPrimoPost = (ImageButton) findViewById( R.id.imageButton39 );
+        creaPrimoPost.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent();
+                intent.setType( "image/*" );
+                intent.putExtra( Intent.EXTRA_ALLOW_MULTIPLE, true );
+                intent.setAction( Intent.ACTION_GET_CONTENT );
+                startActivityForResult( Intent.createChooser( intent, "Choose Picture" ), 4 );
+            }
+        } );
+    }
+    List<SlideModel> slideModels = new ArrayList<>();
+    List<Uri> imageListPath = new ArrayList<>();
+    ArrayList<String> uriArray = new ArrayList<>();
+    Uri filePath;
+    ImageSlider imageSliderr;
+    Uri uriFotoProfilo;
+
+
+    GridView gridView;
+
+    ArrayList<ArrayPost> arrayPost;
+    Adapter_Profile_bottom adapter_profile_bottom;
+    int idGridView;
+    private void setConstract() {
+        constraintLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                setReload();
+            }
+        });
+    }
+
+    private void setReload() {
+        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemedee );
+// ...Irrelevant code for customizing the buttons and title
+        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+        View viewView = inflater.inflate( R.layout.grid_pinned,null);
+        dialogBuilder.setView( viewView );
+        AlertDialog alertDialogg = dialogBuilder.create();
+        alertDialogg.show();
+
+
+        arrayPost = new ArrayList<>();
+        gridView = (GridView)  viewView.findViewById( R.id.gridProfilo );
+        gridView.setBackgroundColor( Color.TRANSPARENT );
+        firebaseFirestore.collection( email+"Post" )
+
+                .orderBy( "pinnato", Query.Direction.DESCENDING )
+                .get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        if(queryDocumentSnapshots.size() >0){
+                            Log.d("djnaskjdnkajnd","primo");
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : list){
+                                Log.d("djnaskjdnkajnd","secondo");
+
+                                ArrayPost arr = documentSnapshot.toObject( ArrayPost.class );
+                                if(arr.getCategoria().equals( "Post" )) {
+                                    Log.d("djnaskjdnkajnd","terxo");
+
+                                    arrayPost.add( arr );
+                                    adapter_profile_bottom = new Adapter_Profile_bottom( HomePage.this, arrayPost );
+                                    gridView.setAdapter( adapter_profile_bottom );
+
+                                    gridView.setOnItemClickListener( new AdapterView.OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                            idGridView = i;
+                                            TextView textView = (TextView) view.findViewById( R.id.idPost );
+                                            String idPost = textView.getText().toString();
+
+                                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this, R.style.MyDialogTheme );
+// ...Irrelevant code for customizing the buttons and title
+
+                                            LayoutInflater inflater = getLayoutInflater();
+                                            View viewView = inflater.inflate( R.layout.alert_grid_profile, null );
+
+                                            dialogBuilder.setView( viewView );
+                                            AlertDialog alertDialog = dialogBuilder.create();
+                                            alertDialog.show();
+
+                                            ArrayList<String> uriArr = new ArrayList<>();
+                                            ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.slider );
+                                            TextView desc = (TextView) viewView.findViewById( R.id.textView69 );
+                                            ImageButton close = (ImageButton) viewView.findViewById( R.id.imageButton35 );
+                                            ImageButton pinna = (ImageButton) viewView.findViewById( R.id.imageButton34 );
+                                            TextView insiedeButton = (TextView) viewView.findViewById( R.id.textView72 ) ;
+                                            ImageButton elimina = (ImageButton) viewView.findViewById( R.id.imageButton36 );
+                                            Group g2 = (Group) viewView.findViewById( R.id.groupEditPhotoProfile );
+                                            Group g1 = (Group) viewView.findViewById( R.id.groupo1);
+                                            firebaseFirestore.collection( email+"Post" ).document(idPost).get().addOnSuccessListener( new OnSuccessListener<DocumentSnapshot>() {
+                                                @Override
+                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                    if(documentSnapshot != null){
+                                                        ArrayPost arrayPost = documentSnapshot.toObject( ArrayPost.class );
+                                                        ArrayList<SlideModel> arrayList = new ArrayList<>();
+                                                        for (int i = 0;i<arrayPost.getFoto().size();i++){
+                                                            arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ),null ) );
+                                                            uriArr.add( arrayPost.getFoto().get( i ) );
+                                                        }
+                                                        imageSlider.setImageList( arrayList );
+                                                        if(arrayPost.getPinnato().equals( "no" )){
+                                                            insiedeButton.setText( getString( R.string.mettiinevidenza ) );
+                                                        }else{
+                                                            insiedeButton.setText( getString( R.string.rimuovidallevidenza ) );
+                                                        }
+                                                        desc.setText( arrayPost.getDescrizione() );
+                                                        if(!arrayPost.getDescrizione().isEmpty()){
+                                                            desc.setVisibility( View.VISIBLE );
+                                                        }
+
+
+
+
+                                                    }
+                                                }
+                                            } );
+
+                                            close.setOnClickListener( new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    alertDialog.dismiss();
+                                                }
+                                            } );
+
+                                            elimina.setOnClickListener( new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            switch (which) {
+                                                                case DialogInterface.BUTTON_POSITIVE:
+                                                                    //Yes button clicked
+                                                                    g1.setVisibility( View.GONE );
+                                                                    g2.setVisibility( View.VISIBLE );
+                                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                    for (int i = 0;i<uriArr.size();i++){
+                                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
+                                                                        storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                uriArr.remove( 0 );
+                                                                                if(uriArr.size() == 0){
+                                                                                    DocumentReference documentReference = firebaseFirestore.collection( email+"Post" ).document(idPost);
+                                                                                    documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                            alertDialog.dismiss();
+                                                                                            setConstract();
+                                                                                            arrayPost.remove(idGridView);
+                                                                                            adapter_profile_bottom.notifyDataSetChanged();
+
+                                                                                        }
+                                                                                    } );
+                                                                                }else{
+                                                                                    Log.d( "kfmldkmf", String.valueOf( uriArr.size() ) );
+                                                                                }
+
+
+                                                                            }
+                                                                        } );
+                                                                    }
+
+
+
+
+
+
+
+                                                                    break;
+
+                                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                                    //No button clicked
+
+                                                                    dialog.dismiss();
+
+                                                                    break;
+                                                            }
+                                                        }
+                                                    };
+                                                    AlertDialog.Builder builder = new AlertDialog.Builder(HomePage.this);
+                                                    builder.setMessage(getString( R.string.seisicurodivolereliminarequestopost )).setPositiveButton(getString( R.string.si ), dialogClickListener)
+                                                            .setNegativeButton(getString( R.string.no ), dialogClickListener).show();
+                                                }
+                                            } );
+
+                                            pinna.setOnClickListener( new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View view) {
+                                                    if (insiedeButton.getText().toString().equals( getString( R.string.mettiinevidenza ) )) {
+
+                                                        DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
+                                                        documentReference.update( "pinnato", "si" ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                alertDialog.dismiss();
+                                                                setReload();
+                                                                setImageSlider();
+                                                            }
+                                                        } );
+                                                    }else{
+                                                        DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
+                                                        documentReference.update( "pinnato", "no" ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                alertDialog.dismiss();
+                                                                setReload();
+                                                                setImageSlider();
+
+                                                            }
+                                                        } );
+                                                    }
+                                                }
+                                            } );
+
+
+
+
+                                        }
+                                    } );
+                                    int totalHeight = 0;
+                                    for (int i = 0; i < gridView.getCount(); i++) {
+                                        View listItem = adapter_profile_bottom.getView(i, null, gridView);
+                                        listItem.measure(0, 0);
+                                        totalHeight += listItem.getMeasuredHeight();
+                                    }
+
+                                    ViewGroup.LayoutParams params = gridView.getLayoutParams();
+                                    params.height = totalHeight
+                                            + (3 * (adapter_profile_bottom.getCount() - 1));
+                                    gridView.setLayoutParams(params);
+                                    gridView.requestLayout();
+                                }
+
+                            }
+                        }else{
+                            gridView.setAdapter( null );
+                        }
+                    }
+                } );
+
+
     }
 
     BottomNavigationView bottomAppBar;
@@ -306,6 +603,7 @@ public class HomePage extends AppCompatActivity {
     AlertDialog alertDialog;
     List<String> arrayToken;
     CodeScanner codeScanner;
+    boolean ciao = false;
     int countI,usate;
     int quanteVolte;
     DocumentSnapshot documentSnapshott;
@@ -561,41 +859,47 @@ public class HomePage extends AppCompatActivity {
                                                                                                                                 } );
                                                                                                                             }
                                                                                                                         } );
-                                                                                                            }else{
-                                                                                                                Log.d("jndkjasnkdj","njkanajs");
-                                                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
+                                                                                                            }
+                                                                                                            else{
+                                                                                                                //ciaoooo
+                                                                                                                if(ciao == false){
+                                                                                                                    ciao = true;
+                                                                                                                    Log.d("jndkjasnkdj","njkanajs");
+                                                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 
 
-                                                                                                                LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                                                                                                                View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+                                                                                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                                    View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
 
-                                                                                                                dialogBuilderr.setView( viewView );
+                                                                                                                    dialogBuilderr.setView( viewView );
 
-                                                                                                                AlertDialog alertDialogg = dialogBuilderr.create();
-                                                                                                                alertDialogg.show();
-                                                                                                                TextView title = (TextView) viewView.findViewById( R.id.textView75 );
-                                                                                                                TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
-                                                                                                                ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
-                                                                                                                imageButton.setOnClickListener( new View.OnClickListener() {
-                                                                                                                    @Override
-                                                                                                                    public void onClick(View view) {
-                                                                                                                        alertDialogg.dismiss();
+                                                                                                                    AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                                                    alertDialogg.show();
+                                                                                                                    TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                                                    TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                                                    ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                                                    imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                                                        @Override
+                                                                                                                        public void onClick(View view) {
+                                                                                                                            alertDialogg.dismiss();
+                                                                                                                        }
+                                                                                                                    } );
+                                                                                                                    if (tipo.equals( "Prezzo" )) {
+                                                                                                                        title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                                                    } else {
+                                                                                                                        title.setText( prezzo + " % " + getString( R.string.discontosu ) );
                                                                                                                     }
-                                                                                                                } );
-                                                                                                                if (tipo.equals( "Prezzo" )) {
-                                                                                                                    title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
-                                                                                                                } else {
-                                                                                                                    title.setText( prezzo + " % " + getString( R.string.discontosu ) );
-                                                                                                                }
-                                                                                                                if (prodotti.equals( "Tutti" )) {
-                                                                                                                    prodotto.setText( getText( R.string.sututtolimporto ) );
-                                                                                                                } else {
-                                                                                                                    prodotto.setText( prodotti );
-                                                                                                                }
+                                                                                                                    if (prodotti.equals( "Tutti" )) {
+                                                                                                                        prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                                                    } else {
+                                                                                                                        prodotto.setText( prodotti );
+                                                                                                                    }
 
 
-                                                                                                                alertDialog.dismiss();
+                                                                                                                    alertDialog.dismiss();
+                                                                                                                }
+
                                                                                                             }
 
                                                                                                         }
@@ -993,14 +1297,15 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             Log.e(TAG, "onCreate: " + e.getMessage() );
         }
-        sendNotification(notification,idPosttt);
+        sendNotification(notification,idPosttt,token);
 
 
 
 
     }
+    boolean entratoo = false;
 
-    private void sendNotification(JSONObject notification,String idPostt) {
+    private void sendNotification(JSONObject notification,String idPostt,String tok) {
         Log.d("kjndjkankjansj","222");
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
@@ -1010,35 +1315,76 @@ public class HomePage extends AppCompatActivity {
 
                         Log.d("kjndjkankjansj","333");
 
-                        StringNotifiche stringNotifiche = new StringNotifiche();
-                        stringNotifiche.setCategoria("Coupon");
-                        stringNotifiche.setVisualizzato("false");
-                        stringNotifiche.setEmailCliente(email);
-                        stringNotifiche.setEmailPub(email);
-                        stringNotifiche.setFotoProfilo(urlFotoProfilo);
-                        stringNotifiche.setIdPost(idPostt);
-                        stringNotifiche.setNomecognomeCliente(nomeCliente);
-                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-                        String currentDateandTime = sdf.format(new Date());
-                        stringNotifiche.setOra(currentDateandTime);
-                        firebaseFirestore.collection(email+"Notifiche").add(stringNotifiche)
-                                .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                        try {
+                            if(response.getString("failure").equals("1")){
+
+                                // token non valido
+                                firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                     @Override
-                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         if(task.isSuccessful()){
-                                            DocumentReference documentReference = task.getResult();
-                                            documentReference.update("id",task.getResult().getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                                @Override
-                                                public void onComplete(@NonNull Task<Void> task) {
+                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                if (documentSnapshot.getString("email").equals(email)){
+                                                    DocumentReference d  = firebaseFirestore.collection("Professionisti").document(documentSnapshot.getId());
+                                                    ArrayList<String > a = (ArrayList<String>) documentSnapshot.get("token");
+                                                    Log.d("njanfd", String.valueOf(a.size()));
+                                                    for (int i = 0;i<a.size();i++){
+                                                        if(a.get(i).equals(tok)){
+                                                            a.remove(i);
+                                                        }
+                                                    }
+                                                    d.update("token",a).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        @Override
+                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                            Log.d("onjlm","ok");
+                                                        }
+                                                    }).addOnFailureListener(new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Log.d("onjlm","ok" + e.getMessage());
 
-
+                                                        }
+                                                    });
                                                 }
-                                            });
+                                            }
                                         }
                                     }
                                 });
 
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(entratoo == false) {
+                            StringNotifiche stringNotifiche = new StringNotifiche();
+                            stringNotifiche.setCategoria("Coupon");
+                            stringNotifiche.setVisualizzato("false");
+                            stringNotifiche.setEmailCliente(email);
+                            stringNotifiche.setEmailPub(email);
+                            stringNotifiche.setFotoProfilo(urlFotoProfilo);
+                            stringNotifiche.setIdPost(idPostt);
+                            stringNotifiche.setNomecognomeCliente(nomeCliente);
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                            String currentDateandTime = sdf.format(new Date());
+                            stringNotifiche.setOra(currentDateandTime);
+                            firebaseFirestore.collection(email + "Notifiche").add(stringNotifiche)
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentReference documentReference = task.getResult();
+                                                documentReference.update("id", task.getResult().getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
 
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                            entratoo = true;
+                        }
 
 
 
@@ -1675,9 +2021,7 @@ public class HomePage extends AppCompatActivity {
         }
         } );
     }
-    List<SlideModel> slideModels = new ArrayList<>();
-    List<Uri> imageListPath = new ArrayList<>();
-    Uri filePath;
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -1721,6 +2065,9 @@ public class HomePage extends AppCompatActivity {
             setResult(Activity.RESULT_OK);
         }
         if(data != null) {
+            slideModels.clear();
+            filePath = null;
+            imageListPath.clear();
             if (requestCode == 1) {
                 slideModels.clear();
                 imageListPath = new ArrayList<>();
@@ -1743,7 +2090,8 @@ public class HomePage extends AppCompatActivity {
                     slideModels.add( new SlideModel( String.valueOf( data.getData() ), null ) );
                     image_prdotto_slide.setImageList( slideModels );
                 }
-            } else if (requestCode == 2) {
+            }
+            else if (requestCode == 2) {
                 Log.d( "oodosdfo", String.valueOf( maintitle.size() ) );
                 Log.d( "oodosdfo", String.valueOf( maintitle.get( maintitle.size() - 1 ) ) );
                 maintitle.remove( maintitle.size() - 1 );
@@ -1780,6 +2128,188 @@ public class HomePage extends AppCompatActivity {
                     maintitle.add( "vuoto" );
                     adapterr.notifyDataSetChanged();
                 }
+            }
+            else if(requestCode == 4){
+                uriArray.clear();
+                slideModels.clear();
+                imageListPath.clear();
+
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this, R.style.MyDialogTheme );
+// ...Irrelevant code for customizing the buttons and title
+
+                LayoutInflater inflater = getLayoutInflater();
+                View viewView = inflater.inflate( R.layout.alert_crea_post, null );
+                dialogBuilder.setView( viewView );
+                AlertDialog alertDialog = dialogBuilder.create();
+                alertDialog.show();
+                imageSliderr = (ImageSlider) viewView.findViewById( R.id.image_slider );
+
+                ClipData selectedimg = data.getClipData();
+                if (selectedimg != null) {
+                    for (int i = 0; i < selectedimg.getItemCount(); i++) {
+                        filePath = data.getData();
+
+                        ClipData.Item item = selectedimg.getItemAt( i );
+                        Log.d( "kfkdksllsl", String.valueOf( item.getUri() ) );
+                        imageListPath.add( item.getUri() );
+                        slideModels.add( new SlideModel( String.valueOf( item.getUri() ), null ) );
+                        if (i < selectedimg.getItemCount() + 1) {
+                            imageSliderr.setImageList( slideModels );
+                        }
+                    }
+                } else {
+                    imageListPath.add( data.getData() );
+                    slideModels.add( new SlideModel( String.valueOf( data.getData() ), null ) );
+                    imageSliderr.setImageList( slideModels );
+                }
+
+                ImageButton creaPostButton = (ImageButton) viewView.findViewById( R.id.imageButton7 );
+                TextInputLayout l_desc = (TextInputLayout) viewView.findViewById( R.id.textLayoutNome );
+                TextInputEditText t_desc = (TextInputEditText) viewView.findViewById( R.id.textNome );
+                Log.d( "lkfmsdlkfm", String.valueOf( imageSliderr.getVisibility() ) );
+
+                creaPostButton.setOnClickListener( new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                        StorageReference storageRef = firebaseStorage.getReference();
+                        StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
+
+                        if (selectedimg != null) {
+                            //selezionata piu di una foto
+
+                            for (int i = 0; i < selectedimg.getItemCount(); i++) {
+                                filePath = data.getData();
+                                ClipData.Item item = selectedimg.getItemAt( i );
+
+                                if (i < selectedimg.getItemCount() + 1) {
+
+                                    storagee.putFile( item.getUri() ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                        @Override
+                                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                            storagee.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                                @Override
+                                                public void onSuccess(Uri uri) {
+                                                    uriArray.add( String.valueOf( uri ) );
+
+                                                    Log.d( "kfmdskf",uriArray.size() + " " + imageListPath.size() );
+
+                                                    if(uriArray.size() == imageListPath.size()){
+                                                        String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                        List<String> listIngg = Arrays.asList( arr );
+                                                        String desc = t_desc.getText().toString();
+                                                        ArrayPost arrayPost = new ArrayPost();
+                                                        if(desc.isEmpty()){
+                                                            arrayPost.setDescrizione( "" );
+                                                        }else{
+                                                            arrayPost.setDescrizione( desc );
+                                                        }
+                                                        arrayPost.setLike( "0" );
+                                                        arrayPost.setCategoria( "Post" );
+                                                        arrayPost.setPinnato( "si" );
+                                                        arrayPost.setFoto( listIngg );
+                                                        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                        firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                            @Override
+                                                            public void onSuccess(DocumentReference documentReference) {
+
+                                                                documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                    @Override
+                                                                    public void onSuccess(Void aVoid) {
+
+                                                                        setImageSlider();
+                                                                        alertDialog.dismiss();
+                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(View view) {
+                                                                                        //portalo al prodotto
+                                                                                        //notify
+
+                                                                                    }
+                                                                                } )
+
+                                                                                .show();
+                                                                    }
+                                                                } );
+
+
+                                                            }
+                                                        } );
+                                                    }
+                                                }
+                                            } );
+                                        }
+                                    } );
+                                }
+                            }
+                        }
+                        else{
+                            storagee.putFile( data.getData() ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                @Override
+                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                    storagee.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                        @Override
+                                        public void onSuccess(Uri uri) {
+                                            uriArray.add( String.valueOf( uri ) );
+                                            if(uriArray.size() == imageListPath.size()){
+                                                String[] arr = uriArray.toArray( new String[uriArray.size()] );
+                                                List<String> listIngg = Arrays.asList( arr );
+                                                String desc = t_desc.getText().toString();
+                                                ArrayPost arrayPost = new ArrayPost();
+                                                if(desc.isEmpty()){
+                                                    arrayPost.setDescrizione( "" );
+                                                }else{
+                                                    arrayPost.setDescrizione( desc );
+                                                }
+                                                arrayPost.setLike( "0" );
+                                                arrayPost.setCategoria( "Post" );
+                                                arrayPost.setPinnato( "si" );
+                                                arrayPost.setFoto( listIngg );
+                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onSuccess(DocumentReference documentReference) {
+
+                                                        documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                            @Override
+                                                            public void onSuccess(Void aVoid) {
+
+
+                                                                setImageSlider();
+
+                                                                alertDialog.dismiss();
+                                                                Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                        .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                            @Override
+                                                                            public void onClick(View view) {
+                                                                                //portalo al prodotto
+
+                                                                            }
+                                                                        } )
+
+                                                                        .show();
+                                                            }
+                                                        } );
+                                                    }
+                                                } );
+                                            }
+                                        }
+                                    } );
+                                }
+                            } );
+
+                        }
+
+
+
+
+
+
+
+                    }
+                } );
+
             }
         }
     }
@@ -1843,6 +2373,7 @@ public class HomePage extends AppCompatActivity {
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
                     if(l_cocktail.getVisibility() == View.GONE) {
                         arrayList = new ArrayList<>();
+                        arrayList.clear();
                         Log.d( "fkldslfq","dfsdfsdf" );
 
                         firebaseFirestore.collection( email ).get()
@@ -1852,6 +2383,7 @@ public class HomePage extends AppCompatActivity {
                                     @Override
                                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                                         if (!queryDocumentSnapshots.isEmpty()) {
+                                            arrayList.clear();
                                             // if the snapshot is not empty we are hiding
                                             // our progress bar and adding our data in a list.
                                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
@@ -1883,6 +2415,7 @@ public class HomePage extends AppCompatActivity {
                                                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                                     TextView idText = (TextView) view.findViewById( R.id.textView135 );
                                                     String idPost = idText.getText().toString();
+                                                    Log.d("jksankldjna",idPost);
                                                     AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( HomePage.this,R.style.MyDialogTheme );
 // ...Irrelevant code for customizing the buttons and title
                                                     LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -1891,7 +2424,7 @@ public class HomePage extends AppCompatActivity {
                                                     AlertDialog alertDialogg = dialogBuilder.create();
                                                     alertDialogg.show();
                                                     TextView titolo = (TextView) viewView.findViewById( R.id.textView36 );
-                                                    TextView prezzo = (TextView) viewView.findViewById( R.id.textView41 );
+                                                    TextView prezzoo = (TextView) viewView.findViewById( R.id.textView41 );
                                                     Spinner spinner = (Spinner) viewView.findViewById( R.id.spinner );
                                                     ImageView elimia = (ImageView) viewView.findViewById( R.id.imageView58 );
                                                     ImageView modifica = (ImageView) viewView.findViewById( R.id.imageView57 );
@@ -1904,12 +2437,12 @@ public class HomePage extends AppCompatActivity {
                                                         public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                                             if(task.isSuccessful()){
                                                                 listImage.clear();
-                                                                Log.d( "fjfndsjlj", String.valueOf( listImage ) );
+                                                                Log.d( "fjfndsjlj", String.valueOf(task.getResult().getData()));
                                                                 titolo.setText(task.getResult().getString( "nome" ));
                                                                 nomeee = task.getResult().getString( "nome" );
                                                                 prezzooo = task.getResult().getString( "prezzo" );
                                                                 categoriaaa = task.getResult().getString( "categoria" );
-                                                                prezzo.setText( task.getResult().getString( "prezzo" ) + " ,00€" );
+                                                                prezzoo.setText( task.getResult().getString( "prezzo" ) + " ,00€" );
                                                                 if(task.getResult().getString( "categoria" ).equals( "Cocktail" )){
                                                                 }else if(task.getResult().getString( "categoria" ).equals( "Bevande" )){
                                                                     spinner.setSelection( 3 );
