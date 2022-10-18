@@ -6,6 +6,72 @@
     android:id="@+id/creaCoupon"
     android:layout_height="match_parent">
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/c1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView147"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/creazionecouponin"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="38dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progressBar3"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_marginBottom="55dp"
+            android:backgroundTint="@color/giallochiaro"
+            android:indeterminateTint="@color/giallochiaro"
+            android:progressTint="@color/gialloScuro"
+            android:secondaryProgressTint="@color/gialloScuro"
+            app:layout_constraintBottom_toTopOf="@+id/textView70"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.496"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView148" />
+
+        <TextView
+            android:id="@+id/textView148"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:fontFamily="@font/bahiama"
+            android:text="@string/sipregadinonuscire"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="22dp"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.501"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView147" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/g1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="spinner3,l_prezzopercentuale,l_titolocoupo,textView52,spinner4,spinner5,textView50,l_Prodoto,imageView27,groupCreaCopuon,textView53,imageView29,textView46,spinner2,listProdottiCopuoin,imageButton29,textView51" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/l_prezzopercentuale"
         android:layout_width="0dp"
@@ -14,6 +80,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="32dp"
         android:backgroundTint="#FF0000"
+        android:digits="0123456789"
         app:boxBackgroundColor="@color/gialloScuro"
         app:boxBackgroundMode="outline"
         app:boxCornerRadiusBottomEnd="12dp"
@@ -23,18 +90,17 @@
         app:boxStrokeColor="@color/gialloScuro"
         app:hintTextColor="@color/gialloScuro"
         app:layout_constraintEnd_toEndOf="parent"
-        android:digits="0123456789"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView52">
+        app:layout_constraintTop_toBottomOf="@+id/textView52"
+        tools:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/t_prezzopercentuale"
-            android:digits="0123456789"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#66D9D9D9"
-            />
+            android:digits="0123456789" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -57,7 +123,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView50">
+        app:layout_constraintTop_toBottomOf="@+id/textView50"
+        tools:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/t_titolocoupon"
@@ -80,7 +147,8 @@
         android:textColor="@color/black"
         android:textSize="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner2"
+        tools:visibility="gone" />
 
 
     <TextView
@@ -94,7 +162,8 @@
         android:textColor="@color/black"
         android:textSize="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/l_titolocoupo" />
+        app:layout_constraintTop_toBottomOf="@+id/l_titolocoupo"
+        tools:visibility="gone" />
 
     <Spinner
         android:id="@+id/spinner2"
@@ -108,7 +177,8 @@
         android:entries="@array/arraySconto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView51" />
+        app:layout_constraintTop_toBottomOf="@+id/textView51"
+        tools:visibility="gone" />
 
     <Spinner
         android:id="@+id/spinner3"
@@ -122,7 +192,8 @@
         android:entries="@array/arrayQuanteVolte"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/l_prezzopercentuale" />
+        app:layout_constraintTop_toBottomOf="@+id/l_prezzopercentuale"
+        tools:visibility="gone" />
 
     <Spinner
         android:id="@+id/spinner4"
@@ -137,7 +208,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner3" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner3"
+        tools:visibility="gone" />
 
     <Spinner
         android:id="@+id/spinner5"
@@ -152,7 +224,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner4" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner4"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textView50"
@@ -164,7 +237,8 @@
         android:textColor="@color/black"
         android:textSize="28dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView46" />
+        app:layout_constraintTop_toBottomOf="@+id/textView46"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textView46"
@@ -177,7 +251,8 @@
         android:textSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="gone" />
 
     <ImageButton
         android:id="@+id/imageButton29"
@@ -190,7 +265,8 @@
         app:layout_constraintHorizontal_bias="0.772"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/spinner5"
-        app:srcCompat="@drawable/botton_creaprodotto" />
+        app:srcCompat="@drawable/botton_creaprodotto"
+        tools:visibility="gone" />
 
     <TextView
         android:id="@+id/textView53"
@@ -204,7 +280,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageButton29"
         app:layout_constraintEnd_toEndOf="@+id/imageButton29"
         app:layout_constraintStart_toStartOf="@+id/imageButton29"
-        app:layout_constraintTop_toTopOf="@+id/imageButton29" />
+        app:layout_constraintTop_toTopOf="@+id/imageButton29"
+        tools:visibility="gone" />
 
     <ImageView
         android:id="@+id/imageView27"
@@ -214,14 +291,16 @@
         app:layout_constraintEnd_toStartOf="@+id/textView53"
         app:layout_constraintStart_toStartOf="@+id/imageButton29"
         app:layout_constraintTop_toTopOf="@+id/imageButton29"
-        app:srcCompat="@drawable/plus_icon" />
+        app:srcCompat="@drawable/plus_icon"
+        tools:visibility="gone" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupCreaCopuon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:constraint_referenced_ids="listProdottiCopuoin,imageView29,l_Prodoto" />
+        app:constraint_referenced_ids="listProdottiCopuoin,imageView29,l_Prodoto"
+        tools:visibility="gone" />
 
     <ImageView
         android:id="@+id/imageView29"
@@ -232,7 +311,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/bianco" />
+        app:srcCompat="@drawable/bianco"
+        tools:visibility="gone" />
 
     <ListView
         android:id="@+id/listProdottiCopuoin"
@@ -240,7 +320,8 @@
         android:layout_height="250dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView29"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/l_Prodoto" />
+        app:layout_constraintTop_toBottomOf="@+id/l_Prodoto"
+        tools:visibility="gone" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/l_Prodoto"
@@ -260,7 +341,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textView46">
+        app:layout_constraintTop_toTopOf="@+id/textView46"
+        tools:visibility="gone">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/t_prodotto"

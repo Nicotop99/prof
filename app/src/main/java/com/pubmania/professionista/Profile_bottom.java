@@ -9,8 +9,12 @@ import android.app.AlertDialog;
 import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -45,12 +49,15 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.pubmania.professionista.Adapter.Adapter_Profile_bottom;
 import com.pubmania.professionista.StringAdapter.ArrayPost;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -95,25 +102,10 @@ public class Profile_bottom extends AppCompatActivity {
                 Group group = (Group) viewView.findViewById( R.id.groupEditPhotoProfile );
                 Group group2 = (Group) viewView.findViewById( R.id.group23 );
                 ImageButton nuovaFoto = (ImageButton) viewView.findViewById( R.id.imageButton32 );
-                firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task != null){
-                            for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                if(documentSnapshot.getString( "email" ).equals( email )) {
-                                    Glide.with(Profile_bottom.this).load(documentSnapshot.getString("fotoProfilo")).into(imageView);
-                                    idEmail = documentSnapshot.getId();
-                                }
-                            }
-                        }
-                    }
-                } ).addOnFailureListener( new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
+                SharedPreferences sharedPreferences = getSharedPreferences("fotoProfilo",MODE_PRIVATE);
+                Glide.with(Profile_bottom.this).load(sharedPreferences.getString("fotoProfilo","null")).into(imageView);
 
-                    }
-                } );;
+
                 nuovaFoto.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -133,58 +125,111 @@ public class Profile_bottom extends AppCompatActivity {
                         group2.setVisibility( View.GONE );
                         salvaChangeFoto.setVisibility( View.GONE );
                         salvaChangeFotoText.setVisibility( View.GONE );
-
-                        FirebaseStorage storage = FirebaseStorage.getInstance();
-                        StorageReference storageReference = storage.getReference();
-                        StorageReference storageReference1 = storageReference.child( email + "/" + UUID.randomUUID().toString()  );
-                        storageReference1.putFile( uriFotoProfilo ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                storageReference1.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
-                                    @Override
-                                    public void onSuccess(Uri uri) {
-                                        DocumentReference documentReference = firebaseFirestore.collection( "Professionisti" ).document(idEmail);
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task != null){
+                                    for(QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                        if(documentSnapshot.getString( "email" ).equals( email )) {
+                                            idEmail = documentSnapshot.getId();
+                                            FirebaseStorage storage = FirebaseStorage.getInstance();
+                                            StorageReference storageReference = storage.getReference();
+                                            StorageReference storageReference1 = storageReference.child( email + "/" + UUID.randomUUID().toString()  );
+                                            storageReference1.putFile( uriFotoProfilo ).addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                                                @Override
+                                                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                                    storageReference1.getDownloadUrl().addOnSuccessListener( new OnSuccessListener<Uri>() {
+                                                        @Override
+                                                        public void onSuccess(Uri uri) {
+                                                            DocumentReference documentReference = firebaseFirestore.collection( "Professionisti" ).document(idEmail);
 
-                                        Glide.with(Profile_bottom.this).load(uri).into(photoProfilo);
-                                        documentReference.update( "fotoProfilo", String.valueOf( uri ) ).addOnSuccessListener( new OnSuccessListener<Void>() {
-                                            @Override
-                                            public void onSuccess(Void aVoid) {
-                                                alertDialog.dismiss();
-                                                Snackbar.make( findViewById( android.R.id.content ),getString( R.string.fotoProfiloCambiata ),Snackbar.LENGTH_LONG ).show();
-                                            }
-                                        } ).addOnFailureListener( new OnFailureListener() {
-                                            @Override
-                                            public void onFailure(@NonNull Exception e) {
-                                                group.setVisibility( View.GONE );
-                                                group2.setVisibility( View.VISIBLE );
-                                                salvaChangeFoto.setVisibility( View.VISIBLE );
-                                                salvaChangeFotoText.setVisibility( View.VISIBLE );
-                                                Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
+                                                            Glide.with(Profile_bottom.this).load(uri).into(photoProfilo);
+                                                            documentReference.update( "fotoProfilo", String.valueOf( uri ) ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                @Override
+                                                                public void onSuccess(Void aVoid) {
+                                                                    alertDialog.dismiss();
+                                                                    FirebaseStorage storagee = FirebaseStorage.getInstance();
 
-                                            }
-                                        } );
+                                                                    SharedPreferences sharedPreferences = getSharedPreferences("fotoProfilo",MODE_PRIVATE);
+
+                                                                    StorageReference httpsReference = storagee.getReferenceFromUrl(String.valueOf(uri));
+                                                                    try {
+                                                                        final File localFile = File.createTempFile("Images", ".jpg");
+                                                                        httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                                                            @Override
+                                                                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                                                Log.d("janasnd", localFile.getAbsolutePath());
+                                                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                                                editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                                                editor.commit();
+                                                                                File imgFile = new File(localFile.getAbsolutePath());
+
+                                                                                if (imgFile.exists()) {
+
+                                                                                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                                                                                    Drawable profileImage = new BitmapDrawable(getResources(), myBitmap);
+                                                                                    bottomAppBar.getMenu().getItem(4).setIcon(profileImage);
+
+
+                                                                                }
+                                                                            }
+                                                                        }).addOnFailureListener(new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Log.d("ijnksaf", e.getMessage());
+                                                                            }
+                                                                        });
+                                                                    } catch (IOException e) {
+                                                                        e.printStackTrace();
+                                                                    }
+
+                                                                    Snackbar.make( findViewById( android.R.id.content ),getString( R.string.fotoProfiloCambiata ),Snackbar.LENGTH_LONG ).show();
+                                                                }
+                                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                                @Override
+                                                                public void onFailure(@NonNull Exception e) {
+                                                                    group.setVisibility( View.GONE );
+                                                                    group2.setVisibility( View.VISIBLE );
+                                                                    salvaChangeFoto.setVisibility( View.VISIBLE );
+                                                                    salvaChangeFotoText.setVisibility( View.VISIBLE );
+                                                                    Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
+
+                                                                }
+                                                            } );
+                                                        }
+                                                    } ).addOnFailureListener( new OnFailureListener() {
+                                                        @Override
+                                                        public void onFailure(@NonNull Exception e) {
+                                                            Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
+                                                            group.setVisibility( View.GONE );
+                                                            group2.setVisibility( View.VISIBLE );
+                                                            salvaChangeFoto.setVisibility( View.VISIBLE );
+                                                            salvaChangeFotoText.setVisibility( View.VISIBLE );
+                                                        }
+                                                    } );
+                                                }
+                                            } ).addOnFailureListener( new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+                                                    Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
+                                                    group.setVisibility( View.GONE );
+                                                    group2.setVisibility( View.VISIBLE );
+                                                    salvaChangeFoto.setVisibility( View.VISIBLE );
+                                                    salvaChangeFotoText.setVisibility( View.VISIBLE );
+                                                }
+                                            } );
+                                        }
                                     }
-                                } ).addOnFailureListener( new OnFailureListener() {
-                                    @Override
-                                    public void onFailure(@NonNull Exception e) {
-                                        Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
-                                        group.setVisibility( View.GONE );
-                                        group2.setVisibility( View.VISIBLE );
-                                        salvaChangeFoto.setVisibility( View.VISIBLE );
-                                        salvaChangeFotoText.setVisibility( View.VISIBLE );
-                                    }
-                                } );
+                                }
                             }
                         } ).addOnFailureListener( new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 Snackbar.make( findViewById( android.R.id.content ),getString( R.string.erroreriprovapiutardi ),Snackbar.LENGTH_LONG ).show();
-                                group.setVisibility( View.GONE );
-                                group2.setVisibility( View.VISIBLE );
-                                salvaChangeFoto.setVisibility( View.VISIBLE );
-                                salvaChangeFotoText.setVisibility( View.VISIBLE );
+
                             }
-                        } );
+                        } );;
+
                     }
                 } );
 
@@ -203,6 +248,7 @@ public class Profile_bottom extends AppCompatActivity {
     CircleImageView photoProfilo;
     int countMedia;
     int intTotRec;
+    int inccc;
     TextView countRec;
     private void setTopActivity() {
         nomePub = (TextView) findViewById( R.id.textView57 );
@@ -215,26 +261,45 @@ public class Profile_bottom extends AppCompatActivity {
         rec4 = (ImageView) findViewById( R.id.imageView35 );
         rec5 = (ImageView) findViewById( R.id.imageView36 );
         photoProfilo = (CircleImageView) findViewById( R.id.circleImageView );
-        firebaseFirestore.collection( "Professionisti").get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task != null){
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                        if(documentSnapshot.getString( "email" ).equals( email )){
-                            nomePub.setText( documentSnapshot.getString( "nomeLocale" ) );
-                            followe.setText( documentSnapshot.getString( "follower" ) );
-                            Glide.with(Profile_bottom.this).load(documentSnapshot.getString("fotoProfilo")).into(photoProfilo);
+        SharedPreferences sharedPreferences = getSharedPreferences("fotoProfilo",MODE_PRIVATE);
+        Glide.with(Profile_bottom.this).load(sharedPreferences.getString("fotoProfilo","null")).into(photoProfilo);
+        if(sharedPreferences.getString("nomePub","null").equals("null")) {
+            firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task != null) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            if (documentSnapshot.getString("email").equals(email)) {
+                                nomePub.setText(documentSnapshot.getString("nomeLocale"));
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("nomePub",documentSnapshot.getString("nomeLocale"));
+                                editor.commit();
 
+                            }
                         }
                     }
                 }
+            });
+        }else{
+            nomePub.setText(sharedPreferences.getString("nomePub",""));
+        }
+        firebaseFirestore.collection(email+"follower").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                followe.setText(String.valueOf(task.getResult().size()));
             }
-        } );
-        firebaseFirestore.collection( email+"Coupon" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+        });
+        inccc = 0;
+        firebaseFirestore.collection( email+"Post" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if(task!= null){
-                    coupon.setText( String.valueOf(  task.getResult().size()));
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        if(documentSnapshot.getString("categoria").equals("Coupon")){
+                            inccc+=1;
+                        }
+                    }
+                    coupon.setText(String.valueOf(inccc));
 
                 }
             }
@@ -302,20 +367,9 @@ public class Profile_bottom extends AppCompatActivity {
             }
         } );
         bottomAppBar.setSelectedItemId(R.id.profil_page);
-        Menu menu = bottomAppBar.getMenu();
-        firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task != null){
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                        if(documentSnapshot.getString( "email" ).equals( email )){
-                            menu.findItem(R.id.profil_page).setTitle( documentSnapshot.getString( "nome" ) );
 
-                        }
-                    }
-                }
-            }
-        } );
+        Menu menu = bottomAppBar.getMenu();
+
         bottomAppBar.setOnItemSelectedListener( new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -442,6 +496,25 @@ public class Profile_bottom extends AppCompatActivity {
                                                             g1.setVisibility( View.GONE );
                                                             g2.setVisibility( View.VISIBLE );
                                                             FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                            SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                            String[] pin = s2.getString("pin","null").split("ì");
+                                                            SharedPreferences.Editor editor = s2.edit();
+                                                            editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) - 1);
+                                                            Log.d("kjnfdkasndkjna", String.valueOf(s2.getInt("fotoCaricate",00000)));
+                                                            if(pin.length > 1) {
+                                                                for (int i = 0; i < pin.length; i++) {
+                                                                    if (pin[i].equals(uriArr.get(0))) {
+                                                                        String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                        editor.putString("pin", fin);
+                                                                    }
+                                                                }
+                                                            }else{
+
+                                                                editor.putString("pin", "null");
+
+                                                            }
+                                                            editor.commit();
+
                                                             for (int i = 0;i<uriArr.size();i++){
                                                                 StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
                                                                 storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
@@ -501,6 +574,11 @@ public class Profile_bottom extends AppCompatActivity {
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         alertDialog.dismiss();
                                                         setGridView();
+                                                        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                        SharedPreferences.Editor editor = s2.edit();
+                                                        editor.putString("pin",s2.getString("pin","") +  uriArr.get(0) + "ì");
+
+                                                        editor.commit();
                                                     }
                                                 } );
                                             }else{
@@ -509,6 +587,22 @@ public class Profile_bottom extends AppCompatActivity {
                                                     @Override
                                                     public void onComplete(@NonNull Task<Void> task) {
                                                         alertDialog.dismiss();
+                                                        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                        String[] pin = s2.getString("pin","null").split("ì");
+                                                        if(pin.length > 1) {
+                                                            for (int i = 0; i < pin.length; i++) {
+                                                                if (pin[i].equals(uriArr.get(0))) {
+                                                                    String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                    editor.putString("pin", fin);
+                                                                    editor.commit();
+                                                                }
+                                                            }
+                                                        }else{
+                                                            SharedPreferences.Editor editor = s2.edit();
+                                                            editor.putString("pin", "null");
+                                                            editor.commit();
+                                                        }
                                                         setGridView();
                                                     }
                                                 } );
@@ -607,7 +701,6 @@ public class Profile_bottom extends AppCompatActivity {
                         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                         StorageReference storageRef = firebaseStorage.getReference();
                         StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
-
                         if (selectedimg != null) {
                             //selezionata piu di una foto
 
@@ -625,9 +718,16 @@ public class Profile_bottom extends AppCompatActivity {
                                                 public void onSuccess(Uri uri) {
                                                     uriArray.add( String.valueOf( uri ) );
 
+
                                                     Log.d( "kfmdskf",uriArray.size() + " " + imageListPath.size() );
 
                                                     if(uriArray.size() == imageListPath.size()){
+
+                                                        SharedPreferences sharedPreferences = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                        editor.putInt("fotoCaricate",sharedPreferences.getInt("fotoCaricate",0) + 1);
+                                                        Log.d("jndjandl", String.valueOf(sharedPreferences.getInt("fotoCaricate",00)));
+                                                        editor.commit();
                                                         String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                         List<String> listIngg = Arrays.asList( arr );
                                                         String desc = t_desc.getText().toString();
@@ -637,6 +737,8 @@ public class Profile_bottom extends AppCompatActivity {
                                                         }else{
                                                             arrayPost.setDescrizione( desc );
                                                         }
+
+
                                                         arrayPost.setLike( "0" );
                                                         arrayPost.setCategoria( "Post" );
                                                         arrayPost.setPinnato( "no" );
@@ -698,6 +800,13 @@ public class Profile_bottom extends AppCompatActivity {
                                                 arrayPost.setLike( "0" );
                                                 arrayPost.setCategoria( "Post" );
                                                 arrayPost.setPinnato( "no" );
+
+
+                                                SharedPreferences sharedPreferences = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.putInt("fotoCaricate",sharedPreferences.getInt("fotoCaricate",0) + 1);
+                                                Log.d("jndjandl", String.valueOf(sharedPreferences.getInt("fotoCaricate",00) + 1));
+                                                editor.commit();
                                                 arrayPost.setFoto( listIngg );
                                                 FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
                                                 firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {

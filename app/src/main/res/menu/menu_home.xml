@@ -19,6 +19,7 @@
 
     <item android:id="@+id/profil_page"
         android:title="Dashboard"
-        android:icon="@drawable/recensioni_icon"/>
+        android:iconTint="@android:color/transparent"
+        android:icon="@drawable/trans_drawable"/>
 
 </menu>

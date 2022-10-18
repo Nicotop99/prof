@@ -1,37 +1,36 @@
 package com.pubmania.professionista;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.ProgressDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Matrix;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -42,7 +41,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -58,19 +56,19 @@ import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.artjimlop.altex.AltexImageDownloader;
 import com.budiyev.android.codescanner.CodeScanner;
 import com.budiyev.android.codescanner.CodeScannerView;
 import com.budiyev.android.codescanner.DecodeCallback;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.constants.ScaleTypes;
 import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationBarView;
@@ -85,6 +83,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
@@ -97,17 +96,12 @@ import com.pubmania.professionista.Adapter.adapter_list_search_prodotti;
 import com.pubmania.professionista.Adapter.try_adapter;
 import com.pubmania.professionista.StringAdapter.ArrayPost;
 import com.pubmania.professionista.StringAdapter.ArrayProdotto;
-import com.pubmania.professionista.StringAdapter.StringCoupon;
 import com.pubmania.professionista.StringAdapter.StringNotifiche;
 import com.pubmania.professionista.StringAdapter.StringRecensioni;
 import com.pubmania.professionista.StringAdapter.StringRegistrazione;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -138,6 +132,18 @@ public class HomePage extends AppCompatActivity {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_home_page );
         setBottonSearch();
+/*
+        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+        String[] pin = s2.getString("pin","null").split("ì");
+        SharedPreferences.Editor editor = s2.edit();
+        editor.putInt("fotoCaricate",0);
+        editor.putString("pin","null");
+        editor.commit();
+
+ */
+
+
+
         email = "oliverio.enicola@gmail.com";
         setMenuBasso();
         creaArticolo();
@@ -294,51 +300,29 @@ public class HomePage extends AppCompatActivity {
         constraintLayoutNewPost.setVisibility(View.GONE);
         constraintLayout.setVisibility(View.GONE);
         imageSlider.setVisibility(View.VISIBLE);
-        firebaseFirestore.collection( email+"Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
-            @Override
-            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                if(queryDocumentSnapshots != null){
-                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                    for (DocumentSnapshot l : list) {
-                        ArrayPost arrayPost = l.toObject( ArrayPost.class );
-
-                        if (arrayPost.getCategoria().equals( "Post" )) {
-                            intl +=1;
-                            if (arrayPost.getPinnato().equals( "si" )) {
-                                for (int i = 0; i < arrayPost.getFoto().size(); i++) {
-                                    arrayModel.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ), null ) );
-                                    imageSlider.setImageList( arrayModel );
-                                    Log.d("ksmflkdsm", String.valueOf( arrayModel.size() ) );
-                                }
-                            }
-                        }
-
-                    }
-                    if(arrayModel.size() ==0 && intl >0){
-                        constraintLayout.setVisibility(View.VISIBLE);
-                        Log.d("fjondsjfnjs","1111");
-
-                        imageSlider.setVisibility(View.GONE);
-                    }else if(arrayModel.size() == 0 && intl == 0){
-                        Log.d("fjondsjfnjs","0000");
-                        constraintLayoutNewPost.setVisibility(View.VISIBLE);
-
-                    }else{
-                        Log.d("fjondsjfnjs","22222");
-
-                    }
-
-
-                }
-            }
-        } ).addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-
-
+        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+        if(!s2.getString("pin","null").equals("null")){
+            String[] pinn = s2.getString("pin","null").split("ì");
+            for (int i = 0;i< pinn.length;i++){
+                arrayModel.add( new SlideModel( String.valueOf( pinn[i] ), null ) );
 
             }
-        } );
+            imageSlider.setImageList( arrayModel );
+
+        }
+        Log.d("jfnsjdknf", String.valueOf(s2.getInt("fotoCaricate",0000)));
+        if(arrayModel.size() ==0 && s2.getInt("fotoCaricate",0) >0){
+            constraintLayout.setVisibility(View.VISIBLE);
+            Log.d("fjondsjfnjs","1111");
+
+            imageSlider.setVisibility(View.GONE);
+        }else if(arrayModel.size() == 0 && s2.getInt("fotoCaricate",0) == 0){
+            Log.d("fjondsjfnjs","0000");
+            constraintLayoutNewPost.setVisibility(View.VISIBLE);
+
+        }
+
+
         setConstract();
 
         setNewPost();
@@ -489,6 +473,24 @@ public class HomePage extends AppCompatActivity {
                                                                     g1.setVisibility( View.GONE );
                                                                     g2.setVisibility( View.VISIBLE );
                                                                     FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                    SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                    String[] pin = s2.getString("pin","null").split("ì");
+                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                    editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) - 1);
+                                                                    Log.d("jdndkajsndas", String.valueOf(s2.getInt("fotoCaricate",000)));
+                                                                    if(pin.length > 1) {
+                                                                        for (int i = 0; i < pin.length; i++) {
+                                                                            if (pin[i].equals(uriArr.get(0))) {
+                                                                                String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                                editor.putString("pin", fin);
+                                                                                editor.commit();
+                                                                            }
+                                                                        }
+                                                                    }else{
+
+                                                                        editor.putString("pin", "null");
+                                                                        editor.commit();
+                                                                    }
                                                                     for (int i = 0;i<uriArr.size();i++){
                                                                         StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
                                                                         storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
@@ -502,7 +504,9 @@ public class HomePage extends AppCompatActivity {
                                                                                         @Override
                                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                                             alertDialog.dismiss();
+                                                                                            alertDialogg.dismiss();
                                                                                             setConstract();
+                                                                                            setImageSlider();
                                                                                             arrayPost.remove(idGridView);
                                                                                             adapter_profile_bottom.notifyDataSetChanged();
 
@@ -550,6 +554,11 @@ public class HomePage extends AppCompatActivity {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 alertDialog.dismiss();
+                                                                alertDialogg.dismiss();
+                                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                SharedPreferences.Editor editor = s2.edit();
+                                                                editor.putString("pin",uriArr.get(0) + "ì");
+                                                                editor.commit();
                                                                 setReload();
                                                                 setImageSlider();
                                                             }
@@ -561,7 +570,25 @@ public class HomePage extends AppCompatActivity {
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 alertDialog.dismiss();
                                                                 setReload();
+                                                                alertDialogg.dismiss();
+
                                                                 setImageSlider();
+                                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                String[] pin = s2.getString("pin","null").split("ì");
+                                                                if(pin.length > 1) {
+                                                                    for (int i = 0; i < pin.length; i++) {
+                                                                        if (pin[i].equals(uriArr.get(0))) {
+                                                                            String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                            SharedPreferences.Editor editor = s2.edit();
+                                                                            editor.putString("pin", fin);
+                                                                            editor.commit();
+                                                                        }
+                                                                    }
+                                                                }else{
+                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                    editor.putString("pin", "null");
+                                                                    editor.commit();
+                                                                }
 
                                                             }
                                                         } );
@@ -612,11 +639,13 @@ public class HomePage extends AppCompatActivity {
     String nomePub;
     boolean exist = false;
     boolean exist2 = false;
+    private Bitmap my_image;
     String idPost;
     int size = 0;
     String nomeCliente;
     CodeScannerView codeScannerView;
     String tipo,prezzo,prodotti,tokenn,emailCliente;
+    Uri imageUri = Uri.parse("https://firebasestorage.googleapis.com/v0/b/pub-mania.appspot.com/o/WIN_20221012_19_25_21_Pro.jpg?alt=media&token=710c0bd3-3303-45f7-87e8-2bb6635d5c45");
     private void setMenuBasso() {
         scanQR = (FloatingActionButton) findViewById( R.id.floatBotton );
         scanQR.setOnClickListener( new View.OnClickListener() {
@@ -883,6 +912,7 @@ public class HomePage extends AppCompatActivity {
                                                                                                                         @Override
                                                                                                                         public void onClick(View view) {
                                                                                                                             alertDialogg.dismiss();
+                                                                                                                            ciao = false;
                                                                                                                         }
                                                                                                                     } );
                                                                                                                     if (tipo.equals( "Prezzo" )) {
@@ -1227,25 +1257,106 @@ public class HomePage extends AppCompatActivity {
 
         bottomAppBar = (BottomNavigationView) findViewById( R.id.bottomNavView );
         bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
+        bottomAppBar.setItemIconTintList(null);
+
+        if ( ContextCompat.checkSelfPermission( this, Manifest.permission.WRITE_EXTERNAL_STORAGE ) != PackageManager.PERMISSION_GRANTED ) {
+
+            ActivityCompat.requestPermissions( this, new String[] {  Manifest.permission.WRITE_EXTERNAL_STORAGE  }, 1232);
+        }else{
+            Log.d("jfnalfnl","flkmsfm");
+        }
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        // Create a storage reference from our app
 
         bottomAppBar.setSelectedItemId(R.id.HomeBotton);
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(getApplicationContext(), R.drawable.home_icon);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.WHITE);
+        bottomAppBar.getMenu().getItem(0).setIcon(wrappedDrawable);
+
         Menu menu = bottomAppBar.getMenu();
-        firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task != null){
-                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                        if(documentSnapshot.getString( "email" ).equals( email )){
-                            menu.findItem(R.id.profil_page).setTitle( documentSnapshot.getString( "nome" ) );
-                            nomePub = documentSnapshot.getString( "nomeLocale" );
-                            urlFotoProfilo = documentSnapshot.getString( "fotoProfilo" );
-                            arrayToken = (List<String>) documentSnapshot.get("token");
+        SharedPreferences sharedPreferences = getSharedPreferences("fotoProfilo",MODE_PRIVATE);
+        if(sharedPreferences.getString("fotoProfilo","null").equals("null")) {
+            firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task != null) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            if (documentSnapshot.getString("email").equals(email)) {
+                                Log.d("fndjsdfjas", documentSnapshot.getString("fotoProfilo"));
+                                if (sharedPreferences.getString("fotoProfilo", "null").equals("null")) {
+                                    StorageReference storageRef = storage.getReference();
+                                    StorageReference httpsReference = storage.getReferenceFromUrl(documentSnapshot.getString("fotoProfilo"));
+                                    try {
+                                        final File localFile = File.createTempFile("Images", ".jpg");
+                                        httpsReference.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                                            @Override
+                                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                                Log.d("janasnd", localFile.getAbsolutePath());
+                                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                editor.putString("nomePub", documentSnapshot.getString("nome"));
+                                                editor.commit();
+                                                File imgFile = new File(localFile.getAbsolutePath());
+
+                                                if (imgFile.exists()) {
+
+                                                    Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                                                    Drawable profileImage = new BitmapDrawable(getResources(), myBitmap);
+                                                    bottomAppBar.getMenu().getItem(4).setIcon(profileImage);
+
+
+                                                }
+                                            }
+                                        }).addOnFailureListener(new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d("ijnksaf", e.getMessage());
+                                            }
+                                        });
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
+                                } else {
+
+                                }
+                                menu.findItem(R.id.profil_page).setTitle(documentSnapshot.getString("nome"));
+                                nomePub = documentSnapshot.getString("nomeLocale");
+                                urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
+                                arrayToken = (List<String>) documentSnapshot.get("token");
+                            }
                         }
                     }
                 }
-            }
-        } );
+            });
+        }
+        else{
 
+
+            MenuItem menuItem = menu.findItem(R.id.profil_page);
+
+            Glide.with(getApplicationContext())
+                    .asBitmap()
+                    .load(sharedPreferences.getString("fotoProfilo","null"))
+                    .apply(RequestOptions
+                            .circleCropTransform()
+                            .placeholder(Drawable.createFromPath("Your PlaceHolder")))
+                    .into(new SimpleTarget<Bitmap>() {
+                        @Override
+                        public void onResourceReady(Bitmap resource, Transition<? super Bitmap> transition) {
+
+                            menuItem.setIcon(new BitmapDrawable(getResources(), resource));
+
+                        }
+
+
+
+
+                    });
+
+
+
+        }
         bottomAppBar.setOnItemSelectedListener( new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -1450,6 +1561,7 @@ public class HomePage extends AppCompatActivity {
         salatiImageButon = (ImageButton) findViewById( R.id.imageButton13 );
         benvandeImageButton = (ImageButton) findViewById( R.id.imageButton14 );
         listProdottiCocktail = (ListView) findViewById( R.id.list_cockta );
+
         listProdottiCocktail.setFocusable( false );
         listProdottiCocktail.setFocusableInTouchMode( false );
         cockatailImageButton.setOnClickListener( new View.OnClickListener() {
@@ -2195,6 +2307,11 @@ public class HomePage extends AppCompatActivity {
                                                     Log.d( "kfmdskf",uriArray.size() + " " + imageListPath.size() );
 
                                                     if(uriArray.size() == imageListPath.size()){
+                                                        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                        SharedPreferences.Editor editor = s2.edit();
+                                                        editor.putString("pin",uriArray.get(0) + "ì");
+                                                        editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) + 1);
+                                                        editor.commit();
                                                         String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                         List<String> listIngg = Arrays.asList( arr );
                                                         String desc = t_desc.getText().toString();
@@ -2262,6 +2379,12 @@ public class HomePage extends AppCompatActivity {
                                                 }else{
                                                     arrayPost.setDescrizione( desc );
                                                 }
+                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                SharedPreferences.Editor editor = s2.edit();
+                                                editor.putString("pin",uriArray.get(0) + "ì");
+                                                editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) + 1);
+                                                Log.d("jfnjkanf", String.valueOf(s2.getInt("fotoCaricate",00)));
+                                                editor.commit();
                                                 arrayPost.setLike( "0" );
                                                 arrayPost.setCategoria( "Post" );
                                                 arrayPost.setPinnato( "si" );

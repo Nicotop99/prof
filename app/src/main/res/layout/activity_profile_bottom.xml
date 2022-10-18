@@ -147,7 +147,7 @@
         android:fontFamily="@font/baloo"
         android:text="12 recensioni"
         android:textColor="@color/black"
-        android:textSize="16dp"
+        android:textSize="12dp"
         app:layout_constraintEnd_toEndOf="@+id/imageView36"
         app:layout_constraintStart_toStartOf="@+id/imageView32"
         app:layout_constraintTop_toBottomOf="@+id/imageView34" />
@@ -156,7 +156,6 @@
         android:id="@+id/imageView33"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView32"
         app:layout_constraintTop_toTopOf="@+id/textView59" />
 
@@ -164,7 +163,6 @@
         android:id="@+id/imageView34"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView33"
         app:layout_constraintTop_toTopOf="@+id/textView59" />
 
@@ -172,7 +170,6 @@
         android:id="@+id/imageView35"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView34"
         app:layout_constraintTop_toTopOf="@+id/textView59" />
 
@@ -180,7 +177,6 @@
         android:id="@+id/imageView36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toEndOf="@+id/imageView35"
         app:layout_constraintTop_toTopOf="@+id/textView59" />
 
@@ -249,7 +245,6 @@
         android:id="@+id/imageView32"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="@+id/textView59"
         app:layout_constraintStart_toStartOf="@+id/textView60"
         app:layout_constraintTop_toTopOf="@+id/textView59" />
 

@@ -565,7 +565,7 @@ public class profileMenu extends AppCompatActivity {
         bottomAppBar = (BottomNavigationView) findViewById( R.id.bottomNavView );
         bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
 
-        bottomAppBar.setSelectedItemId(R.id.nullable);
+        bottomAppBar.setSelectedItemId(R.id.profil_page);
         bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
         Menu menu = bottomAppBar.getMenu();
         firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {

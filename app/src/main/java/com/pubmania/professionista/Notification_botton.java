@@ -3,14 +3,18 @@ package com.pubmania.professionista;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -1011,6 +1015,10 @@ public class Notification_botton extends AppCompatActivity {
         bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
 
         bottomAppBar.setSelectedItemId(R.id.HomeBotton);
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(getApplicationContext(), R.drawable.home_icon);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.WHITE);
+        bottomAppBar.getMenu().getItem(0).setIcon(wrappedDrawable);
         Menu menu = bottomAppBar.getMenu();
         firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
             @Override

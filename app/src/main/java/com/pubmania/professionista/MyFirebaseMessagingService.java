@@ -70,7 +70,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                        PendingIntent.FLAG_ONE_SHOT);
+                        PendingIntent.FLAG_IMMUTABLE);
 
                 Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
                         R.drawable.review_icon);
@@ -106,7 +106,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                        PendingIntent.FLAG_ONE_SHOT);
+                        PendingIntent.FLAG_IMMUTABLE);
 
                 Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
                         R.drawable.follow_icon);
@@ -140,7 +140,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent,
-                        PendingIntent.FLAG_ONE_SHOT);
+                        PendingIntent.FLAG_IMMUTABLE);
 
                 Bitmap largeIcon = BitmapFactory.decodeResource(getResources(),
                         R.drawable.coupon_notifi_icon);

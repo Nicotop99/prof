@@ -3,9 +3,11 @@ package com.pubmania.professionista;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -13,6 +15,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -645,6 +648,10 @@ public class Recensioni_Bottom extends AppCompatActivity {
         bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
 
         bottomAppBar.setSelectedItemId(R.id.recensioniBotton);
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(getApplicationContext(), R.drawable.recensioni_icon);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.WHITE);
+        bottomAppBar.getMenu().getItem(3).setIcon(wrappedDrawable);
         Menu menu = bottomAppBar.getMenu();
         firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -702,9 +709,10 @@ public class Recensioni_Bottom extends AppCompatActivity {
     int countCouponUtilzzati,couponAfter;
     int coutProdotti,coutProdottiAfter;
     private void setTextView() {
-
+        coutProdotti = 0;
         countFollower = 0;
         countFollowerAfter = 0;
+        countCouponUtilzzati = 0;
         countRec = 0;
         counRecAfte = 0;
         sommaMediaAfter = 0;
@@ -967,7 +975,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                     Log.d( "fdsfs", String.valueOf(  tot ) );
 
                     if(tot > 100000){
-                        perc4.setVisibility( View.GONE );
+                        perc5.setVisibility( View.GONE );
                     }else  if(coutProdotti > coutProdottiAfter){
                         int x = Math.abs(100-tot);
                         perc5.setVisibility( View.VISIBLE );
@@ -1445,7 +1453,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot documentSnapshot1 : task.getResult()){
                                 if(documentSnapshot1.getString("email").equals(stringRec.getEmailPubblico())){
-                                    recensioniDi.setText(getString(R.string.recensioneDi) + documentSnapshot1.getString("nome") + " " + " " + documentSnapshot1.getString("cognome"));
+                                    recensioniDi.setText(getString(R.string.recensioneDi) +" " + documentSnapshot1.getString("nome") + " " + " " + documentSnapshot1.getString("cognome"));
                                 }
                             }
                         }
@@ -1921,6 +1929,7 @@ public class Recensioni_Bottom extends AppCompatActivity {
                         barEntriesArrayList.add(new BarEntry(5,valutazioneCinque));
                         barDataSet = new BarDataSet(barEntriesArrayList, getString(R.string.valutazionie));
                         BarData data = new BarData(barDataSet);
+                        barDataSet.setColor(Color.parseColor("#EFF0AF"));
                         coutRecensioni.setText(getString(R.string.cisono)+ " " + d + " " + getString(R.string.recensioni) );
                         data.setDrawValues(false);
 

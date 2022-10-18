@@ -2,9 +2,12 @@ package com.pubmania.professionista;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.Group;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.Manifest;
@@ -14,6 +17,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -181,105 +186,25 @@ public class couponActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
 
 
-                firebaseFirestore.collection( email+"Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                firebaseFirestore.collection( email+"Post" )
+                        .orderBy("ora", Query.Direction.DESCENDING)
+                        .get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots != null) {
-                            List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                        if (queryDocumentSnapshots != null) {
+                            List<DocumentSnapshot> l = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : l) {
                                 StringCoupon stringCoupon = documentSnapshot.toObject( StringCoupon.class );
                                 if (stringCoupon.getCategoria().equals( "Coupon" )) {
 
-
-                                    try {
-                                        SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
-                                        String currentDateandTime = sdf.format( new Date() );
-                                        Date date1 = simpleDateFormat.parse( currentDateandTime );
-
-                                        Date date2 = simpleDateFormat.parse( stringCoupon.getOra() );
-
-                                        int different = (int) (date1.getTime() - date2.getTime());
-                                        prova.add( different );
-                                        provaCheck.add( different );
-                                        Log.d( "mdlfsld", String.valueOf( prova.size() ) );
+                                    Log.d( "kfmslfsd", stringCoupon.getPrezzo() );
+                                    arrayListCoupon.add( stringCoupon );
+                                    array_list_coupon = new array_list_coupon( couponActivity.this, arrayListCoupon );
 
 
-                                        Collections.sort( prova );
-
-
-                                        //chi lo ha piu basso è piu recente
-
-
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-
-                                    }
-
-
+                                    listView.setAdapter( array_list_coupon );
                                 }
                             }
-                            Collections.sort( provaCheck );
-
-                            for (int i = 0; i < prova.size() ; i++) {
-                                int finalI = i;
-                                Log.d( "kfmsdklmf", String.valueOf( i ) + " " +prova.size() );
-                                int finalI1 = i;
-
-                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                            for (DocumentSnapshot doc : list) {
-                                                StringCoupon stringCoupon1 = doc.toObject( StringCoupon.class );
-                                                if (stringCoupon1.getCategoria().equals( "Coupon" )) {
-                                                    SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
-                                                    String currentDateandTime = sdf.format( new Date() );
-
-                                                    Date date1 = null;
-                                                    try {
-                                                        date1 = simpleDateFormat.parse( currentDateandTime );
-                                                        Date date2 = simpleDateFormat.parse( stringCoupon1.getOra() );
-
-                                                        int different = (int) (date1.getTime() - date2.getTime());
-                                                        Log.d( "fkmdskfm","prmo" );
-
-                                                        if (provaCheck.size() > 0) {
-                                                            Log.d( "fkmdskfm","2" );
-                                                            Log.d( "kfmdskmfks",different + " " + prova.get( finalI ) );
-                                                            if (different == prova.get( finalI )) {
-                                                                Log.d( "fkmdskfm","3" );
-
-                                                                provaCheck.remove( 0 );
-                                                                arrayListCoupon.add( stringCoupon1 );
-                                                            }
-
-                                                        } else {
-                                                            Log.d( "fkmdskfm","4" );
-
-
-                                                            if (arrayListCoupon.size() > 0) {
-
-                                                                Log.d( "fkmdskfm","5" );
-
-                                                                array_list_coupon = new array_list_coupon( couponActivity.this, arrayListCoupon );
-
-
-                                                                listView.setAdapter( array_list_coupon );
-                                                            }
-                                                        }
-
-
-
-                                                    } catch (ParseException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-
-                                                }
-                                            }
-
-                            }
-
-                        }
-                        else{
-
                         }
                     }
 
@@ -308,102 +233,24 @@ public class couponActivity extends AppCompatActivity {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/M/yyyy hh:mm:ss");
 
 
-                firebaseFirestore.collection( email+"Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                firebaseFirestore.collection( email+"Post" )
+                        .orderBy("ora", Query.Direction.ASCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        if(queryDocumentSnapshots != null) {
-                            List<DocumentSnapshot> documentSnapshots = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot documentSnapshot : documentSnapshots) {
+                        if (queryDocumentSnapshots != null) {
+                            List<DocumentSnapshot> l = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : l) {
                                 StringCoupon stringCoupon = documentSnapshot.toObject( StringCoupon.class );
                                 if (stringCoupon.getCategoria().equals( "Coupon" )) {
 
-
-                                    try {
-                                        SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
-                                        String currentDateandTime = sdf.format( new Date() );
-                                        Date date1 = simpleDateFormat.parse( currentDateandTime );
-
-                                        Date date2 = simpleDateFormat.parse( stringCoupon.getOra() );
-
-                                        int different = (int) (date1.getTime() - date2.getTime());
-                                        prova.add( different );
-                                        provaCheck.add( different );
-                                        Log.d( "mdlfsld", String.valueOf( prova.size() ) );
+                                    Log.d( "kfmslfsd", stringCoupon.getPrezzo() );
+                                    arrayListCoupon.add( stringCoupon );
+                                    array_list_coupon = new array_list_coupon( couponActivity.this, arrayListCoupon );
 
 
-
-
-                                        //chi lo ha piu basso è piu recente
-
-
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-
-                                    }
-
-
+                                    listView.setAdapter( array_list_coupon );
                                 }
                             }
-                            Collections.sort(provaCheck, Collections.reverseOrder());
-                            Collections.sort(prova, Collections.reverseOrder());
-                            for (int i = 0; i < prova.size() ; i++) {
-                                int finalI = i;
-                                Log.d( "kfmsdklmf", String.valueOf( i ) + " " +prova.size() );
-                                int finalI1 = i;
-                                firebaseFirestore.collection( email + "Post" ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                                        if (queryDocumentSnapshots != null) {
-                                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                                            for (DocumentSnapshot doc : list) {
-                                                StringCoupon stringCoupon1 = doc.toObject( StringCoupon.class );
-                                                if (stringCoupon1.getCategoria().equals( "Coupon" )) {
-                                                    SimpleDateFormat sdf = new SimpleDateFormat( "dd/MM/yyyy HH:mm:ss", Locale.getDefault() );
-                                                    String currentDateandTime = sdf.format( new Date() );
-
-                                                    Date date1 = null;
-                                                    try {
-                                                        date1 = simpleDateFormat.parse( currentDateandTime );
-                                                        Date date2 = simpleDateFormat.parse( stringCoupon1.getOra() );
-
-                                                        int different = (int) (date1.getTime() - date2.getTime());
-
-
-                                                        if (provaCheck.size() > 0) {
-                                                            if (different == prova.get( finalI )) {
-                                                                provaCheck.remove( 0 );
-                                                                arrayListCoupon.add( stringCoupon1 );
-                                                            }
-
-                                                        } else {
-
-                                                            if (arrayListCoupon.size() > 0) {
-
-
-                                                                array_list_coupon = new array_list_coupon( couponActivity.this, arrayListCoupon );
-
-
-                                                                listView.setAdapter( array_list_coupon );
-                                                            }
-                                                        }
-
-
-
-                                                    } catch (ParseException e) {
-                                                        e.printStackTrace();
-                                                    }
-
-
-                                                }
-                                            }
-                                        }
-                                    }
-                                } );
-                            }
-
-                        }
-                        else{
-
                         }
                     }
 
@@ -1001,6 +848,10 @@ public class couponActivity extends AppCompatActivity {
         bottomAppBar.findViewById( R.id.nullable ).setClickable( false );
 
         bottomAppBar.setSelectedItemId(R.id.couponBotton);
+        Drawable unwrappedDrawable = AppCompatResources.getDrawable(getApplicationContext(), R.drawable.coupon_icon);
+        Drawable wrappedDrawable = DrawableCompat.wrap(unwrappedDrawable);
+        DrawableCompat.setTint(wrappedDrawable, Color.WHITE);
+        bottomAppBar.getMenu().getItem(1).setIcon(wrappedDrawable);
         Menu menu = bottomAppBar.getMenu();
         firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -1048,7 +899,8 @@ public class couponActivity extends AppCompatActivity {
     ImageButton creaCoupon;
     public static Group group;
     ArrayList<ArrayProdotto> arrayList = new ArrayList<>();
-
+    ConstraintLayout c1;
+    Group g1;
     public static TextInputEditText t_search;
     public static Spinner spinnerProdotto;
 
@@ -1076,6 +928,9 @@ public class couponActivity extends AppCompatActivity {
                     }
                 } );
                 alertDialogg.show();
+                g1 = (Group) viewView.findViewById(R.id.g1);
+                c1 = (ConstraintLayout) viewView.findViewById(R.id.c1);
+
                 alertDialogg.setOnKeyListener( new DialogInterface.OnKeyListener() {
                     @Override
                     public boolean onKey(DialogInterface dialogInterface, int i, KeyEvent keyEvent) {
@@ -1116,6 +971,8 @@ public class couponActivity extends AppCompatActivity {
                 crea.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        c1.setVisibility(View.VISIBLE);
+                        g1.setVisibility(View.GONE);
                         String titolo = t_titolo.getText().toString();
                         String tipoSconto = spinnerTipoSconto.getSelectedItem().toString();
                         String prezzo = t_prezzo.getText().toString();
@@ -1170,9 +1027,21 @@ public class couponActivity extends AppCompatActivity {
                                             listView.setAdapter( array_list_coupon );
                                             alertDialogg.dismiss();
                                         }
-                                    } );
+                                    } ).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+                                            c1.setVisibility(View.GONE);
+                                            g1.setVisibility(View.VISIBLE);
+                                        }
+                                    });
                                 }
-                            } );
+                            } ).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+                                    c1.setVisibility(View.GONE);
+                                    g1.setVisibility(View.VISIBLE);
+                                }
+                            });
                         }
                     }
                 } );
