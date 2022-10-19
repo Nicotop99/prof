@@ -144,7 +144,7 @@ public class Array_prodottooo extends ArrayAdapter<ArrayProdotto> {
             int totalHeight = 0;
             for (int i = 0; i < listView.getCount(); i++) {
                 View listItem = adapterr.getView(i, null, listView);
-                listItem.measure(0, 0);
+                listItem.measure(3, 0);
                 totalHeight += listItem.getMeasuredHeight();
             }
 

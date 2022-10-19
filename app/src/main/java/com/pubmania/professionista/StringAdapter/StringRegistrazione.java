@@ -8,6 +8,7 @@ public class StringRegistrazione {
     public String nome;
     public String cognome;
     public String numero;
+    public String profiloPubblico,nascondiPost,nascondiFollower,nascondiCoupon;
     public String id;
     public String partitaIva;
     public String follower;
@@ -18,7 +19,15 @@ public class StringRegistrazione {
 
     }
 
-    public StringRegistrazione(List<String> token, String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo) {
+    public StringRegistrazione(List<String> token, String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo,
+                               String profiloPubblico, String nascondiFollower, String nascondiPost, String nascondiCoupon
+    ) {
+        this.nascondiCoupon = nascondiCoupon;
+
+        this.profiloPubblico = profiloPubblico;
+        this.nascondiFollower = nascondiFollower;
+        this.nascondiPost = nascondiPost;
+
         this.email = email;
         this.token = token;
         this.nome = nome;
@@ -32,6 +41,38 @@ public class StringRegistrazione {
 
     public List<String> getToken() {
         return token;
+    }
+
+    public String getNascondiCoupon() {
+        return nascondiCoupon;
+    }
+
+    public void setNascondiCoupon(String nascondiCoupon) {
+        this.nascondiCoupon = nascondiCoupon;
+    }
+
+    public String getProfiloPubblico() {
+        return profiloPubblico;
+    }
+
+    public void setProfiloPubblico(String profiloPubblico) {
+        this.profiloPubblico = profiloPubblico;
+    }
+
+    public String getNascondiPost() {
+        return nascondiPost;
+    }
+
+    public void setNascondiPost(String nascondiPost) {
+        this.nascondiPost = nascondiPost;
+    }
+
+    public String getNascondiFollower() {
+        return nascondiFollower;
+    }
+
+    public void setNascondiFollower(String nascondiFollower) {
+        this.nascondiFollower = nascondiFollower;
     }
 
     public void setToken(List<String> token) {

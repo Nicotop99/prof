@@ -27,7 +27,7 @@
             android:id="@+id/roundedImageView"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:scaleType="centerInside"
+            android:scaleType="fitCenter"
             android:src="@drawable/googleg_disabled_color_18"
             app:srcCompat="@drawable/immage_prova" />
 

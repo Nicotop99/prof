@@ -6,21 +6,95 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/imageButton33"
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="50dp"
-        android:backgroundTint="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:visibility="gone"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:stretchMode="columnWidth"
+        android:gravity="center"
+
+
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageButton32"
-        app:srcCompat="@drawable/botton_creaprodotto" />
+
+        app:layout_constraintTop_toBottomOf="@+id/imageView14">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/cofotoNuova"
+            android:layout_weight="0.5">
+
+            <ImageButton
+                android:id="@+id/imageButton32"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/botton_creaprodotto"
+                />
+
+            <TextView
+                android:id="@+id/textView68"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bahiama"
+                android:text="@string/cambiafoto"
+                android:textColor="@color/black"
+                android:textSize="22dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButton32"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageButton32" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cfoto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:visibility="gone">
+
+            <ImageButton
+                android:id="@+id/imageButton33"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@android:color/transparent"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/botton_creaprodotto"
+                tools:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textView67"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/bahiama"
+                android:text="@string/salvamodifice"
+                android:textColor="@color/black"
+                android:textSize="22dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@+id/imageButton33"
+                app:layout_constraintEnd_toEndOf="@+id/imageButton33"
+                app:layout_constraintStart_toStartOf="@+id/imageButton33"
+                app:layout_constraintTop_toTopOf="@+id/imageButton33" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView14"
@@ -34,49 +108,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />
-
-    <ImageButton
-        android:id="@+id/imageButton32"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="50dp"
-        android:backgroundTint="@android:color/transparent"
-        android:scaleType="fitXY"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView14"
-        app:srcCompat="@drawable/botton_creaprodotto" />
-
-    <TextView
-        android:id="@+id/textView68"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bahiama"
-        android:text="@string/cambiafoto"
-        android:textColor="@color/black"
-        android:textSize="22dp"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton32"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton32"
-        app:layout_constraintStart_toStartOf="@+id/imageButton32"
-        app:layout_constraintTop_toTopOf="@+id/imageButton32" />
-
-    <TextView
-        android:id="@+id/textView67"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/bahiama"
-        android:text="@string/salvamodifice"
-        android:textColor="@color/black"
-        android:textSize="22dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="@+id/imageButton33"
-        app:layout_constraintEnd_toEndOf="@+id/imageButton33"
-        app:layout_constraintStart_toStartOf="@+id/imageButton33"
-        app:layout_constraintTop_toTopOf="@+id/imageButton33" />
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/groupEditPhotoProfile"

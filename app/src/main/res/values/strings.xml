@@ -274,11 +274,19 @@
     <string name="hafattounarecensione">ha fatto una recensione</string>
     <string name="disattivanotifiche">Disattive notifiche</string>
     <string name="silenzianotifiche">Silenzia notifiche</string>
-    <string name="notifichenuovofollower">Notifiche nuovo follower</string>
-    <string name="notifichenuovocou">Notifiche nuovo coupon usato</string>
-    <string name="notifichenuovarecensuiine">Notifiche nuova recensione</string>
+    <string name="notifichenuovofollower">Disattiva notifiche nuovo follower</string>
+    <string name="notifichenuovocou">Disattiva notifiche nuovo coupon usato</string>
+    <string name="notifichenuovarecensuiine">Disattiva notifiche nuova recensione</string>
     <string name="hausatouncoupon">ha usato un coupon</string>
     <string name="cliccalanotifica">Clicca la notifica per ulteriori dettagli</string>
     <string name="pinnailprimopost">Pinna il tuo primo post</string>
     <string name="creazionecouponin">Creazione coupon in corso</string>
+    <string name="creazioneposr">Creazione post in corso...</string>
+    <string name="eliminazionein">Eliminazione Post in corso...</string>
+    <string name="creazioneprodottoincorso">Creazione prodotto in corso...</string>
+    <string name="profilopubblico">Profilo pubblico</string>
+    <string name="tuttipossonovedereletuefoto">Tutti possono vedere le tue foto</string>
+    <string name="tuttipossonovedereituoicoupon">Tutti possono vedere i tuoi coupon</string>
+    <string name="tuttipossonovedereifolorwer">Tutti possono vedere i tuoi follower</string>
+    <string name="profilopun">Profilo Pub</string>
 </resources>

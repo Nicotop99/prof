@@ -2,6 +2,7 @@ package com.pubmania.professionista.Adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -47,7 +48,11 @@ public class Notifiche extends ArrayAdapter<StringNotifiche> {
         TextView titolo = (TextView) view.findViewById(R.id.textView141);
         ImageView backGround = (ImageView) view.findViewById(R.id.imageView59);
         if(stringNotifiche.getVisualizzato().equals("false")){
+            Log.d("jndjsandjn","odaslkd");
             backGround.setImageResource(R.drawable.back_notification_not_show);
+            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+            DocumentReference documentReference = firebaseFirestore.collection(email+"Notifiche").document(stringNotifiche.getId());
+            documentReference.update("visualizzato","true");
         }
         Glide.with(context).load(stringNotifiche.getFotoProfilo()).into(circleImageView);
         if(stringNotifiche.getCategoria().equals("Follower")){
@@ -57,9 +62,7 @@ public class Notifiche extends ArrayAdapter<StringNotifiche> {
         }else if(stringNotifiche.getCategoria().equals("Coupon")){
             titolo.setText(stringNotifiche.getNomecognomeCliente() + " " + context.getString(R.string.hausatouncoupon));
         }
-        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-        DocumentReference documentReference = firebaseFirestore.collection(email+"Notifiche").document(stringNotifiche.getId());
-        documentReference.update("visualizzato","true");
+
 
 
 

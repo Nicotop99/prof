@@ -60,6 +60,7 @@ public class Adapter_Profile_bottom extends ArrayAdapter<ArrayPost> {
 
         Glide.with(context)
                 .load(dataModal.getFoto().get( 0 ))
+
                 .listener( new RequestListener<Drawable>() {
                     @Override
                     public boolean onLoadFailed(GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {

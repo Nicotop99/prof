@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:divider="@null"
-        android:dividerHeight="-3dp"
+        android:dividerHeight="3dp"
         android:focusable="false"
         android:focusableInTouchMode="false"
         android:listSelector="@android:color/transparent"

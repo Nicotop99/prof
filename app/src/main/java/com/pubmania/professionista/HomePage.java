@@ -46,6 +46,7 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -140,7 +141,9 @@ public class HomePage extends AppCompatActivity {
         editor.putString("pin","null");
         editor.commit();
 
+
  */
+
 
 
 
@@ -258,18 +261,23 @@ public class HomePage extends AppCompatActivity {
         navigationView = (NavigationView) findViewById( R.id.menulaterale );
         View header = navigationView.getHeaderView(0);
         TextView text = (TextView) header.findViewById(R.id.textView21);
-        firebaseFirestore.collection( "Professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if(task.isSuccessful()){
-                    for (QueryDocumentSnapshot documentSnapshot: task.getResult()){
-                        if(documentSnapshot.getString( "email" ).equals( email )){
-                            text.setText(documentSnapshot.getString( "nome" ) + " " + documentSnapshot.getString( "cognome" ));
+        SharedPreferences sharedPreferences = getSharedPreferences("fotoProfilo",MODE_PRIVATE);
+        if(sharedPreferences.getString("nomeCognome","null").equals("null")) {
+            firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if (task.isSuccessful()) {
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                            if (documentSnapshot.getString("email").equals(email)) {
+                                text.setText(documentSnapshot.getString("nome") + " " + documentSnapshot.getString("cognome"));
+                            }
                         }
                     }
                 }
-            }
-        } );
+            });
+        }else{
+            text.setText(sharedPreferences.getString("nomeCognome",""));
+        }
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -284,6 +292,9 @@ public class HomePage extends AppCompatActivity {
                 }
                 else if(id == R.id.notificheLato){
                     startActivity(new Intent(getApplicationContext(),Notification_botton.class));
+                }else if(id == R.id.profiloPubLato){
+                    startActivity(new Intent(getApplicationContext(),ProfiloPub.class));
+
                 }
                 return true;
             }
@@ -707,88 +718,95 @@ public class HomePage extends AppCompatActivity {
 
                             Log.d( "omfodsfm",idPost );
                             countI = 1;
-                            firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                            firebaseFirestore.collection("Pubblico").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                    if(task != null){
-                                        Log.d( "kmfslkfmksdmf","zerp" );
+                                    if(task.isSuccessful()){
+                                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                            if(documentSnapshot.getString("email").equals(email)){
+                                                urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
+                                                firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if(task != null){
+                                                            Log.d( "kmfslkfmksdmf","zerp" );
 
-                                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
 
-                                            size = documentSnapshot.getData().size();
-                                            if(documentSnapshot.getId().equals( idPost )){
-                                                exist2 = true;
-                                                countI = documentSnapshot.getData().size() +1;
+                                                                size = documentSnapshot.getData().size();
+                                                                if(documentSnapshot.getId().equals( idPost )){
+                                                                    exist2 = true;
+                                                                    countI = documentSnapshot.getData().size() +1;
 
-                                                documentSnapshott =documentSnapshot;
-                                            }
-
-
-                                        }
-
-                                            if (exist2 == true) {
-                                                for (int i = 1; i < documentSnapshott.getData().size(); i++) {
-                                                    if (documentSnapshott.getData().get( String.valueOf( i ) ).equals( emailCliente )) {
-
-                                                        usate += 1;
-                                                    }
-                                                }
+                                                                    documentSnapshott =documentSnapshot;
+                                                                }
 
 
-                                                if (quanteVolte == 1 && usate >= 1) {
-                                                    entrato = true;
-                                                    alertDialog.dismiss();
-                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
-                                                    Log.d( "kmfslkfmksdmf", "3" );
+                                                            }
 
-                                                } else if (quanteVolte == 2 && usate >= 2) {
+                                                            if (exist2 == true) {
+                                                                for (int i = 1; i < documentSnapshott.getData().size(); i++) {
+                                                                    if (documentSnapshott.getData().get( String.valueOf( i ) ).equals( emailCliente )) {
 
-                                                    if (usate >= 2) {
-                                                        alertDialog.dismiss();
-                                                        Log.d( "kmfslkfmksdmf", "4" );
-                                                        entrato = true;
-
-                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
-                                                    }
-                                                } else if (quanteVolte == 3 && usate >= 3) {
-
-                                                    if (usate >= 3) {
-                                                        alertDialog.dismiss();
-                                                        Log.d( "kmfslkfmksdmf", "5" );
-                                                        entrato = true;
-
-                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
-                                                    }
-                                                } else if (quanteVolte == 4 && usate >= 4) {
-
-                                                    if (usate >= 4) {
-                                                        alertDialog.dismiss();
-                                                        Log.d( "kmfslkfmksdmf", "6" );
-                                                        entrato = true;
-
-                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
-                                                    }
-                                                } else if (quanteVolte == 5 && usate >= 5) {
-
-                                                    if (usate >= 5) {
-                                                        alertDialog.dismiss();
-                                                        Log.d( "kmfslkfmksdmf", "7" );
-                                                        entrato = true;
-
-                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
-                                                    }
-                                                } else {
-                                                    entrato = true;
-                                                    boolean exit = false;
+                                                                        usate += 1;
+                                                                    }
+                                                                }
 
 
+                                                                if (quanteVolte == 1 && usate >= 1) {
+                                                                    entrato = true;
+                                                                    alertDialog.dismiss();
+                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
+                                                                    Log.d( "kmfslkfmksdmf", "3" );
+
+                                                                } else if (quanteVolte == 2 && usate >= 2) {
+
+                                                                    if (usate >= 2) {
+                                                                        alertDialog.dismiss();
+                                                                        Log.d( "kmfslkfmksdmf", "4" );
+                                                                        entrato = true;
+
+                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
+                                                                    }
+                                                                } else if (quanteVolte == 3 && usate >= 3) {
+
+                                                                    if (usate >= 3) {
+                                                                        alertDialog.dismiss();
+                                                                        Log.d( "kmfslkfmksdmf", "5" );
+                                                                        entrato = true;
+
+                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
+                                                                    }
+                                                                } else if (quanteVolte == 4 && usate >= 4) {
+
+                                                                    if (usate >= 4) {
+                                                                        alertDialog.dismiss();
+                                                                        Log.d( "kmfslkfmksdmf", "6" );
+                                                                        entrato = true;
+
+                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
+                                                                    }
+                                                                } else if (quanteVolte == 5 && usate >= 5) {
+
+                                                                    if (usate >= 5) {
+                                                                        alertDialog.dismiss();
+                                                                        Log.d( "kmfslkfmksdmf", "7" );
+                                                                        entrato = true;
+
+                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.questoutentrhagiautilizzatoquestocoupon ), Snackbar.LENGTH_LONG ).show();
+                                                                    }
+                                                                } else {
+                                                                    entrato = true;
+                                                                    boolean exit = false;
 
 
-                                                    Log.d( "asdsadasdasd", String.valueOf( countI ) );
-                                                    DocumentReference documentReference = firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost );
-                                                    documentReference.update( String.valueOf( countI ), emailCliente ).addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                        @Override
-                                                        public void onSuccess(Void aVoid) {
+
+
+                                                                    Log.d( "asdsadasdasd", String.valueOf( countI ) );
+                                                                    DocumentReference documentReference = firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost );
+                                                                    documentReference.update( String.valueOf( countI ), emailCliente ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                        @Override
+                                                                        public void onSuccess(Void aVoid) {
 
 
                                                                             Log.d( "pkfmdsòkmòks","sec" );
@@ -1040,212 +1058,218 @@ public class HomePage extends AppCompatActivity {
 
 
 
-                                                        }
-                                                    } ).addOnFailureListener( new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Map<String, Object> user = new HashMap<>();
-                                                            user.put( "1", emailCliente );
-                                                            firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost ).set( user )
-                                                                    .addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            alertDialog.dismiss();
                                                                         }
-                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                    } ).addOnFailureListener( new OnFailureListener() {
                                                                         @Override
                                                                         public void onFailure(@NonNull Exception e) {
-                                                                            Log.d("ofjndsljnflj",e.getMessage());
-                                                                        }
-                                                                    });
-                                                        }
-                                                    } );
-                                                }
-
-                                            }
-                                            else {
-                                                Log.d( "kmfslkfmksdmf", "9999" );
-                                                if (entrato == false) {
-                                                    countI = 1;
-                                                    Log.d( "Qklmfldksmdf", String.valueOf( countI ) + "lllllll" );
-                                                    Map<String, Object> user = new HashMap<>();
-                                                    user.put( "1", emailCliente );
-                                                    firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost ).set( user )
-                                                            .addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                @Override
-                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                    Log.d( "Qklmfldksmdf", "fkmdklfm" );
-                                                                    entrato = true;
-                                                                    //coupon utilizzato
-                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
-// ...Irrelevant code for customizing the buttons and title
-
-
-                                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                                                                    View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
-
-                                                                    dialogBuilderr.setView( viewView );
-
-                                                                    AlertDialog alertDialogg = dialogBuilderr.create();
-                                                                    alertDialogg.show();
-                                                                    TextView title = (TextView) viewView.findViewById( R.id.textView75 );
-                                                                    TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
-                                                                    ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
-                                                                    imageButton.setOnClickListener( new View.OnClickListener() {
-                                                                        @Override
-                                                                        public void onClick(View view) {
-                                                                            alertDialogg.dismiss();
+                                                                            Map<String, Object> user = new HashMap<>();
+                                                                            user.put( "1", emailCliente );
+                                                                            firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost ).set( user )
+                                                                                    .addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                            alertDialog.dismiss();
+                                                                                        }
+                                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                                        @Override
+                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                            Log.d("ofjndsljnflj",e.getMessage());
+                                                                                        }
+                                                                                    });
                                                                         }
                                                                     } );
-                                                                    if (tipo.equals( "Prezzo" )) {
-                                                                        title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
-                                                                    } else {
-                                                                        title.setText( prezzo + " % " + getString( R.string.discontosu ) );
-                                                                    }
-                                                                    if (prodotti.equals( "Tutti" )) {
-                                                                        prodotto.setText( getText( R.string.sututtolimporto ) );
-                                                                    } else {
-                                                                        prodotto.setText( prodotti );
-                                                                    }
-
-
-                                                                    alertDialog.dismiss();
                                                                 }
-                                                            } )
 
-
-                                                            .addOnFailureListener( new OnFailureListener() {
-                                                                @Override
-                                                                public void onFailure(@NonNull Exception e) {
-                                                                    Log.d( "Qklmfldksmdf", e.getMessage() );
-
+                                                            }
+                                                            else {
+                                                                Log.d( "kmfslkfmksdmf", "9999" );
+                                                                if (entrato == false) {
+                                                                    countI = 1;
+                                                                    Log.d( "Qklmfldksmdf", String.valueOf( countI ) + "lllllll" );
                                                                     Map<String, Object> user = new HashMap<>();
                                                                     user.put( "1", emailCliente );
                                                                     firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost ).set( user )
                                                                             .addOnCompleteListener( new OnCompleteListener<Void>() {
                                                                                 @Override
                                                                                 public void onComplete(@NonNull Task<Void> task) {
-                                                                                    alertDialog.dismiss();
-                                                                                }
-                                                                            } );
-                                                                }
-                                                            } );
-                                                }
-                                            }
-
-                                        Log.d( "omsodfsdm", "asdasdasdsdasd" );
-                                        entrato = true;
-                                        if(task.getResult().size()== 0){
-                                            countI = 1;
-                                            Log.d( "Qklmfldksmdf", String.valueOf( countI ) +"lllllll");
-                                            Map<String, Object> user = new HashMap<>();
-                                            user.put("1", emailCliente);
-                                            firebaseFirestore.collection( email+"CouponUtilizzati" ).document(idPost).set( user )
-
-
-
-                                                    .addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                        @Override
-                                                        public void onComplete(@NonNull Task<Void> task) {
-
-
-
-                                                            for (int i = 0;i<tokenList.size();i++){
-                                                                if(i== 0){
-                                                                    propvaNotifica(tokenList.get(0).replace("[",""),idPost);
-
-                                                                }else if(i == tokenList.size() -1){
-                                                                    propvaNotifica(tokenList.get(i).replace("]",""),idPost);
-
-                                                                }
-
-                                                                else{
-                                                                    propvaNotifica(tokenList.get(i),idPost);
-
-                                                                }
-
-                                                            }
-                                                            Log.d("kjfnaskjfnjans","fuoriiii");
-
-
-                                                            //coupon utilizzato
-                                                            AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this,R.style.MyDialogThemeeee  );
+                                                                                    Log.d( "Qklmfldksmdf", "fkmdklfm" );
+                                                                                    entrato = true;
+                                                                                    //coupon utilizzato
+                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 
 
-                                                            LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-                                                            View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+                                                                                    LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                    View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
 
-                                                            dialogBuilderr.setView( viewView );
+                                                                                    dialogBuilderr.setView( viewView );
 
-                                                            AlertDialog alertDialogg = dialogBuilderr.create();
-                                                            alertDialogg.show();
-                                                            TextView title = (TextView) viewView.findViewById( R.id.textView75 );
-                                                            TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
-                                                            ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
-                                                            imageButton.setOnClickListener( new View.OnClickListener() {
-                                                                @Override
-                                                                public void onClick(View view) {
-                                                                    alertDialogg.dismiss();
+                                                                                    AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                    alertDialogg.show();
+                                                                                    TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                    TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                    ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                    imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                        @Override
+                                                                                        public void onClick(View view) {
+                                                                                            alertDialogg.dismiss();
+                                                                                        }
+                                                                                    } );
+                                                                                    if (tipo.equals( "Prezzo" )) {
+                                                                                        title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ) );
+                                                                                    } else {
+                                                                                        title.setText( prezzo + " % " + getString( R.string.discontosu ) );
+                                                                                    }
+                                                                                    if (prodotti.equals( "Tutti" )) {
+                                                                                        prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                    } else {
+                                                                                        prodotto.setText( prodotti );
+                                                                                    }
+
+
+                                                                                    alertDialog.dismiss();
+                                                                                }
+                                                                            } )
+
+
+                                                                            .addOnFailureListener( new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                    Log.d( "Qklmfldksmdf", e.getMessage() );
+
+                                                                                    Map<String, Object> user = new HashMap<>();
+                                                                                    user.put( "1", emailCliente );
+                                                                                    firebaseFirestore.collection( email + "CouponUtilizzati" ).document( idPost ).set( user )
+                                                                                            .addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                @Override
+                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                    alertDialog.dismiss();
+                                                                                                }
+                                                                                            } );
+                                                                                }
+                                                                            } );
                                                                 }
-                                                            } );
-                                                            if(tipo.equals( "Prezzo" )){
-                                                                title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ));
-                                                            }else{
-                                                                title.setText( prezzo + " % " + getString( R.string.discontosu ) );
-                                                            }
-                                                            if(prodotti.equals( "Tutti" )){
-                                                                prodotto.setText( getText( R.string.sututtolimporto ) );
-                                                            }else{
-                                                                prodotto.setText( prodotti );
                                                             }
 
+                                                            Log.d( "omsodfsdm", "asdasdasdsdasd" );
+                                                            entrato = true;
+                                                            if(task.getResult().size()== 0){
+                                                                countI = 1;
+                                                                Log.d( "Qklmfldksmdf", String.valueOf( countI ) +"lllllll");
+                                                                Map<String, Object> user = new HashMap<>();
+                                                                user.put("1", emailCliente);
+                                                                firebaseFirestore.collection( email+"CouponUtilizzati" ).document(idPost).set( user )
 
 
-                                                            alertDialog.dismiss();
+
+                                                                        .addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                            @Override
+                                                                            public void onComplete(@NonNull Task<Void> task) {
+
+
+
+                                                                                for (int i = 0;i<tokenList.size();i++){
+                                                                                    if(i== 0){
+                                                                                        propvaNotifica(tokenList.get(0).replace("[",""),idPost);
+
+                                                                                    }else if(i == tokenList.size() -1){
+                                                                                        propvaNotifica(tokenList.get(i).replace("]",""),idPost);
+
+                                                                                    }
+
+                                                                                    else{
+                                                                                        propvaNotifica(tokenList.get(i),idPost);
+
+                                                                                    }
+
+                                                                                }
+                                                                                Log.d("kjfnaskjfnjans","fuoriiii");
+
+
+                                                                                //coupon utilizzato
+                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( HomePage.this,R.style.MyDialogThemeeee  );
+// ...Irrelevant code for customizing the buttons and title
+
+
+                                                                                LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                View viewView = inflater.inflate( R.layout.layout_viualizza_coupon_scansionato, null );
+
+                                                                                dialogBuilderr.setView( viewView );
+
+                                                                                AlertDialog alertDialogg = dialogBuilderr.create();
+                                                                                alertDialogg.show();
+                                                                                TextView title = (TextView) viewView.findViewById( R.id.textView75 );
+                                                                                TextView prodotto = (TextView) viewView.findViewById( R.id.textView76 );
+                                                                                ImageButton imageButton = (ImageButton) viewView.findViewById( R.id.imageButton37 );
+                                                                                imageButton.setOnClickListener( new View.OnClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(View view) {
+                                                                                        alertDialogg.dismiss();
+                                                                                    }
+                                                                                } );
+                                                                                if(tipo.equals( "Prezzo" )){
+                                                                                    title.setText( getString( R.string.scontoDi ) + " " + prezzo + " ,00€ " + getString( R.string.su ));
+                                                                                }else{
+                                                                                    title.setText( prezzo + " % " + getString( R.string.discontosu ) );
+                                                                                }
+                                                                                if(prodotti.equals( "Tutti" )){
+                                                                                    prodotto.setText( getText( R.string.sututtolimporto ) );
+                                                                                }else{
+                                                                                    prodotto.setText( prodotti );
+                                                                                }
+
+
+
+                                                                                alertDialog.dismiss();
+                                                                            }
+                                                                        } )
+
+
+                                                                        .addOnFailureListener( new OnFailureListener() {
+                                                                            @Override
+                                                                            public void onFailure(@NonNull Exception e) {
+                                                                                Map<String, Object> user = new HashMap<>();
+                                                                                user.put("1", emailCliente);
+                                                                                firebaseFirestore.collection( email+"CouponUtilizzati" ).document(idPost).set( user )
+                                                                                        .addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                alertDialog.dismiss();
+                                                                                            }
+                                                                                        } );
+                                                                            }
+                                                                        } );
+                                                            }
+                                                            else{
+                                                                for (int i = 0;i<tokenList.size();i++){
+                                                                    if(i== 0){
+                                                                        propvaNotifica(tokenList.get(0).replace("[",""),idPost);
+
+                                                                    }else if(i == tokenList.size() -1){
+                                                                        propvaNotifica(tokenList.get(i).replace("]",""),idPost);
+
+                                                                    }
+
+                                                                    else{
+                                                                        propvaNotifica(tokenList.get(i),idPost);
+
+                                                                    }
+
+                                                                }
+                                                                Log.d("kjfnaskjfnjans","fuoriiii");
+
+                                                            }
                                                         }
-                                                    } )
-
-
-                                                    .addOnFailureListener( new OnFailureListener() {
-                                                        @Override
-                                                        public void onFailure(@NonNull Exception e) {
-                                                            Map<String, Object> user = new HashMap<>();
-                                                            user.put("1", emailCliente);
-                                                            firebaseFirestore.collection( email+"CouponUtilizzati" ).document(idPost).set( user )
-                                                                    .addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                        @Override
-                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                            alertDialog.dismiss();
-                                                                        }
-                                                                    } );
+                                                        else{
                                                         }
-                                                    } );
-                                        }
-                                        else{
-                                            for (int i = 0;i<tokenList.size();i++){
-                                                if(i== 0){
-                                                    propvaNotifica(tokenList.get(0).replace("[",""),idPost);
-
-                                                }else if(i == tokenList.size() -1){
-                                                    propvaNotifica(tokenList.get(i).replace("]",""),idPost);
-
-                                                }
-
-                                                else{
-                                                    propvaNotifica(tokenList.get(i),idPost);
-
-                                                }
+                                                    }
+                                                } );
 
                                             }
-                                            Log.d("kjfnaskjfnjans","fuoriiii");
-
                                         }
                                     }
-                                    else{
-                                    }
                                 }
-                            } );
+                            });
                         }
                     } );
 
@@ -1295,7 +1319,8 @@ public class HomePage extends AppCompatActivity {
                                                 Log.d("janasnd", localFile.getAbsolutePath());
                                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                                 editor.putString("fotoProfilo", localFile.getAbsolutePath());
-                                                editor.putString("nomePub", documentSnapshot.getString("nome"));
+                                                editor.putString("nomePub", documentSnapshot.getString("nomeLocale"));
+                                                editor.putString("nomecognome",documentSnapshot.getString("nome") + " " + documentSnapshot.getString("cognome"));
                                                 editor.commit();
                                                 File imgFile = new File(localFile.getAbsolutePath());
 
@@ -1322,7 +1347,6 @@ public class HomePage extends AppCompatActivity {
                                 }
                                 menu.findItem(R.id.profil_page).setTitle(documentSnapshot.getString("nome"));
                                 nomePub = documentSnapshot.getString("nomeLocale");
-                                urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
                                 arrayToken = (List<String>) documentSnapshot.get("token");
                             }
                         }
@@ -1470,7 +1494,7 @@ public class HomePage extends AppCompatActivity {
                             StringNotifiche stringNotifiche = new StringNotifiche();
                             stringNotifiche.setCategoria("Coupon");
                             stringNotifiche.setVisualizzato("false");
-                            stringNotifiche.setEmailCliente(email);
+                            stringNotifiche.setEmailCliente(emailCliente);
                             stringNotifiche.setEmailPub(email);
                             stringNotifiche.setFotoProfilo(urlFotoProfilo);
                             stringNotifiche.setIdPost(idPostt);
@@ -1579,7 +1603,8 @@ public class HomePage extends AppCompatActivity {
 
                 textBottonMenu.setText( getText( R.string.menuPrincipale ) );
                 l_cocktail.setVisibility( View.VISIBLE );
-                firebaseFirestore.collection( email ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                firebaseFirestore.collection( email )
+                        .orderBy("ora", Query.Direction.DESCENDING).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.size() > 0){
@@ -1644,7 +1669,8 @@ public class HomePage extends AppCompatActivity {
 
                 textBottonMenu.setText( getText( R.string.menuPrincipale ) );
                 l_cocktail.setVisibility( View.VISIBLE );
-                firebaseFirestore.collection( email ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                firebaseFirestore.collection( email )
+                        .orderBy("ora", Query.Direction.DESCENDING).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.size() > 0){
@@ -1708,7 +1734,8 @@ public class HomePage extends AppCompatActivity {
 
                 textBottonMenu.setText( getText( R.string.menuPrincipale ) );
                 l_cocktail.setVisibility( View.VISIBLE );
-                firebaseFirestore.collection( email ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                firebaseFirestore.collection( email )
+                        .orderBy("ora", Query.Direction.DESCENDING).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.size() > 0){
@@ -1769,7 +1796,8 @@ public class HomePage extends AppCompatActivity {
                 plusButton.setVisibility( View.GONE );
                 textBottonMenu.setText( getText( R.string.menuPrincipale ) );
                 l_cocktail.setVisibility( View.VISIBLE );
-                firebaseFirestore.collection( email ).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
+                firebaseFirestore.collection( email )
+                        .orderBy("ora", Query.Direction.DESCENDING).get().addOnSuccessListener( new OnSuccessListener<QuerySnapshot>() {
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
                         if(queryDocumentSnapshots.size() > 0){
@@ -1872,6 +1900,8 @@ public class HomePage extends AppCompatActivity {
         }
         Log.d( "kmfldksmf","fds" );
     }
+
+    Group gLoading,gProdotto;
 
     private void creaArticolo() {
         plusButton = (ImageView) findViewById( R.id.imageView20 );
@@ -1980,8 +2010,10 @@ public class HomePage extends AppCompatActivity {
 
                             String[] arr = arrayList.toArray( new String[arrayList.size()] );
                             List<String> listIng = Arrays.asList( arr );
-
-
+                            ArrayList<String> l = new ArrayList<>();
+                            String[] arr1 = l.toArray( new String[l  .size()] );
+                            List<String> listIng1 = Arrays.asList( arr1 );
+                            arrayProdotto.setFoto(listIng1);
                             arrayProdotto.setIngredienti( listIng );
                             arrayProdotto.setNome( nome );
                             arrayProdotto.setId( nome.replace(" ", "") );
@@ -2009,12 +2041,11 @@ public class HomePage extends AppCompatActivity {
                                     dialogBuilder.setView( viewView );
                                     AlertDialog alertDialogg = dialogBuilder.create();
                                     alertDialogg.show();
-
+                                    gLoading = (Group) viewView.findViewById(R.id.gloading);
+                                    gProdotto = (Group) viewView.findViewById(R.id.gprodotto);
                                     image_prdotto_slide = (ImageSlider) viewView.findViewById( R.id.image_slider );
                                     ImageButton caricaProdotto = (ImageButton) viewView.findViewById( R.id.imageButton19 );
                                     ImageButton chooseImage = (ImageButton) viewView.findViewById( R.id.imageButton18 );
-                                    ProgressBar progressBar = (ProgressBar) viewView.findViewById( R.id.progressBar );
-                                    TextView coutImageText = (TextView) viewView.findViewById( R.id.textView36 );
                                     chooseImage.setOnClickListener( new View.OnClickListener() {
                                         @Override
                                         public void onClick(View view) {
@@ -2029,10 +2060,10 @@ public class HomePage extends AppCompatActivity {
                                         @Override
                                         public void onClick(View view) {
                                             if (imageListPath.size() != 0) {
+                                                gLoading.setVisibility(View.VISIBLE);
+                                                gProdotto.setVisibility(View.GONE);
                                                 caricaProdotto.setClickable( false );
-                                                progressBar.setVisibility( View.VISIBLE );
-                                                coutImageText.setVisibility( View.VISIBLE );
-                                                coutImageText.setText( immaginiCaricate + " / " + imageListPath.size() );
+
                                                 immaginiCaricate = 1;
                                                 FirebaseStorage storage = FirebaseStorage.getInstance();
                                                 StorageReference storageRef = storage.getReference();
@@ -2041,17 +2072,7 @@ public class HomePage extends AppCompatActivity {
                                                     int finalI = i;
                                                     StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
                                                     Log.d( "kfkdldl", String.valueOf( imageListPath.get( i ) ) );
-                                                    storagee.putFile( imageListPath.get( i ) ).addOnProgressListener( new OnProgressListener<UploadTask.TaskSnapshot>() {
-                                                        @Override
-                                                        public void onProgress(@NonNull UploadTask.TaskSnapshot snapshot) {
-                                                            if (snapshot.getBytesTransferred() != 0) {
-                                                                double progress = 100 * ((double) snapshot.getBytesTransferred() / snapshot.getTotalByteCount());
-                                                                int currentprogress = (int) progress;
-                                                                progressBar.setProgress( currentprogress );
-                                                                Log.d( "ldldldldldldlld", String.valueOf( progress ) );
-                                                            }
-                                                        }
-                                                    } )
+                                                    storagee.putFile( imageListPath.get( i ) )
                                                             .addOnSuccessListener( new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                                                 @Override
                                                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -2061,7 +2082,7 @@ public class HomePage extends AppCompatActivity {
                                                                             uriArray.add( uri.toString() );
                                                                             if (uriArray.size() > immaginiCaricate) {
                                                                                 immaginiCaricate += 1;
-                                                                                coutImageText.setText( immaginiCaricate + " / " + (imageListPath.size()) );
+
                                                                             }
                                                                             if (uriArray.size() == imageListPath.size()) {
                                                                                 immaginiCaricate = 1;
@@ -2080,15 +2101,115 @@ public class HomePage extends AppCompatActivity {
                                                                                                     @Override
                                                                                                     public void onClick(View view) {
                                                                                                         //portalo al prodotto
+
+                                                                                                        String idPost = documentReference.getId();
+                                                                                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(HomePage.this,R.style.MyDialogTheme );
+// ...Irrelevant code for customizing the buttons and title
+                                                                                                        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
+                                                                                                        View viewView = inflater.inflate( R.layout.click_item_list_prodotti, null );
+                                                                                                        dialogBuilder.setView( viewView );
+                                                                                                        AlertDialog alertDialogg = dialogBuilder.create();
+                                                                                                        alertDialogg.show();
+                                                                                                        TextView titolo = (TextView) viewView.findViewById( R.id.textView36 );
+                                                                                                        TextView prezzo = (TextView) viewView.findViewById( R.id.textView41 );
+                                                                                                        Spinner spinner = (Spinner) viewView.findViewById( R.id.spinner );
+                                                                                                        ImageView elimia = (ImageView) viewView.findViewById( R.id.imageView58 );
+                                                                                                        ImageView modifica = (ImageView) viewView.findViewById( R.id.imageView57 );
+                                                                                                        LinearLayout linearLayout22 = (LinearLayout) viewView.findViewById(R.id.linearLayout4);
+                                                                                                        linearLayout22.setVisibility(View.GONE);
+                                                                                                        spinner.setEnabled( false );
+                                                                                                        ListView listngredienti = (ListView) viewView.findViewById( R.id.listingr );
+                                                                                                        ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.image_slider );
+                                                                                                        TextView ing = (TextView) viewView.findViewById( R.id.textView43);
+                                                                                                        firebaseFirestore.collection( email ).document(idPost).get().addOnCompleteListener( new OnCompleteListener<DocumentSnapshot>() {
+                                                                                                            @Override
+                                                                                                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                                                                                                if(task.isSuccessful()){
+                                                                                                                    listImage.clear();
+                                                                                                                    Log.d( "fjfndsjlj", String.valueOf( listImage ) );
+                                                                                                                    titolo.setText(task.getResult().getString( "nome" ));
+                                                                                                                    nomeee = task.getResult().getString( "nome" );
+                                                                                                                    prezzooo = task.getResult().getString( "prezzo" );
+                                                                                                                    categoriaaa = task.getResult().getString( "categoria" );
+                                                                                                                    prezzo.setText( task.getResult().getString( "prezzo" ) + " ,00€" );
+                                                                                                                    if(task.getResult().getString( "categoria" ).equals( "Cocktail" )){
+                                                                                                                    }else if(task.getResult().getString( "categoria" ).equals( "Bevande" )){
+                                                                                                                        spinner.setSelection( 3 );
+                                                                                                                    }
+                                                                                                                    else if(task.getResult().getString( "categoria" ).equals( "Dolci" )){
+                                                                                                                        spinner.setSelection( 1 );
+                                                                                                                    }
+                                                                                                                    else if(task.getResult().getString( "categoria" ).equals( "Salati" )){
+                                                                                                                        spinner.setSelection( 2 );
+                                                                                                                    }
+                                                                                                                    ArrayList<String> group = (ArrayList<String>) task.getResult().get("ingredienti");
+                                                                                                                    ArrayList<String> fotoList = (ArrayList<String>) task.getResult().get("foto");
+                                                                                                                    ArrayList<SlideModel> arrMod = new ArrayList<>();
+                                                                                                                    ingredientiList =(ArrayList<String>)  task.getResult().get( "ingredienti" );
+
+                                                                                                                    Log.d( "mldkmkdmd", String.valueOf( task.getResult().get("ingredienti") ) );
+
+                                                                                                                    if (group != null) {
+                                                                                                                        if(group.size() >0){
+                                                                                                                            ArrayIngredienti arraySearchprodotti = new ArrayIngredienti( HomePage.this, group );
+                                                                                                                            listngredienti.setAdapter( arraySearchprodotti );
+                                                                                                                        }else {
+                                                                                                                            listngredienti.setVisibility( View.GONE );
+                                                                                                                            ing.setVisibility( View.GONE );
+                                                                                                                        }
+
+                                                                                                                    } else {
+                                                                                                                        listngredienti.setVisibility( View.GONE );
+                                                                                                                        ing.setVisibility( View.GONE );
+                                                                                                                    }
+
+
+                                                                                                                    if (fotoList != null) {
+                                                                                                                        if(fotoList.size() >0) {
+                                                                                                                            for (int i = 0; i < fotoList.size(); i++) {
+                                                                                                                                listImage.add( fotoList.get( i ) );
+                                                                                                                                arrMod.add( new SlideModel( fotoList.get( i ), null ) );
+                                                                                                                            }
+                                                                                                                            imageSlider.setImageList( arrMod );
+
+                                                                                                                        }
+                                                                                                                        else {
+                                                                                                                            imageSlider.setVisibility( View.GONE );
+                                                                                                                        }
+                                                                                                                    } else {
+                                                                                                                        imageSlider.setVisibility( View.GONE );
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        } );
+
+
+
+
+
                                                                                                     }
                                                                                                 } )
 
                                                                                                 .show();
                                                                                     }
-                                                                                } );
+                                                                                } ).addOnFailureListener(new OnFailureListener() {
+                                                                                    @Override
+                                                                                    public void onFailure(@NonNull Exception e) {
+
+                                                                                        gLoading.setVisibility(View.GONE);
+                                                                                        gProdotto.setVisibility(View.VISIBLE);
+                                                                                    }
+                                                                                });
                                                                             }
                                                                         }
-                                                                    } );
+                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+
+                                                                            gLoading.setVisibility(View.GONE);
+                                                                            gProdotto.setVisibility(View.VISIBLE);
+                                                                        }
+                                                                    });
 
 
                                                                 }
@@ -2097,11 +2218,15 @@ public class HomePage extends AppCompatActivity {
                                                         public void onFailure(@NonNull Exception e) {
                                                             caricaProdotto.setClickable( true );
                                                             Toast.makeText( getApplicationContext(), getString( R.string.erroreriprovapiutardi ), Toast.LENGTH_LONG ).show();
+
+                                                            gLoading.setVisibility(View.GONE);
+                                                            gProdotto.setVisibility(View.VISIBLE);
                                                         }
                                                     } );
 
                                                 }
-                                            } else {
+                                            }
+                                            else {
                                                 String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                 List<String> listIngg = Arrays.asList( arr );
                                                 DocumentReference documentReference = firebaseFirestore.collection( email ).document(nome);
@@ -2111,7 +2236,14 @@ public class HomePage extends AppCompatActivity {
                                                         alertDialogg.dismiss();
 
                                                     }
-                                                } );
+                                                } ).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+
+                                                        gLoading.setVisibility(View.GONE);
+                                                        gProdotto.setVisibility(View.VISIBLE);
+                                                    }
+                                                });
 
                                             }
                                         }
@@ -2169,6 +2301,8 @@ public class HomePage extends AppCompatActivity {
 
     }
 
+
+    Group loadingGroup,creaPostGroup;
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult( requestCode, resultCode, data );
@@ -2255,7 +2389,8 @@ public class HomePage extends AppCompatActivity {
                 AlertDialog alertDialog = dialogBuilder.create();
                 alertDialog.show();
                 imageSliderr = (ImageSlider) viewView.findViewById( R.id.image_slider );
-
+                loadingGroup = (Group) viewView.findViewById(R.id.Loading);
+                creaPostGroup = (Group) viewView.findViewById(R.id.creaPostGroup);
                 ClipData selectedimg = data.getClipData();
                 if (selectedimg != null) {
                     for (int i = 0; i < selectedimg.getItemCount(); i++) {
@@ -2283,6 +2418,8 @@ public class HomePage extends AppCompatActivity {
                 creaPostButton.setOnClickListener( new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        creaPostGroup.setVisibility(View.GONE);
+                        loadingGroup.setVisibility(View.VISIBLE);
                         FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
                         StorageReference storageRef = firebaseStorage.getReference();
                         StorageReference storagee = storageRef.child( email + "/" + UUID.randomUUID().toString() );
@@ -2336,28 +2473,46 @@ public class HomePage extends AppCompatActivity {
 
                                                                         setImageSlider();
                                                                         alertDialog.dismiss();
-                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
-                                                                                .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
-                                                                                    @Override
-                                                                                    public void onClick(View view) {
-                                                                                        //portalo al prodotto
-                                                                                        //notify
 
-                                                                                    }
-                                                                                } )
-
-                                                                                .show();
                                                                     }
-                                                                } );
+                                                                } ).addOnFailureListener(new OnFailureListener() {
+                                                                    @Override
+                                                                    public void onFailure(@NonNull Exception e) {
+
+                                                                        creaPostGroup.setVisibility(View.VISIBLE);
+                                                                        loadingGroup.setVisibility(View.GONE);
+                                                                    }
+                                                                });
 
 
                                                             }
-                                                        } );
+                                                        } ).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+
+                                                                creaPostGroup.setVisibility(View.VISIBLE);
+                                                                loadingGroup.setVisibility(View.GONE);
+                                                            }
+                                                        });
                                                     }
                                                 }
-                                            } );
+                                            } ).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                    creaPostGroup.setVisibility(View.VISIBLE);
+                                                    loadingGroup.setVisibility(View.GONE);
+                                                }
+                                            });
                                         }
-                                    } );
+                                    } ).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            creaPostGroup.setVisibility(View.VISIBLE);
+                                            loadingGroup.setVisibility(View.GONE);
+                                        }
+                                    });
                                 }
                             }
                         }
@@ -2413,14 +2568,42 @@ public class HomePage extends AppCompatActivity {
 
                                                                         .show();
                                                             }
-                                                        } );
+                                                        } ).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+
+                                                                creaPostGroup.setVisibility(View.VISIBLE);
+                                                                loadingGroup.setVisibility(View.GONE);
+                                                            }
+                                                        });
                                                     }
-                                                } );
+                                                } ).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+
+                                                        creaPostGroup.setVisibility(View.VISIBLE);
+                                                        loadingGroup.setVisibility(View.GONE);
+                                                    }
+                                                });
                                             }
                                         }
-                                    } );
+                                    } ).addOnFailureListener(new OnFailureListener() {
+                                        @Override
+                                        public void onFailure(@NonNull Exception e) {
+
+                                            creaPostGroup.setVisibility(View.VISIBLE);
+                                            loadingGroup.setVisibility(View.GONE);
+                                        }
+                                    });
                                 }
-                            } );
+                            } ).addOnFailureListener(new OnFailureListener() {
+                                @Override
+                                public void onFailure(@NonNull Exception e) {
+
+                                    creaPostGroup.setVisibility(View.VISIBLE);
+                                    loadingGroup.setVisibility(View.GONE);
+                                }
+                            });
 
                         }
 

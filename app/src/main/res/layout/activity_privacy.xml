@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gestione_notifiche">
+    tools:context=".privacy">
 
     <ImageView
-        android:id="@+id/imageView61"
+        android:id="@+id/imageView62"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scaleType="centerCrop"
@@ -18,70 +18,54 @@
         app:srcCompat="@drawable/back_impo" />
 
     <Switch
-        android:id="@+id/switch2"
+        android:id="@+id/switch6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="60dp"
-        android:theme="@style/SCBSwitch"
         android:fontFamily="@font/bahiama"
         android:minHeight="48dp"
         android:switchPadding="15dp"
-        android:text="@string/disattivanotifiche"
+        android:text="@string/profilopubblico"
         android:textSize="28dp"
+        android:theme="@style/SCBSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Switch
-        android:id="@+id/switch3"
+        android:id="@+id/switch8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/bahiama"
-        android:theme="@style/SCBSwitch"
 
         android:minHeight="48dp"
         android:switchPadding="15dp"
-        android:text="@string/silenzianotifiche"
+        android:text="@string/tuttipossonovedereletuefoto"
         android:textSize="28dp"
+        android:theme="@style/SCBSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch2" />
+        app:layout_constraintTop_toBottomOf="@+id/switch6" />
 
     <Switch
-        android:id="@+id/switch4"
+        android:id="@+id/switch9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/bahiama"
         android:minHeight="48dp"
         android:switchPadding="15dp"
-        android:text="@string/notifichenuovofollower"
+        android:text="@string/tuttipossonovedereituoicoupon"
         android:textSize="28dp"
-        android:theme="@style/SCBSwitch"
 
+        android:theme="@style/SCBSwitch"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch3" />
+        app:layout_constraintTop_toBottomOf="@+id/switch8" />
 
     <Switch
-        android:id="@+id/switch5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="@font/bahiama"
-        android:minHeight="48dp"
-        android:theme="@style/SCBSwitch"
-
-        android:switchPadding="15dp"
-        android:text="@string/notifichenuovocou"
-        android:textSize="28dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch4" />
-
-    <Switch
-        android:id="@+id/switch7"
+        android:id="@+id/switch10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -89,14 +73,12 @@
         android:minHeight="48dp"
 
         android:switchPadding="15dp"
-        android:text="@string/notifichenuovarecensuiine"
+        android:text="@string/tuttipossonovedereifolorwer"
         android:textSize="28dp"
         android:theme="@style/SCBSwitch"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/switch5" />
-
+        app:layout_constraintTop_toBottomOf="@+id/switch9" />
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinatorLayout"
 
@@ -106,7 +88,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/constraintLayout2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/imageView61">
+        app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.bottomappbar.BottomAppBar
             android:id="@+id/bottomAppBar"
@@ -143,4 +125,5 @@
             app:layout_anchor="@id/bottomAppBar" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -144,7 +144,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/bahiama"
-        android:text="@string/aggiornamentopostincorso"
+        android:text="@string/eliminazionein"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="38dp"

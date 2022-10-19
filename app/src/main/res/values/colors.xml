@@ -12,4 +12,6 @@
     <color name="grigio">#D9D9D9</color>
     <color name="giallochiaro">#EFF0AF</color>
     <color name="grigioScuro">#A4A4A4</color>
+    <color name="grigioClassico">#A4A4A4</color>
+    <color name="succesGreen">#5cb85c</color>
 </resources>

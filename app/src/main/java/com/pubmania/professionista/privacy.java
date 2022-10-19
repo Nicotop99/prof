@@ -1,7 +1,6 @@
 package com.pubmania.professionista;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.core.app.ActivityCompat;
@@ -26,10 +25,9 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ListView;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -43,8 +41,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
-import com.denzcoskun.imageslider.ImageSlider;
-import com.denzcoskun.imageslider.models.SlideModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -55,19 +51,14 @@ import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.zxing.Result;
-import com.pubmania.professionista.Adapter.Notifiche;
 import com.pubmania.professionista.StringAdapter.StringNotifiche;
-import com.pubmania.professionista.StringAdapter.StringRec;
 import com.pubmania.professionista.StringAdapter.StringRecensioni;
 
 import org.json.JSONException;
@@ -84,455 +75,30 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Notification_botton extends AppCompatActivity {
-    String email;
+public class privacy extends AppCompatActivity {
+    String email = "oliverio.enicola@gmail.com";
+    String idPostt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_notification_botton);
-        email = "oliverio.enicola@gmail.com";
-
-setListNotification();
-        setMenuBasso();
-
-    }
-
-    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-    Notifiche notifiche;
-    ArrayList<StringNotifiche> arrayList = new ArrayList<>();
-    ListView listNotifiche;
-    private void setListNotification() {
-        Log.d("kfjndkjnf",email+"Notifiche");
-        Log.d("kfjndkjnf","oliverio.enicola@gmail.comNotifiche");
-        listNotifiche = (ListView) findViewById(R.id.list_notification);
-        firebaseFirestore.collection(email+"Notifiche")
-                .orderBy("ora", Query.Direction.DESCENDING).get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-                        Log.d("jkndkjasnjd", String.valueOf(queryDocumentSnapshots.size()));
-                        if(queryDocumentSnapshots.size() > 0){
-                            Log.d("jkndkjasnjd","ccccccc");
-
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot documentSnapshot : list){
-                                StringNotifiche stringNotifiche = documentSnapshot.toObject(StringNotifiche.class);
-                                arrayList.add(stringNotifiche);
-                                notifiche = new Notifiche(Notification_botton.this,arrayList,email);
-                                listNotifiche.setAdapter(notifiche);
-                                listNotifiche.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                        StringNotifiche stringNotifiche1 = arrayList.get(i);
-                                        if(stringNotifiche1.getCategoria().equals("Recensione"))
-                                        {
-                                            firebaseFirestore.collection(email+"Rec").document(stringNotifiche1.getIdPost()).addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                                @Override
-                                                public void onEvent(@Nullable DocumentSnapshot value, @Nullable FirebaseFirestoreException error) {
-                                                    if(!value.getString("titolo").equals("") && !value.getString("desc").equals("")) {
-                                                        clickItem(Notification_botton.this,stringNotifiche1.getIdPost());
-                                                    }
-                                                }
-                                            });
-                                        }
-                                    }
-                                });
-                            }
-                        }
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        Log.d("jnffkjsanf", String.valueOf(task.getResult().size()));
-                    }
-                });
-    }
-
-    ImageView uno8,due8,tre8,quattro8,cinque8;
-    ImageView uno7,due7,tre7,quattro7,cinque7;
-    ImageView uno6,due6,tre6,quattro6,cinque6;
-    ImageView uno10,due10,tre10,quattro10,cinque10;
-    ImageView uno5,due5,tre5,quattro5,cinque5;
-    ImageView uno4,due4,tre4,quattro4,cinque4;
-    ImageView uno3,due3,tre3,quattro3,cinque3;
-    ImageView uno2,due2,tre2,quattro2,cinque2;
-    ImageView uno1,due1,tre1,quattro1,cinque1;
-    ImageSlider imageSlider;
-    TextView recensioniDi,titolo,desc;
-    ArrayList<SlideModel> arraySlider;
-    private void clickItem(Notification_botton view, String idPost) {
-        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( Notification_botton.this, R.style.MyDialogThemedee );
-// ...Irrelevant code for customizing the buttons and title
-        LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
-        View viewView = inflater.inflate( R.layout.click_rec_pub,null);
-        dialogBuilder.setView( viewView );
-        AlertDialog alertDialogg = dialogBuilder.create();
-        alertDialogg.show();
-        setidListView(viewView);
-        arraySlider = new ArrayList<>();
-        firebaseFirestore.collection(email+"Rec").document(idPost).get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+        setContentView(R.layout.activity_privacy);
+        setId();
+        setPinned();
+        setEditPin();
+        firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                StringRec stringRec = documentSnapshot.toObject(StringRec.class);
-                if(stringRec.getArrayList() == null){
-                    imageSlider.setVisibility(View.GONE);
-                }
-                else{
-                    for (int i = 0;i<stringRec.getArrayList().size();i++) {
-                        arraySlider.add( new SlideModel( String.valueOf( stringRec.getArrayList().get(i)), null ) );
-
-                        if(i + 1 == stringRec.getArrayList().size()){
-                            imageSlider.setImageList(arraySlider);
-
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if(task.isSuccessful()){
+                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                        if(documentSnapshot.getString("email").equals(email)){
+                            idPostt = documentSnapshot.getId();
                         }
                     }
                 }
-                firebaseFirestore.collection("Pubblico").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if(task.isSuccessful()){
-                            for (QueryDocumentSnapshot documentSnapshot1 : task.getResult()){
-                                if(documentSnapshot1.getString("email").equals(stringRec.getEmailPubblico())){
-                                    recensioniDi.setText(getString(R.string.recensioneDi) + " " +  documentSnapshot1.getString("nome") + " " + " " + documentSnapshot1.getString("cognome"));
-                                }
-                            }
-                        }
-                    }
-                });
-                titolo.setText(stringRec.getTitolo());
-                desc.setText(stringRec.getDesc());
-                {
-                    if (stringRec.getValStruttura().equals("1")) {
-                        uno1.setImageResource(R.drawable.ballrecensionegiallo);
-                    } else if (stringRec.getValStruttura().equals("2")) {
-                        uno1.setImageResource(R.drawable.ballrecensionegiallo);
-                        due1.setImageResource(R.drawable.ballrecensionegiallo);
-                    } else if (stringRec.getValStruttura().equals("3")) {
-                        uno1.setImageResource(R.drawable.ballrecensionegiallo);
-                        due1.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre1.setImageResource(R.drawable.ballrecensionegiallo);
-                    } else if (stringRec.getValStruttura().equals("4")) {
-                        uno1.setImageResource(R.drawable.ballrecensionegiallo);
-                        due1.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre1.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro1.setImageResource(R.drawable.ballrecensionegiallo);
-                    } else if (stringRec.getValStruttura().equals("5")) {
-                        uno1.setImageResource(R.drawable.ballrecensionegiallo);
-                        due1.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre1.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro1.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque1.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                }
-
-                {
-                    if(stringRec.getValProdotti().equals("1")){
-                        uno2.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValProdotti().equals("2")){
-                        uno2.setImageResource(R.drawable.ballrecensionegiallo);
-                        due2.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValProdotti().equals("3")){
-                        uno2.setImageResource(R.drawable.ballrecensionegiallo);
-                        due2.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre2.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValProdotti().equals("4")){
-                        uno2.setImageResource(R.drawable.ballrecensionegiallo);
-                        due2.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre2.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro2.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValProdotti().equals("5")){
-                        uno2.setImageResource(R.drawable.ballrecensionegiallo);
-                        due2.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre2.setImageResource(R.drawable.ballrecensionegiallo);
-                        uno2.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro2.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                }
-
-                {
-                    if(stringRec.getValServizio().equals("1")){
-                        uno3.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValServizio().equals("2")){
-                        uno3.setImageResource(R.drawable.ballrecensionegiallo);
-                        due3.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValServizio().equals("3")){
-                        uno3.setImageResource(R.drawable.ballrecensionegiallo);
-                        due3.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre3.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValServizio().equals("4")){
-                        uno3.setImageResource(R.drawable.ballrecensionegiallo);
-                        due3.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre3.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro4.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValServizio().equals("5")){
-                        uno3.setImageResource(R.drawable.ballrecensionegiallo);
-                        due3.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre3.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro4.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque3.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                }
-
-                {
-                    if(stringRec.getValBagni().equals("1")){
-                        uno4.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValBagni().equals("2")){
-                        uno4.setImageResource(R.drawable.ballrecensionegiallo);
-                        due4.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValBagni().equals("3")){
-                        uno4.setImageResource(R.drawable.ballrecensionegiallo);
-                        due4.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre4.setImageResource(R.drawable.ballrecensionegiallo);
-
-
-                    }
-                    else if(stringRec.getValBagni().equals("4")){
-                        uno4.setImageResource(R.drawable.ballrecensionegiallo);
-                        due4.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre4.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro4.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                    else if(stringRec.getValBagni().equals("5")){
-                        uno4.setImageResource(R.drawable.ballrecensionegiallo);
-                        due4.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre4.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro4.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque4.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                }
-
-                {
-                    if(stringRec.getValQuantitaGente().equals("1")){
-                        uno5.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValQuantitaGente().equals("2")){
-                        uno5.setImageResource(R.drawable.ballrecensionegiallo);
-                        due5.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValQuantitaGente().equals("3")){
-                        uno5.setImageResource(R.drawable.ballrecensionegiallo);
-                        due5.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre5.setImageResource(R.drawable.ballrecensionegiallo);
-
-
-                    }
-                    else if(stringRec.getValQuantitaGente().equals("4")){
-                        uno5.setImageResource(R.drawable.ballrecensionegiallo);
-                        due5.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre5.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro5.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                    else if(stringRec.getValQuantitaGente().equals("5")){
-                        uno5.setImageResource(R.drawable.ballrecensionegiallo);
-                        due5.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre5.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro5.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque5.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                }
-
-                {
-                    if(stringRec.getValRagazzi().equals("1")){
-                        uno10.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValRagazzi().equals("2")){
-                        uno10.setImageResource(R.drawable.ballrecensionegiallo);
-                        due10.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValRagazzi().equals("3")){
-                        uno10.setImageResource(R.drawable.ballrecensionegiallo);
-                        due10.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre10.setImageResource(R.drawable.ballrecensionegiallo);
-
-
-                    }
-                    else if(stringRec.getValRagazzi().equals("4")){
-                        uno10.setImageResource(R.drawable.ballrecensionegiallo);
-                        due10.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre10.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro10.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                    else if(stringRec.getValRagazzi().equals("5")){
-                        uno10.setImageResource(R.drawable.ballrecensionegiallo);
-                        due10.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre10.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro10.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque10.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                }
-
-                {
-                    if(stringRec.getValRagazze().equals("1")){
-                        uno6.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValRagazze().equals("2")){
-                        uno6.setImageResource(R.drawable.ballrecensionegiallo);
-                        due6.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValRagazze().equals("3")){
-                        uno6.setImageResource(R.drawable.ballrecensionegiallo);
-                        due6.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre6.setImageResource(R.drawable.ballrecensionegiallo);
-
-
-                    }
-                    else if(stringRec.getValRagazze().equals("4")){
-                        uno6.setImageResource(R.drawable.ballrecensionegiallo);
-                        due6.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre6.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro6.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                    else if(stringRec.getValRagazze().equals("5")){
-                        uno6.setImageResource(R.drawable.ballrecensionegiallo);
-                        due6.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre6.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro6.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque6.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                }
-
-                {
-                    if(stringRec.getValPrezzi().equals("1")){
-                        uno7.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValPrezzi().equals("2")){
-                        uno7.setImageResource(R.drawable.ballrecensionegiallo);
-                        due7.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValPrezzi().equals("3")){
-                        uno7.setImageResource(R.drawable.ballrecensionegiallo);
-                        due7.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre7.setImageResource(R.drawable.ballrecensionegiallo);
-
-
-                    }
-                    else if(stringRec.getValPrezzi().equals("4")){
-                        uno7.setImageResource(R.drawable.ballrecensionegiallo);
-                        due7.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre7.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro7.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                    else if(stringRec.getValPrezzi().equals("5")){
-                        uno7.setImageResource(R.drawable.ballrecensionegiallo);
-                        due7.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre7.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro7.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque7.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                }
-
-                {
-                    if(stringRec.getValDivertimento().equals("1")){
-                        uno8.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValDivertimento().equals("2")){
-                        uno8.setImageResource(R.drawable.ballrecensionegiallo);
-                        due8.setImageResource(R.drawable.ballrecensionegiallo);
-                    }
-                    else if(stringRec.getValDivertimento().equals("3")){
-                        uno8.setImageResource(R.drawable.ballrecensionegiallo);
-                        due8.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre8.setImageResource(R.drawable.ballrecensionegiallo);
-
-
-                    }
-                    else if(stringRec.getValDivertimento().equals("4")){
-                        uno8.setImageResource(R.drawable.ballrecensionegiallo);
-                        due8.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre8.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro8.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                    else if(stringRec.getValDivertimento().equals("5")){
-                        uno8.setImageResource(R.drawable.ballrecensionegiallo);
-                        due8.setImageResource(R.drawable.ballrecensionegiallo);
-                        tre8.setImageResource(R.drawable.ballrecensionegiallo);
-                        quattro8.setImageResource(R.drawable.ballrecensionegiallo);
-                        cinque8.setImageResource(R.drawable.ballrecensionegiallo);
-
-                    }
-                }
-
             }
-
-
         });
-
-
-
-
-    }
-
-    private void setidListView(View view) {
-        imageSlider = (ImageSlider) view.findViewById(R.id.imageSlider);
-        recensioniDi = (TextView) view.findViewById(R.id.textView98);
-        titolo = (TextView) view.findViewById(R.id.textView100);
-        desc = (TextView) view.findViewById(R.id.textView102);
-        uno1 = (ImageView)view. findViewById( R.id.imageView48 );
-        due1 = (ImageView) view.findViewById( R.id.imageView49 );
-        tre1 = (ImageView) view.findViewById( R.id.imageView50 );
-        quattro1 = (ImageView) view.findViewById( R.id.imageView51 );
-        cinque1 = (ImageView) view.findViewById( R.id.imageView52 );
-        uno2 = (ImageView) view.findViewById(R.id.imageView483);
-        due2 = (ImageView) view.findViewById(R.id.imageView493);
-        tre2 = (ImageView)view. findViewById(R.id.imageView503);
-        quattro2 = (ImageView) view.findViewById(R.id.imageView513);
-        cinque2 = (ImageView) view.findViewById(R.id.imageView523);
-        uno3 = (ImageView) view.findViewById(R.id.imageView4831);
-        due3 = (ImageView)view. findViewById(R.id.imageView4931);
-        tre3 = (ImageView) view.findViewById(R.id.imageView5031);
-        quattro3 = (ImageView)view. findViewById(R.id.imageView5131);
-        cinque3 = (ImageView) view.findViewById(R.id.imageView5231);
-        uno4 = (ImageView) view.findViewById(R.id.imageView482);
-        due4 = (ImageView)view. findViewById(R.id.imageView492);
-        tre4 = (ImageView)view. findViewById(R.id.imageView502);
-        quattro4 = (ImageView) view.findViewById(R.id.imageView512);
-        cinque4 = (ImageView) view.findViewById(R.id.imageView522);
-        uno5 = (ImageView) view.findViewById(R.id.imageView484);
-        due5 = (ImageView)view. findViewById(R.id.imageView494);
-        tre5 = (ImageView)view. findViewById(R.id.imageView504);
-        quattro5 = (ImageView)view. findViewById(R.id.imageView514);
-        cinque5 = (ImageView)view. findViewById(R.id.imageView524);
-        uno10 = (ImageView) view.findViewById(R.id.imageView48459);
-        due10 = (ImageView) view.findViewById(R.id.imageView49459);
-        tre10 = (ImageView)view. findViewById(R.id.imageView50459);
-        quattro10 = (ImageView) view.findViewById(R.id.imageView51459);
-        cinque10 = (ImageView)view. findViewById(R.id.imageView52459);
-        uno6 = (ImageView) view.findViewById(R.id.imageView4845);
-        due6 = (ImageView) view.findViewById(R.id.imageView4945);
-        tre6 = (ImageView) view.findViewById(R.id.imageView5045);
-        quattro6 = (ImageView)view. findViewById(R.id.imageView5145);
-        cinque6 = (ImageView)view. findViewById(R.id.imageView5245);
-        uno7 = (ImageView)view. findViewById(R.id.imageView4846);
-        due7 = (ImageView)view. findViewById(R.id.imageView4946);
-        tre7 = (ImageView) view.findViewById(R.id.imageView5046);
-        quattro7 = (ImageView) view.findViewById(R.id.imageView51646);
-        cinque7 = (ImageView) view.findViewById(R.id.imageView5246);
-        uno8 = (ImageView) view.findViewById(R.id.imageView48467);
-        due8 = (ImageView) view.findViewById(R.id.imageView49467);
-        tre8 = (ImageView) view.findViewById(R.id.imageView50467);
-        quattro8 = (ImageView) view.findViewById(R.id.imageView516467);
-        cinque8 = (ImageView)view. findViewById(R.id.imageView52467);
+        setMenuBasso();
     }
 
     BottomNavigationView bottomAppBar;
@@ -544,7 +110,7 @@ setListNotification();
     int countI,usate;
     int quanteVolte;
     DocumentSnapshot documentSnapshott;
-    ArrayList<String>tokenList = new ArrayList<>();
+    ArrayList<String> tokenList = new ArrayList<>();
     boolean entrato = false;
     String nomePub;
     boolean exist = false;
@@ -565,15 +131,15 @@ setListNotification();
                 size = 0;
                 documentSnapshott = null;
 
-                if (ContextCompat.checkSelfPermission(Notification_botton.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                if (ContextCompat.checkSelfPermission(privacy.this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
                     //ask for authorisation
-                    ActivityCompat.requestPermissions( Notification_botton.this, new String[]{Manifest.permission.CAMERA}, 50 );
+                    ActivityCompat.requestPermissions( privacy.this, new String[]{Manifest.permission.CAMERA}, 50 );
                 }
                 else {
                     //start your camera
 
 
-                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( Notification_botton.this );
+                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( privacy.this );
 // ...Irrelevant code for customizing the buttons and title
 
 
@@ -583,7 +149,7 @@ setListNotification();
                     dialogBuilder.setView( viewView );
 
                     codeScannerView = (CodeScannerView) viewView.findViewById( R.id.scanner_view );
-                    codeScanner = new CodeScanner( Notification_botton.this, codeScannerView );
+                    codeScanner = new CodeScanner( privacy.this, codeScannerView );
                     codeScanner.startPreview();
 
 
@@ -762,7 +328,7 @@ setListNotification();
                                                                                                                                                 .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
                                                                                                                                                     @Override
                                                                                                                                                     public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                                                                                                                        AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( Notification_botton.this, R.style.MyDialogThemeeee );
+                                                                                                                                                        AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( privacy.this, R.style.MyDialogThemeeee );
                                                                                                                                                         //dddddddddddd
 
                                                                                                                                                         LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -812,7 +378,7 @@ setListNotification();
                                                                                                                 if(ciao == false){
                                                                                                                     ciao = true;
                                                                                                                     Log.d("jndkjasnkdj","njkanajs");
-                                                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( Notification_botton.this, R.style.MyDialogThemeeee );
+                                                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( privacy.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 
 
@@ -883,7 +449,7 @@ setListNotification();
                                                                                                                                         .addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
                                                                                                                                             @Override
                                                                                                                                             public void onComplete(@NonNull Task<DocumentReference> task) {
-                                                                                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( Notification_botton.this, R.style.MyDialogThemeeee );
+                                                                                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( privacy.this, R.style.MyDialogThemeeee );
                                                                                                                                                 //dddddddddddd
 
                                                                                                                                                 LayoutInflater inflater = (LayoutInflater) getSystemService( Context.LAYOUT_INFLATER_SERVICE );
@@ -995,7 +561,7 @@ setListNotification();
                                                                                     Log.d( "Qklmfldksmdf", "fkmdklfm" );
                                                                                     entrato = true;
                                                                                     //coupon utilizzato
-                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( Notification_botton.this, R.style.MyDialogThemeeee );
+                                                                                    AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( privacy.this, R.style.MyDialogThemeeee );
 // ...Irrelevant code for customizing the buttons and title
 
 
@@ -1087,7 +653,7 @@ setListNotification();
 
 
                                                                                 //coupon utilizzato
-                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( Notification_botton.this,R.style.MyDialogThemeeee  );
+                                                                                AlertDialog.Builder dialogBuilderr = new AlertDialog.Builder( privacy.this,R.style.MyDialogThemeeee  );
 // ...Irrelevant code for customizing the buttons and title
 
 
@@ -1191,10 +757,7 @@ setListNotification();
         }
         FirebaseStorage storage = FirebaseStorage.getInstance();
         // Create a storage reference from our app
-
         bottomAppBar.setSelectedItemId(R.id.nullable);
-
-
 
 
         Menu menu = bottomAppBar.getMenu();
@@ -1456,5 +1019,136 @@ setListNotification();
             }
         };
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+    }
+
+    private void setEditPin() {
+        s1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences sharedPreferences = getSharedPreferences("privacy",MODE_PRIVATE);
+                SharedPreferences.Editor s = sharedPreferences.edit();
+                Log.d("ajsdnasdam", String.valueOf(b));
+                s.putString("profiloPubblico", String.valueOf(b));
+                s.commit();
+                DocumentReference documentReference = firebaseFirestore.collection("Professionisti").document(idPostt);
+                documentReference.update("profiloPubblico",String.valueOf(b));
+            }
+        });
+        s2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences sharedPreferences = getSharedPreferences("privacy",MODE_PRIVATE);
+                SharedPreferences.Editor s = sharedPreferences.edit();
+                Log.d("ajsdnasdam", String.valueOf(b));
+                s.putString("nascondiPost", String.valueOf(b));
+                s.commit();
+                DocumentReference documentReference = firebaseFirestore.collection("Professionisti").document(idPostt);
+                documentReference.update("nascondiPost",String.valueOf(b));
+            }
+        });
+        s4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences sharedPreferences = getSharedPreferences("privacy",MODE_PRIVATE);
+                SharedPreferences.Editor s = sharedPreferences.edit();
+                Log.d("ajsdnasdam", String.valueOf(b));
+                s.putString("nascondiFollower", String.valueOf(b));
+                s.commit();
+                DocumentReference documentReference = firebaseFirestore.collection("Professionisti").document(idPostt);
+                documentReference.update("nascondiFollower",String.valueOf(b));
+            }
+        });
+
+        s3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                SharedPreferences sharedPreferences = getSharedPreferences("privacy",MODE_PRIVATE);
+                SharedPreferences.Editor s = sharedPreferences.edit();
+                Log.d("ajsdnasdam", String.valueOf(b));
+                s.putString("nascondiCoupon", String.valueOf(b));
+                s.commit();
+                DocumentReference documentReference = firebaseFirestore.collection("Professionisti").document(idPostt);
+                documentReference.update("nascondiCoupon",String.valueOf(b));
+            }
+        });
+
+
+    }
+
+    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+    private void setPinned() {
+        SharedPreferences sharedPreferences = getSharedPreferences("privacy",MODE_PRIVATE);
+        if(sharedPreferences.getString("profiloPubblico","null").equals("null")){
+            firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                            if(documentSnapshot.getString("email").equals(email)){
+                                SharedPreferences.Editor editor = sharedPreferences.edit();
+                                editor.putString("profiloPubblico",documentSnapshot.getString("profiloPubblico"));
+                                editor.putString("nascondiPost",documentSnapshot.getString("nascondiPost"));
+                                editor.putString("nascondiFollower",documentSnapshot.getString("nascondiFollower"));
+                                editor.putString("nascondiCoupon",documentSnapshot.getString("nascondiCoupon"));
+                                if(!documentSnapshot.getString("profiloPubblico").equals("true")){
+                                    s1.setChecked(true);
+                                }else{
+                                    s1.setChecked(false);
+                                }
+                                if(!documentSnapshot.getString("nascondiPost").equals("true")){
+                                    s2.setChecked(false);
+                                }else{
+                                    s2.setChecked(true);
+                                }
+                                if(!documentSnapshot.getString("nascondiFollower").equals("true")){
+                                    s3.setChecked(false);
+                                }else{
+                                    s3.setChecked(true);
+                                }
+                                if(!documentSnapshot.getString("nascondiCoupon").equals("true")){
+                                    s4.setChecked(false);
+                                }else{
+                                    s4.setChecked(true);
+                                }
+
+
+                            }
+                        }
+                    }
+                }
+            });
+        }else{
+
+
+            if(sharedPreferences.getString("profiloPubblico","null").equals("true")){
+                s1.setChecked(true);
+            }
+            else{
+                s1.setChecked(false);
+            }
+            if(!sharedPreferences.getString("nascondiPost","null").equals("false")){
+                s2.setChecked(true);
+            }else{
+                s2.setChecked(false);
+            }
+            if(!sharedPreferences.getString("nascondiFollower","null").equals("false")){
+                s3.setChecked(true);
+            }else{
+                s3.setChecked(false);
+            }
+            if(!sharedPreferences.getString("nascondiCoupon","null").equals("false")){
+                s4.setChecked(true);
+            }else{
+                s4.setChecked(false);
+            }
+        }
+    }
+
+    Switch s1,s2,s3,s4;
+    private void setId() {
+        s1 = (Switch) findViewById(R.id.switch6);
+        s2 = (Switch) findViewById(R.id.switch8);
+        s3 = (Switch) findViewById(R.id.switch9);
+        s4 = (Switch) findViewById(R.id.switch10);
     }
 }

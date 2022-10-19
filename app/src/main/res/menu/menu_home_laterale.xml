@@ -11,6 +11,9 @@
     <item android:title="@string/notifiche"
         android:id="@+id/notificheLato"
         android:icon="@drawable/notifiche_icon"/>
+    <item android:title="@string/profiloPub"
+        android:id="@+id/profiloPubLato"
+        android:icon="@drawable/profile_pub_icon"/>
 
 
 </menu>
