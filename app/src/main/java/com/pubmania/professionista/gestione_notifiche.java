@@ -179,7 +179,7 @@ public class gestione_notifiche extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                            if(documentSnapshot.getString("email").equals(email)){
+                                            if(documentSnapshot.getString("email").equals(emailCliente)){
                                                 urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
                                                 firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
@@ -772,6 +772,8 @@ public class gestione_notifiche extends AppCompatActivity {
                                                 Log.d("janasnd", localFile.getAbsolutePath());
                                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                                 editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                editor.putString("uriFoto",documentSnapshot.getString("fotoProfilo"));
+
                                                 editor.putString("nomePub", documentSnapshot.getString("nomeLocale"));
                                                 editor.putString("nomecognome",documentSnapshot.getString("nome") + " " + documentSnapshot.getString("cognome"));
                                                 editor.commit();

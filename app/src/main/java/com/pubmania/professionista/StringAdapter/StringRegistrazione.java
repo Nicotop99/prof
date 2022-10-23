@@ -13,6 +13,7 @@ public class StringRegistrazione {
     public String partitaIva;
     public String follower;
     public String fotoProfilo;
+    public String lati,longi,viaLocale,nomeLocale;
     public List<String> token;
 
     public StringRegistrazione(){
@@ -20,8 +21,13 @@ public class StringRegistrazione {
     }
 
     public StringRegistrazione(List<String> token, String partitaIva,String email, String nome, String cognome, String numero, String id,String follower, String fotoProfilo,
-                               String profiloPubblico, String nascondiFollower, String nascondiPost, String nascondiCoupon
+                               String profiloPubblico, String nascondiFollower, String nascondiPost, String nascondiCoupon, String lati, String longi, String viaLocale,
+                               String nomeLocale
     ) {
+        this.nomeLocale = nomeLocale;
+        this.lati = lati;
+        this.viaLocale = viaLocale;
+        this.longi = longi;
         this.nascondiCoupon = nascondiCoupon;
 
         this.profiloPubblico = profiloPubblico;
@@ -37,6 +43,22 @@ public class StringRegistrazione {
         this.partitaIva = partitaIva;
         this.follower = follower;
         this.fotoProfilo = fotoProfilo;
+    }
+
+    public String getNomeLocale() {
+        return nomeLocale;
+    }
+
+    public void setNomeLocale(String nomeLocale) {
+        this.nomeLocale = nomeLocale;
+    }
+
+    public String getViaLocale() {
+        return viaLocale;
+    }
+
+    public void setViaLocale(String viaLocale) {
+        this.viaLocale = viaLocale;
     }
 
     public List<String> getToken() {
@@ -141,5 +163,21 @@ public class StringRegistrazione {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getLati() {
+        return lati;
+    }
+
+    public void setLati(String lati) {
+        this.lati = lati;
+    }
+
+    public String getLongi() {
+        return longi;
+    }
+
+    public void setLongi(String longi) {
+        this.longi = longi;
     }
 }

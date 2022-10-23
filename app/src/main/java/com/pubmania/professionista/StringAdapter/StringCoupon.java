@@ -5,10 +5,13 @@ public class StringCoupon {
 
     }
 
-    public String id,titolo,email,tipo,giorno,mese,ora,prezzo,quanteVolte,chi,qualeProdotto,volteUtilizzate,categoria,token;
+    public String id,titolo,email,tipo,giorno,mese,ora,prezzo,quanteVolte,chi,qualeProdotto,volteUtilizzate,categoria,token,fotoProfilo,nomeLocale;
 
-    public StringCoupon(String token, String categoria, String id, String titolo, String email, String tipo, String giorno, String mese, String ora, String prezzo, String quanteVolte, String chi, String qualeProdotto, String volteUtilizzate) {
+    public StringCoupon(String token, String categoria, String fotoProfilo, String nomeLocale,
+                        String id, String titolo, String email, String tipo, String giorno, String mese, String ora, String prezzo, String quanteVolte, String chi, String qualeProdotto, String volteUtilizzate) {
         this.id = id;
+        this.fotoProfilo = fotoProfilo;
+        this.nomeLocale = nomeLocale;
         this.token = token;
         this.titolo = titolo;
         this.email = email;
@@ -23,6 +26,22 @@ public class StringCoupon {
         this.categoria = categoria;
         this.qualeProdotto = qualeProdotto;
 
+    }
+
+    public String getFotoProfilo() {
+        return fotoProfilo;
+    }
+
+    public void setFotoProfilo(String fotoProfilo) {
+        this.fotoProfilo = fotoProfilo;
+    }
+
+    public String getNomeLocale() {
+        return nomeLocale;
+    }
+
+    public void setNomeLocale(String nomeLocale) {
+        this.nomeLocale = nomeLocale;
     }
 
     public String getToken() {

@@ -289,4 +289,8 @@
     <string name="tuttipossonovedereituoicoupon">Tutti possono vedere i tuoi coupon</string>
     <string name="tuttipossonovedereifolorwer">Tutti possono vedere i tuoi follower</string>
     <string name="profilopun">Profilo Pub</string>
+    <string name="emailNonVerificata">Email non verificata</string>
+    <string name="autologinincorso">AutoLogin in corso</string>
+    <string name="attendereprego">Attendere prego</string>
+    <string name="hapubblicatouncoupon">ha pubblicato un coupon</string>
 </resources>

@@ -723,11 +723,12 @@ public class HomePage extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                            if(documentSnapshot.getString("email").equals(email)){
+                                            if(documentSnapshot.getString("email").equals(emailCliente)){
                                                 urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
                                                 firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
                                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        Log.d("primo","dldldlld");
                                                         if(task != null){
                                                             Log.d( "kmfslkfmksdmf","zerp" );
 
@@ -1319,6 +1320,7 @@ public class HomePage extends AppCompatActivity {
                                                 Log.d("janasnd", localFile.getAbsolutePath());
                                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                                 editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                editor.putString("uriFoto",documentSnapshot.getString("fotoProfilo"));
                                                 editor.putString("nomePub", documentSnapshot.getString("nomeLocale"));
                                                 editor.putString("nomecognome",documentSnapshot.getString("nome") + " " + documentSnapshot.getString("cognome"));
                                                 editor.commit();
@@ -2452,48 +2454,66 @@ public class HomePage extends AppCompatActivity {
                                                         String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                         List<String> listIngg = Arrays.asList( arr );
                                                         String desc = t_desc.getText().toString();
-                                                        ArrayPost arrayPost = new ArrayPost();
-                                                        if(desc.isEmpty()){
-                                                            arrayPost.setDescrizione( "" );
-                                                        }else{
-                                                            arrayPost.setDescrizione( desc );
-                                                        }
-                                                        arrayPost.setLike( "0" );
-                                                        arrayPost.setCategoria( "Post" );
-                                                        arrayPost.setPinnato( "si" );
-                                                        arrayPost.setFoto( listIngg );
-                                                        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                                        firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+
+
+                                                        firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                             @Override
-                                                            public void onSuccess(DocumentReference documentReference) {
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if(task.isSuccessful()){
+                                                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                                        if(documentSnapshot.getString("email").equals(email)){
+                                                                            ArrayPost arrayPost = new ArrayPost();
+                                                                            if(desc.isEmpty()){
+                                                                                arrayPost.setDescrizione( "" );
+                                                                            }else{
+                                                                                arrayPost.setDescrizione( desc );
+                                                                            }
+                                                                            arrayPost.setLike( "0" );
+                                                                            arrayPost.setCategoria( "Post" );
+                                                                            arrayPost.setPinnato( "si" );
+                                                                            arrayPost.setEmail(email);
+                                                                            arrayPost.setFotoProfilo(documentSnapshot.getString("fotoProfilo"));
+                                                                            arrayPost.setNomeLocale(documentSnapshot.getString("nomeLocale"));
+                                                                            arrayPost.setFoto( listIngg );
+                                                                            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                            firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                                                @Override
+                                                                                public void onSuccess(DocumentReference documentReference) {
 
-                                                                documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
+                                                                                    documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onSuccess(Void aVoid) {
 
-                                                                        setImageSlider();
-                                                                        alertDialog.dismiss();
+                                                                                            setImageSlider();
+                                                                                            alertDialog.dismiss();
 
+                                                                                        }
+                                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                                        @Override
+                                                                                        public void onFailure(@NonNull Exception e) {
+
+                                                                                            creaPostGroup.setVisibility(View.VISIBLE);
+                                                                                            loadingGroup.setVisibility(View.GONE);
+                                                                                        }
+                                                                                    });
+
+
+                                                                                }
+                                                                            } ).addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+
+                                                                                    creaPostGroup.setVisibility(View.VISIBLE);
+                                                                                    loadingGroup.setVisibility(View.GONE);
+                                                                                }
+                                                                            });
+                                                                        }
                                                                     }
-                                                                } ).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-
-                                                                        creaPostGroup.setVisibility(View.VISIBLE);
-                                                                        loadingGroup.setVisibility(View.GONE);
-                                                                    }
-                                                                });
-
-
-                                                            }
-                                                        } ).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-
-                                                                creaPostGroup.setVisibility(View.VISIBLE);
-                                                                loadingGroup.setVisibility(View.GONE);
+                                                                }
                                                             }
                                                         });
+
+
                                                     }
                                                 }
                                             } ).addOnFailureListener(new OnFailureListener() {
@@ -2528,63 +2548,79 @@ public class HomePage extends AppCompatActivity {
                                                 String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                 List<String> listIngg = Arrays.asList( arr );
                                                 String desc = t_desc.getText().toString();
-                                                ArrayPost arrayPost = new ArrayPost();
-                                                if(desc.isEmpty()){
-                                                    arrayPost.setDescrizione( "" );
-                                                }else{
-                                                    arrayPost.setDescrizione( desc );
-                                                }
-                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = s2.edit();
-                                                editor.putString("pin",uriArray.get(0) + "ì");
-                                                editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) + 1);
-                                                Log.d("jfnjkanf", String.valueOf(s2.getInt("fotoCaricate",00)));
-                                                editor.commit();
-                                                arrayPost.setLike( "0" );
-                                                arrayPost.setCategoria( "Post" );
-                                                arrayPost.setPinnato( "si" );
-                                                arrayPost.setFoto( listIngg );
-                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                                firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+
+
+
+                                                firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if(task.isSuccessful()){
+                                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                                if(documentSnapshot.getString("email").equals(email)){
+                                                                    ArrayPost arrayPost = new ArrayPost();
+                                                                    if(desc.isEmpty()){
+                                                                        arrayPost.setDescrizione( "" );
+                                                                    }else{
+                                                                        arrayPost.setDescrizione( desc );
+                                                                    }
+                                                                    SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                    editor.putString("pin",uriArray.get(0) + "ì");
+                                                                    editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) + 1);
+                                                                    Log.d("jfnjkanf", String.valueOf(s2.getInt("fotoCaricate",00)));
+                                                                    editor.commit();
+                                                                    arrayPost.setLike( "0" );
+                                                                    arrayPost.setCategoria( "Post" );
+                                                                    arrayPost.setPinnato( "si" );
+                                                                    arrayPost.setFoto( listIngg );
+                                                                    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                    firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                                        @Override
+                                                                        public void onSuccess(DocumentReference documentReference) {
 
-                                                        documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
+                                                                            documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void aVoid) {
 
 
-                                                                setImageSlider();
+                                                                                    setImageSlider();
 
-                                                                alertDialog.dismiss();
-                                                                Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
-                                                                        .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(View view) {
-                                                                                //portalo al prodotto
+                                                                                    alertDialog.dismiss();
+                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                @Override
+                                                                                                public void onClick(View view) {
+                                                                                                    //portalo al prodotto
 
-                                                                            }
-                                                                        } )
+                                                                                                }
+                                                                                            } )
 
-                                                                        .show();
+                                                                                            .show();
+                                                                                }
+                                                                            } ).addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+
+                                                                                    creaPostGroup.setVisibility(View.VISIBLE);
+                                                                                    loadingGroup.setVisibility(View.GONE);
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+
+                                                                            creaPostGroup.setVisibility(View.VISIBLE);
+                                                                            loadingGroup.setVisibility(View.GONE);
+                                                                        }
+                                                                    });
+                                                                }
                                                             }
-                                                        } ).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-
-                                                                creaPostGroup.setVisibility(View.VISIBLE);
-                                                                loadingGroup.setVisibility(View.GONE);
-                                                            }
-                                                        });
-                                                    }
-                                                } ).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-
-                                                        creaPostGroup.setVisibility(View.VISIBLE);
-                                                        loadingGroup.setVisibility(View.GONE);
+                                                        }
                                                     }
                                                 });
+
+
                                             }
                                         }
                                     } ).addOnFailureListener(new OnFailureListener() {

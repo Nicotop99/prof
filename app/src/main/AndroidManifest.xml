@@ -82,16 +82,19 @@
             android:name=".HomePage"
             android:exported="true"
             android:windowSoftInputMode="adjustPan">
+
+        </activity>
+        <activity android:name=".CheckPartitaIva" />
+        <activity android:name=".Registrazione" />
+        <activity android:name=".Login" />
+        <activity android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CheckPartitaIva" />
-        <activity android:name=".Registrazione" />
-        <activity android:name=".Login" />
-        <activity android:name=".MainActivity" />
     </application>
 
 </manifest>

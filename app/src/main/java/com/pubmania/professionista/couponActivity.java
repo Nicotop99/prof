@@ -453,7 +453,7 @@ public class couponActivity extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                            if(documentSnapshot.getString("email").equals(email)){
+                                            if(documentSnapshot.getString("email").equals(emailCliente)){
                                                 urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
                                                 firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
@@ -1049,6 +1049,8 @@ public class couponActivity extends AppCompatActivity {
                                                 Log.d("janasnd", localFile.getAbsolutePath());
                                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                                 editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                editor.putString("uriFoto",documentSnapshot.getString("fotoProfilo"));
+
                                                 editor.putString("nomePub", documentSnapshot.getString("nomeLocale"));
                                                 editor.putString("nomecognome",documentSnapshot.getString("nome") + " " + documentSnapshot.getString("cognome"));
                                                 editor.commit();
@@ -1294,6 +1296,7 @@ public class couponActivity extends AppCompatActivity {
     ArrayList<ArrayProdotto> arrayList = new ArrayList<>();
     ConstraintLayout c1;
     Group g1;
+    String idPostCoupon;
     public static TextInputEditText t_search;
     public static Spinner spinnerProdotto;
 
@@ -1391,50 +1394,69 @@ public class couponActivity extends AppCompatActivity {
                         }else{
                             //tutto apposto
                             Calendar cal = Calendar.getInstance();
-                            StringCoupon stringCoupon = new StringCoupon();
-                            stringCoupon.setChi( chi );
-                            stringCoupon.setEmail( email );
-                            stringCoupon.setToken(token);
-                            stringCoupon.setGiorno(  String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ));
-                            stringCoupon.setMese( String.valueOf( cal.get(Calendar.MONTH) ) );
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
-                            String currentDateandTime = sdf.format(new Date());
-                            stringCoupon.setOra( currentDateandTime);
-                            stringCoupon.setPrezzo( prezzo );
-                            stringCoupon.setQuanteVolte( quanteVolte );
-                            stringCoupon.setVolteUtilizzate( "0" );
-                            stringCoupon.setTipo( tipoSconto );
-                            stringCoupon.setTitolo( titolo );
-                            stringCoupon.setQualeProdotto( qualeProdotto );
-                            stringCoupon.setCategoria( "Coupon" );
-                            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                            firebaseFirestore.collection( email + "Post" ).add( stringCoupon ).addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                            firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                 @Override
-                                public void onComplete(@NonNull Task<DocumentReference> task) {
-                                    DocumentReference documentReference = firebaseFirestore.collection( email + "Post"  ).document(task.getResult().getId());
-                                    documentReference.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            arrayListCoupon.add( stringCoupon );
-                                            array_list_coupon = new array_list_coupon( couponActivity.this,arrayListCoupon );
-                                            listView.setAdapter( array_list_coupon );
-                                            alertDialogg.dismiss();
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if(task.isSuccessful()){
+                                        for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                            if(documentSnapshot.getString("email").equals(email)){
+
+                                                StringCoupon stringCoupon = new StringCoupon();
+                                                stringCoupon.setChi( chi );
+                                                stringCoupon.setEmail( email );
+                                                stringCoupon.setNomeLocale(documentSnapshot.getString("nomeLocale"));
+                                                stringCoupon.setFotoProfilo(documentSnapshot.getString("fotoProfilo"));
+                                                stringCoupon.setToken(token);
+                                                stringCoupon.setGiorno(  String.valueOf( cal.get( Calendar.DAY_OF_MONTH ) ));
+                                                stringCoupon.setMese( String.valueOf( cal.get(Calendar.MONTH) ) );
+                                                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                                                String currentDateandTime = sdf.format(new Date());
+                                                stringCoupon.setOra( currentDateandTime);
+                                                stringCoupon.setPrezzo( prezzo );
+                                                stringCoupon.setQuanteVolte( quanteVolte );
+                                                stringCoupon.setVolteUtilizzate( "0" );
+                                                stringCoupon.setTipo( tipoSconto );
+                                                stringCoupon.setEmail(email);
+                                                stringCoupon.setTitolo( titolo );
+                                                stringCoupon.setQualeProdotto( qualeProdotto );
+                                                stringCoupon.setCategoria( "Coupon" );
+                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                firebaseFirestore.collection( email + "Post" ).add( stringCoupon ).addOnCompleteListener( new OnCompleteListener<DocumentReference>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<DocumentReference> task) {
+                                                        DocumentReference documentReference = firebaseFirestore.collection( email + "Post"  ).document(task.getResult().getId());
+                                                        documentReference.update( "id", task.getResult().getId() ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> taskk) {
+                                                                arrayListCoupon.add( stringCoupon );
+                                                                array_list_coupon = new array_list_coupon( couponActivity.this,arrayListCoupon );
+                                                                listView.setAdapter( array_list_coupon );
+                                                                idPostCoupon = task.getResult().getId();
+                                                                alertDialogg.dismiss();
+                                                                inviaNotifica();
+
+                                                            }
+                                                        } ).addOnFailureListener(new OnFailureListener() {
+                                                            @Override
+                                                            public void onFailure(@NonNull Exception e) {
+                                                                c1.setVisibility(View.GONE);
+                                                                g1.setVisibility(View.VISIBLE);
+                                                            }
+                                                        });
+                                                    }
+                                                } ).addOnFailureListener(new OnFailureListener() {
+                                                    @Override
+                                                    public void onFailure(@NonNull Exception e) {
+                                                        c1.setVisibility(View.GONE);
+                                                        g1.setVisibility(View.VISIBLE);
+                                                    }
+                                                });
+                                            }
                                         }
-                                    } ).addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            c1.setVisibility(View.GONE);
-                                            g1.setVisibility(View.VISIBLE);
-                                        }
-                                    });
-                                }
-                            } ).addOnFailureListener(new OnFailureListener() {
-                                @Override
-                                public void onFailure(@NonNull Exception e) {
-                                    c1.setVisibility(View.GONE);
-                                    g1.setVisibility(View.VISIBLE);
+                                    }
                                 }
                             });
+
                         }
                     }
                 } );
@@ -1592,6 +1614,175 @@ public class couponActivity extends AppCompatActivity {
         } );
     }
 
+    ArrayList<String> tokClien = new ArrayList<>();
+    ArrayList<String> emaiClie = new ArrayList<>();
+
+    private void inviaNotifica() {
+        firebaseFirestore.collection(email+"notificheCoupon").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                if(!queryDocumentSnapshots.isEmpty()){
+                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                    for (DocumentSnapshot documentSnapshot : list){
+
+                        String[] strings = documentSnapshot.getString("token").split(" ");
+                        for(int i = 0;i<strings.length;i++){
+                            Log.d("jndajnd",strings[i]);
+                            String[] te = strings[i].split("=");
+                            for (int im = 0;im < te.length;im++) {
+                                Log.d("jndajnd",te[im]);
+
+                                    Log.d("scasdasdasdad",te[0] + " " + te[1]);
+                                    propvaNotificaPubblico(te[0], idPostCoupon, te[1], "notificheCoupon");
+                                    tokClien.add(te[0]);
+                                    emaiClie.add(te[1]);
+
+                            }
+
+                        }
+
+
+                        for (int i = 0;i<documentSnapshot.getData().size();i++){
+                        }
+                    }
+                }
+            }
+        });
+    }
+    private void propvaNotificaPubblico(String token, String idPosttt,String emailCliente, String cat) {
+
+        TOPIC = "/topics/userABC"; //topic must match with what the receiver subscribed to
+        Log.d("jndjakndj",token);
+        Log.d("kjndjkankjansj","djndjsandfa");
+        JSONObject notification = new JSONObject();
+        JSONObject notifcationBody = new JSONObject();
+        try {
+            notifcationBody.put("title",nomePub + " " +  getString(R.string.hapubblicatouncoupon)  );
+            notifcationBody.put("message", getString(R.string.cliccalanotifica));
+            notifcationBody.put("tipo","Coupon");
+            notifcationBody.put("idPost",idPosttt);
+            notification.put("to", token);
+            notification.put("data", notifcationBody);
+        } catch (JSONException e) {
+            Log.e(TAG, "onCreate: " + e.getMessage() );
+        }
+        sendNotificationPubblic(notification,idPosttt,token,emailCliente,cat);
+
+
+
+
+    }
+    boolean entratooc = false;
+
+    private void sendNotificationPubblic(JSONObject notification,String idPostt,String tok, String emailCliente, String cat) {
+        Log.d("kjndjkankjansj","222");
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(FCM_API, notification,
+                new com.android.volley.Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Log.d("kjndjkankjansj","333");
+
+                        try {
+                            if(response.getString("failure").equals("1")){
+
+                                // token non valido
+                                firebaseFirestore.collection(email+cat).get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                                                if(!queryDocumentSnapshots.isEmpty()){
+                                                    List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                                                    for (DocumentSnapshot documentSnapshot : list){
+                                                        String[] strings = documentSnapshot.getString("token").split(" ");
+                                                        for (int i = 0;i<strings.length;i++){
+                                                            String[] te = strings[i].split("=");
+                                                            DocumentReference d  = firebaseFirestore.collection(email+cat).document(documentSnapshot.getId());
+                                                            d.update("token",documentSnapshot.getString("token").equals(tok + "=" + emailCliente));
+
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        if(entratooc == false) {
+                            SharedPreferences sharedPreferences = getSharedPreferences("fotoProfilo",MODE_PRIVATE);
+
+                            StringNotifiche stringNotifiche = new StringNotifiche();
+                            stringNotifiche.setCategoria("Coupon");
+                            stringNotifiche.setVisualizzato("false");
+                            stringNotifiche.setEmailCliente(emailCliente);
+                            stringNotifiche.setEmailPub(email);
+                            if(sharedPreferences.getString("uriFoto","null").equals("null")){
+                                stringNotifiche.setFotoProfilo(sharedPreferences.getString("uriFoto","null"));
+                            }
+                            stringNotifiche.setIdPost(idPostt);
+                            stringNotifiche.setNomecognomeCliente(nomePub);
+                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
+                            String currentDateandTime = sdf.format(new Date());
+                            stringNotifiche.setOra(currentDateandTime);
+                            firebaseFirestore.collection(emailCliente + "Notifiche").add(stringNotifiche)
+                                    .addOnCompleteListener(new OnCompleteListener<DocumentReference>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentReference> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentReference documentReference = task.getResult();
+                                                documentReference.update("id", task.getResult().getId()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<Void> task) {
+
+
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+                            entratooc = true;
+                        }
+
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("kjndjkankjansj","4444");
+                        for (int i = 0;i<tokClien.size();i++){
+                            if(i== 0){
+                                propvaNotificaPubblico(tokenList.get(i),idPost,emaiClie.get(i),"notificheCoupon");
+
+                            }else if(i == tokClien.size() -1){
+                                propvaNotificaPubblico(tokenList.get(i),idPost,emaiClie.get(i),"notificheCoupon");
+
+
+                            }
+
+                            else{
+                                propvaNotificaPubblico(tokenList.get(i),idPost,emaiClie.get(i),"notificheCoupon");
+
+
+                            }
+
+                        }
+                        Log.d("onfljdsnfl",error.getMessage() + " ciao");
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Authorization", serverKey);
+                params.put("Content-Type", contentType);
+                return params;
+            }
+        };
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(jsonObjectRequest);
+    }
     @Override
     public void onBackPressed() {
         Log.d( "mflkdsmfl","kdksmdfks" );

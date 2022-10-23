@@ -49,12 +49,6 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         SharedPreferences sharedPreferences = getSharedPreferences("notifiche",MODE_PRIVATE);
         String s1 = sharedPreferences.getString("s1","true");
 
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(new Runnable() {
-            public void run() {
-                Toast.makeText(getApplicationContext(), tipo + " " + sharedPreferences.getString("s3","ciaoo"), Toast.LENGTH_SHORT).show();
-            }
-        });
         if(s1.equals("true")) {
             if (tipo.equals("Recensione")&& sharedPreferences.getString("s5","true").equals("true")) {
                 final Intent intent = new Intent(this, MainActivity.class);

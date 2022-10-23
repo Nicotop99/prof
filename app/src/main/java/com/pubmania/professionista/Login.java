@@ -124,52 +124,65 @@ public class Login extends AppCompatActivity {
                     auth.signInWithEmailAndPassword( email,password ).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-                            if(task.getResult().getUser().isEmailVerified() == true){
-                                if(restaConnesso.isChecked() == true){
-                                    SharedPreferences sharedPreferences = getSharedPreferences("emailPassAutoLogin",MODE_PRIVATE);
-                                    SharedPreferences.Editor myEdit = sharedPreferences.edit();
-                                    myEdit.putString("email", email);
-                                    myEdit.putString("pass",password);
-                                    myEdit.commit();
-                                }
+                            Log.d("jnakjnd","odjnsajld");
+                            if(!task.isSuccessful()){
+                            if(task.getException().getMessage().equals("The password is invalid or the user does not have a password.")){
+                                Toast.makeText(getApplicationContext(),getString(R.string.passworderrata),Toast.LENGTH_LONG).show();
+                            }else if(task.getException().getMessage().equals( "There is no user record corresponding to this identifier. The user may have been deleted." )) {
+                                Toast.makeText(getApplicationContext(),getString(R.string.utentenontrovato),Toast.LENGTH_LONG).show();
+
+                            }
+                            }else {
+                                if (task.getResult().getUser().isEmailVerified() == true) {
+                                    if (task.getResult().getUser().isEmailVerified() == true) {
+                                        Log.d("jnakjnd", "22222");
+
+                                        if (restaConnesso.isChecked() == true) {
+                                            SharedPreferences sharedPreferences = getSharedPreferences("emailPassAutoLogin", MODE_PRIVATE);
+                                            SharedPreferences.Editor myEdit = sharedPreferences.edit();
+                                            myEdit.putString("email", email);
+                                            myEdit.putString("pass", password);
+                                            myEdit.commit();
+                                        }
 
 
+                                        firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                if (task != null) {
+                                                    Log.d("jnakjnd", "33333");
+
+                                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()) {
+                                                        if (documentSnapshot.getString("email").equals(email)) {
+                                                            if (documentSnapshot.getString("partitaIva").equals(null) || documentSnapshot.getString("partitaIva").equals("")) {
+                                                                //non ha ancora la partita iva
 
 
-                                firebaseFirestore.collection( "professionisti" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if(task !=null){
+                                                                startActivity(new Intent(getApplicationContext(), CheckPartitaIva.class));
+                                                                finish();
 
-                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                                if (documentSnapshot.getString( "email" ).equals( email )){
-                                                    if (documentSnapshot.getString( "partitaIva" ).equals( null ) || documentSnapshot.getString( "partitaIva" ).equals( "" )){
-                                                        //non ha ancora la partita iva
+                                                            } else {
+                                                                startActivity(new Intent(getApplicationContext(), HomePage.class));
+                                                                finish();
 
-
-                                                        startActivity( new Intent(getApplicationContext(), CheckPartitaIva.class) );
-                                                        finish();
-
-                                                    }else{
-                                                        startActivity( new Intent(getApplicationContext(),HomePage.class) );
-                                                        finish();
-
-                                                        // effettua login naturalmente
+                                                                // effettua login naturalmente
+                                                            }
+                                                        }
                                                     }
+
                                                 }
                                             }
+                                        });
 
-                                        }
+
+                                    } else {
+                                        Log.d("ldldldldl", "Emainnonverificfdssdfsdfsdfsdfa");
+                                        Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.sipregadiverificarelinidizzoemail), Toast.LENGTH_LONG).show();
                                     }
-                                } );
+                                } else {
+                                    Toast.makeText(getApplicationContext(), getApplicationContext().getString(R.string.emailNonVerificata), Toast.LENGTH_LONG).show();
 
-
-
-
-
-                            }else{
-                                Log.d( "ldldldldl","Emainnonverificfdssdfsdfsdfsdfa" );
-                                Toast.makeText( getApplicationContext(), getApplicationContext().getString( R.string.sipregadiverificarelinidizzoemail ),Toast.LENGTH_LONG ).show();
+                                }
                             }
 
 

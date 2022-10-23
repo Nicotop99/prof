@@ -194,6 +194,7 @@ public class Profile_bottom extends AppCompatActivity {
                                                                                 Log.d("janasnd", localFile.getAbsolutePath());
                                                                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                                                                 editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                                                editor.putString("uriFoto", String.valueOf(uri));
                                                                                 editor.commit();
                                                                                 File imgFile = new File(localFile.getAbsolutePath());
 
@@ -474,7 +475,7 @@ public class Profile_bottom extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                     if(task.isSuccessful()){
                                         for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
-                                            if(documentSnapshot.getString("email").equals(email)){
+                                            if(documentSnapshot.getString("email").equals(emailCliente)){
                                                 urlFotoProfilo = documentSnapshot.getString("fotoProfilo");
                                                 firebaseFirestore.collection( email+"CouponUtilizzati" ).get().addOnCompleteListener( new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
@@ -1068,6 +1069,7 @@ public class Profile_bottom extends AppCompatActivity {
                                                 Log.d("janasnd", localFile.getAbsolutePath());
                                                 SharedPreferences.Editor editor = sharedPreferences.edit();
                                                 editor.putString("fotoProfilo", localFile.getAbsolutePath());
+                                                editor.putString("uriFoto",documentSnapshot.getString("fotoProfilo"));
                                                 editor.putString("nomePub", documentSnapshot.getString("nomeLocale"));
                                                 editor.putString("nomecognome",documentSnapshot.getString("nome") + " " + documentSnapshot.getString("cognome"));
                                                 editor.commit();
@@ -1650,241 +1652,258 @@ public class Profile_bottom extends AppCompatActivity {
                                                         String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                         List<String> listIngg = Arrays.asList( arr );
                                                         String desc = t_desc.getText().toString();
-                                                        ArrayPost arrayPost = new ArrayPost();
-                                                        if(desc.isEmpty()){
-                                                            arrayPost.setDescrizione( "" );
-                                                        }else{
-                                                            arrayPost.setDescrizione( desc );
-                                                        }
 
-
-                                                        arrayPost.setLike( "0" );
-                                                        arrayPost.setCategoria( "Post" );
-                                                        arrayPost.setPinnato( "no" );
-                                                        arrayPost.setFoto( listIngg );
-                                                        FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                                        firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                        firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                             @Override
-                                                            public void onSuccess(DocumentReference documentReference) {
+                                                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                                if(task.isSuccessful()){
+                                                                    for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                                        if(documentSnapshot.getString("email").equals(email)){
+                                                                            ArrayPost arrayPost = new ArrayPost();
+                                                                            if(desc.isEmpty()){
+                                                                                arrayPost.setDescrizione( "" );
+                                                                            }else{
+                                                                                arrayPost.setDescrizione( desc );
+                                                                            }
 
-                                                                documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                                    @Override
-                                                                    public void onSuccess(Void aVoid) {
-                                                                        setGridView();
+                                                                            arrayPost.setEmail(email);
+                                                                            arrayPost.setFotoProfilo(documentSnapshot.getString("fotoProfilo"));
+                                                                            arrayPost.setNomeLocale(documentSnapshot.getString("nomeLocale"));
+                                                                            arrayPost.setLike( "0" );
+                                                                            arrayPost.setCategoria( "Post" );
+                                                                            arrayPost.setPinnato( "no" );
+                                                                            arrayPost.setFoto( listIngg );
+                                                                            FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                            firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                                                @Override
+                                                                                public void onSuccess(DocumentReference documentReference) {
 
-                                                                        alertDialog.dismiss();
-                                                                        Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
-                                                                                .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
-                                                                                    @Override
-                                                                                    public void onClick(View view) {
+                                                                                    documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onSuccess(Void aVoid) {
+                                                                                            setGridView();
 
-                                                                                        String idPost = documentReference.getId();
+                                                                                            alertDialog.dismiss();
+                                                                                            Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                                    .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                        @Override
+                                                                                                        public void onClick(View view) {
 
-                                                                                        AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( Profile_bottom.this, R.style.MyDialogTheme );
+                                                                                                            String idPost = documentReference.getId();
+
+                                                                                                            AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( Profile_bottom.this, R.style.MyDialogTheme );
 // ...Irrelevant code for customizing the buttons and title
 
-                                                                                        LayoutInflater inflater = getLayoutInflater();
-                                                                                        View viewView = inflater.inflate( R.layout.alert_grid_profile, null );
+                                                                                                            LayoutInflater inflater = getLayoutInflater();
+                                                                                                            View viewView = inflater.inflate( R.layout.alert_grid_profile, null );
 
-                                                                                        dialogBuilder.setView( viewView );
-                                                                                        AlertDialog alertDialog = dialogBuilder.create();
-                                                                                        alertDialog.show();
+                                                                                                            dialogBuilder.setView( viewView );
+                                                                                                            AlertDialog alertDialog = dialogBuilder.create();
+                                                                                                            alertDialog.show();
 
-                                                                                        ArrayList<String> uriArr = new ArrayList<>();
-                                                                                        ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.slider );
-                                                                                        TextView desc = (TextView) viewView.findViewById( R.id.textView69 );
-                                                                                        ImageButton close = (ImageButton) viewView.findViewById( R.id.imageButton35 );
-                                                                                        ImageButton pinna = (ImageButton) viewView.findViewById( R.id.imageButton34 );
-                                                                                        TextView insiedeButton = (TextView) viewView.findViewById( R.id.textView72 ) ;
-                                                                                        ImageButton elimina = (ImageButton) viewView.findViewById( R.id.imageButton36 );
-                                                                                        Group g2 = (Group) viewView.findViewById( R.id.groupEditPhotoProfile );
-                                                                                        Group g1 = (Group) viewView.findViewById( R.id.groupo1);
-                                                                                        firebaseFirestore.collection( email+"Post" ).document(idPost).get().addOnSuccessListener( new OnSuccessListener<DocumentSnapshot>() {
-                                                                                            @Override
-                                                                                            public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                                                                if(documentSnapshot != null){
-                                                                                                    ArrayPost arrayPost = documentSnapshot.toObject( ArrayPost.class );
-                                                                                                    ArrayList<SlideModel> arrayList = new ArrayList<>();
-                                                                                                    for (int i = 0;i<arrayPost.getFoto().size();i++){
-                                                                                                        arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ),null ) );
-                                                                                                        uriArr.add( arrayPost.getFoto().get( i ) );
-                                                                                                    }
-                                                                                                    imageSlider.setImageList( arrayList );
-                                                                                                    if(arrayPost.getPinnato().equals( "no" )){
-                                                                                                        insiedeButton.setText( getString( R.string.mettiinevidenza ) );
-                                                                                                    }else{
-                                                                                                        insiedeButton.setText( getString( R.string.rimuovidallevidenza ) );
-                                                                                                    }
-                                                                                                    desc.setText( arrayPost.getDescrizione() );
-                                                                                                    if(!arrayPost.getDescrizione().isEmpty()){
-                                                                                                        desc.setVisibility( View.VISIBLE );
-                                                                                                    }
-
-
-
-
-                                                                                                }
-                                                                                            }
-                                                                                        } );
-
-                                                                                        close.setOnClickListener( new View.OnClickListener() {
-                                                                                            @Override
-                                                                                            public void onClick(View view) {
-                                                                                                alertDialog.dismiss();
-                                                                                            }
-                                                                                        } );
-
-                                                                                        elimina.setOnClickListener( new View.OnClickListener() {
-                                                                                            @Override
-                                                                                            public void onClick(View view) {
-                                                                                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                                                                                    @Override
-                                                                                                    public void onClick(DialogInterface dialog, int which) {
-                                                                                                        switch (which) {
-                                                                                                            case DialogInterface.BUTTON_POSITIVE:
-                                                                                                                //Yes button clicked
-                                                                                                                g1.setVisibility( View.GONE );
-                                                                                                                g2.setVisibility( View.VISIBLE );
-                                                                                                                FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                                                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                                                                                String[] pin = s2.getString("pin","null").split("ì");
-                                                                                                                SharedPreferences.Editor editor = s2.edit();
-                                                                                                                editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) - 1);
-                                                                                                                Log.d("kjnfdkasndkjna", String.valueOf(s2.getInt("fotoCaricate",00000)));
-                                                                                                                if(pin.length > 1) {
-                                                                                                                    for (int i = 0; i < pin.length; i++) {
-                                                                                                                        if (pin[i].equals(uriArr.get(0))) {
-                                                                                                                            String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
-                                                                                                                            editor.putString("pin", fin);
+                                                                                                            ArrayList<String> uriArr = new ArrayList<>();
+                                                                                                            ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.slider );
+                                                                                                            TextView desc = (TextView) viewView.findViewById( R.id.textView69 );
+                                                                                                            ImageButton close = (ImageButton) viewView.findViewById( R.id.imageButton35 );
+                                                                                                            ImageButton pinna = (ImageButton) viewView.findViewById( R.id.imageButton34 );
+                                                                                                            TextView insiedeButton = (TextView) viewView.findViewById( R.id.textView72 ) ;
+                                                                                                            ImageButton elimina = (ImageButton) viewView.findViewById( R.id.imageButton36 );
+                                                                                                            Group g2 = (Group) viewView.findViewById( R.id.groupEditPhotoProfile );
+                                                                                                            Group g1 = (Group) viewView.findViewById( R.id.groupo1);
+                                                                                                            firebaseFirestore.collection( email+"Post" ).document(idPost).get().addOnSuccessListener( new OnSuccessListener<DocumentSnapshot>() {
+                                                                                                                @Override
+                                                                                                                public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                                                                                    if(documentSnapshot != null){
+                                                                                                                        ArrayPost arrayPost = documentSnapshot.toObject( ArrayPost.class );
+                                                                                                                        ArrayList<SlideModel> arrayList = new ArrayList<>();
+                                                                                                                        for (int i = 0;i<arrayPost.getFoto().size();i++){
+                                                                                                                            arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ),null ) );
+                                                                                                                            uriArr.add( arrayPost.getFoto().get( i ) );
                                                                                                                         }
+                                                                                                                        imageSlider.setImageList( arrayList );
+                                                                                                                        if(arrayPost.getPinnato().equals( "no" )){
+                                                                                                                            insiedeButton.setText( getString( R.string.mettiinevidenza ) );
+                                                                                                                        }else{
+                                                                                                                            insiedeButton.setText( getString( R.string.rimuovidallevidenza ) );
+                                                                                                                        }
+                                                                                                                        desc.setText( arrayPost.getDescrizione() );
+                                                                                                                        if(!arrayPost.getDescrizione().isEmpty()){
+                                                                                                                            desc.setVisibility( View.VISIBLE );
+                                                                                                                        }
+
+
+
+
                                                                                                                     }
-                                                                                                                }else{
-
-                                                                                                                    editor.putString("pin", "null");
-
                                                                                                                 }
-                                                                                                                editor.commit();
+                                                                                                            } );
 
-                                                                                                                for (int i = 0;i<uriArr.size();i++){
-                                                                                                                    StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
-                                                                                                                    storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                            close.setOnClickListener( new View.OnClickListener() {
+                                                                                                                @Override
+                                                                                                                public void onClick(View view) {
+                                                                                                                    alertDialog.dismiss();
+                                                                                                                }
+                                                                                                            } );
+
+                                                                                                            elimina.setOnClickListener( new View.OnClickListener() {
+                                                                                                                @Override
+                                                                                                                public void onClick(View view) {
+                                                                                                                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                                                                                                                         @Override
-                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                        public void onClick(DialogInterface dialog, int which) {
+                                                                                                                            switch (which) {
+                                                                                                                                case DialogInterface.BUTTON_POSITIVE:
+                                                                                                                                    //Yes button clicked
+                                                                                                                                    g1.setVisibility( View.GONE );
+                                                                                                                                    g2.setVisibility( View.VISIBLE );
+                                                                                                                                    FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                                                                                    SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                                                                                    String[] pin = s2.getString("pin","null").split("ì");
+                                                                                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                                                                                    editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) - 1);
+                                                                                                                                    Log.d("kjnfdkasndkjna", String.valueOf(s2.getInt("fotoCaricate",00000)));
+                                                                                                                                    if(pin.length > 1) {
+                                                                                                                                        for (int i = 0; i < pin.length; i++) {
+                                                                                                                                            if (pin[i].equals(uriArr.get(0))) {
+                                                                                                                                                String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                                                                                                editor.putString("pin", fin);
+                                                                                                                                            }
+                                                                                                                                        }
+                                                                                                                                    }else{
 
-                                                                                                                            uriArr.remove( 0 );
-                                                                                                                            if(uriArr.size() == 0){
-                                                                                                                                DocumentReference documentReference = firebaseFirestore.collection( email+"Post" ).document(idPost);
-                                                                                                                                documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                                    @Override
-                                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                        alertDialog.dismiss();
-                                                                                                                                        setGridView();
+                                                                                                                                        editor.putString("pin", "null");
+
                                                                                                                                     }
-                                                                                                                                } );
-                                                                                                                            }else{
-                                                                                                                                Log.d( "kfmldkmf", String.valueOf( uriArr.size() ) );
+                                                                                                                                    editor.commit();
+
+                                                                                                                                    for (int i = 0;i<uriArr.size();i++){
+                                                                                                                                        StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
+                                                                                                                                        storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                            @Override
+                                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                                                                                uriArr.remove( 0 );
+                                                                                                                                                if(uriArr.size() == 0){
+                                                                                                                                                    DocumentReference documentReference = firebaseFirestore.collection( email+"Post" ).document(idPost);
+                                                                                                                                                    documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                        @Override
+                                                                                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                            alertDialog.dismiss();
+                                                                                                                                                            setGridView();
+                                                                                                                                                        }
+                                                                                                                                                    } );
+                                                                                                                                                }else{
+                                                                                                                                                    Log.d( "kfmldkmf", String.valueOf( uriArr.size() ) );
+                                                                                                                                                }
+
+
+                                                                                                                                            }
+                                                                                                                                        } );
+                                                                                                                                    }
+
+
+
+
+
+
+
+                                                                                                                                    break;
+
+                                                                                                                                case DialogInterface.BUTTON_NEGATIVE:
+                                                                                                                                    //No button clicked
+
+                                                                                                                                    dialog.dismiss();
+
+                                                                                                                                    break;
                                                                                                                             }
-
-
                                                                                                                         }
-                                                                                                                    } );
+                                                                                                                    };
+                                                                                                                    AlertDialog.Builder builder = new AlertDialog.Builder(Profile_bottom.this);
+                                                                                                                    builder.setMessage(getString( R.string.seisicurodivolereliminarequestopost )).setPositiveButton(getString( R.string.si ), dialogClickListener)
+                                                                                                                            .setNegativeButton(getString( R.string.no ), dialogClickListener).show();
                                                                                                                 }
+                                                                                                            } );
 
+                                                                                                            pinna.setOnClickListener( new View.OnClickListener() {
+                                                                                                                @Override
+                                                                                                                public void onClick(View view) {
+                                                                                                                    if (insiedeButton.getText().toString().equals( getString( R.string.mettiinevidenza ) )) {
 
+                                                                                                                        DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
+                                                                                                                        documentReference.update( "pinnato", "si" ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                            @Override
+                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                alertDialog.dismiss();
+                                                                                                                                setGridView();
+                                                                                                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                                                                                SharedPreferences.Editor editor = s2.edit();
+                                                                                                                                editor.putString("pin",s2.getString("pin","") +  uriArr.get(0) + "ì");
 
-
-
-
-
-                                                                                                                break;
-
-                                                                                                            case DialogInterface.BUTTON_NEGATIVE:
-                                                                                                                //No button clicked
-
-                                                                                                                dialog.dismiss();
-
-                                                                                                                break;
-                                                                                                        }
-                                                                                                    }
-                                                                                                };
-                                                                                                AlertDialog.Builder builder = new AlertDialog.Builder(Profile_bottom.this);
-                                                                                                builder.setMessage(getString( R.string.seisicurodivolereliminarequestopost )).setPositiveButton(getString( R.string.si ), dialogClickListener)
-                                                                                                        .setNegativeButton(getString( R.string.no ), dialogClickListener).show();
-                                                                                            }
-                                                                                        } );
-
-                                                                                        pinna.setOnClickListener( new View.OnClickListener() {
-                                                                                            @Override
-                                                                                            public void onClick(View view) {
-                                                                                                if (insiedeButton.getText().toString().equals( getString( R.string.mettiinevidenza ) )) {
-
-                                                                                                    DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
-                                                                                                    documentReference.update( "pinnato", "si" ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                        @Override
-                                                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                                                            alertDialog.dismiss();
-                                                                                                            setGridView();
-                                                                                                            SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                                                                            SharedPreferences.Editor editor = s2.edit();
-                                                                                                            editor.putString("pin",s2.getString("pin","") +  uriArr.get(0) + "ì");
-
-                                                                                                            editor.commit();
-                                                                                                        }
-                                                                                                    } );
-                                                                                                }else{
-                                                                                                    DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
-                                                                                                    documentReference.update( "pinnato", "no" ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                        @Override
-                                                                                                        public void onComplete(@NonNull Task<Void> task) {
-                                                                                                            alertDialog.dismiss();
-                                                                                                            SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                                                                            String[] pin = s2.getString("pin","null").split("ì");
-                                                                                                            if(pin.length > 1) {
-                                                                                                                for (int i = 0; i < pin.length; i++) {
-                                                                                                                    if (pin[i].equals(uriArr.get(0))) {
-                                                                                                                        String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
-                                                                                                                        SharedPreferences.Editor editor = s2.edit();
-                                                                                                                        editor.putString("pin", fin);
-                                                                                                                        editor.commit();
+                                                                                                                                editor.commit();
+                                                                                                                            }
+                                                                                                                        } );
+                                                                                                                    }else{
+                                                                                                                        DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
+                                                                                                                        documentReference.update( "pinnato", "no" ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                            @Override
+                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                alertDialog.dismiss();
+                                                                                                                                SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                                                                                String[] pin = s2.getString("pin","null").split("ì");
+                                                                                                                                if(pin.length > 1) {
+                                                                                                                                    for (int i = 0; i < pin.length; i++) {
+                                                                                                                                        if (pin[i].equals(uriArr.get(0))) {
+                                                                                                                                            String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                                                                                            SharedPreferences.Editor editor = s2.edit();
+                                                                                                                                            editor.putString("pin", fin);
+                                                                                                                                            editor.commit();
+                                                                                                                                        }
+                                                                                                                                    }
+                                                                                                                                }else{
+                                                                                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                                                                                    editor.putString("pin", "null");
+                                                                                                                                    editor.commit();
+                                                                                                                                }
+                                                                                                                                setGridView();
+                                                                                                                            }
+                                                                                                                        } );
                                                                                                                     }
                                                                                                                 }
-                                                                                                            }else{
-                                                                                                                SharedPreferences.Editor editor = s2.edit();
-                                                                                                                editor.putString("pin", "null");
-                                                                                                                editor.commit();
-                                                                                                            }
-                                                                                                            setGridView();
+                                                                                                            } );
+
+
+
+
                                                                                                         }
-                                                                                                    } );
-                                                                                                }
-                                                                                            }
-                                                                                        } );
+                                                                                                    } )
+
+                                                                                                    .show();
+                                                                                        }
+                                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                                        @Override
+                                                                                        public void onFailure(@NonNull Exception e) {
+                                                                                            loadingGroup.setVisibility(View.GONE);
+                                                                                            creaPostGroup.setVisibility(View.VISIBLE);
+                                                                                        }
+                                                                                    });
 
 
-
-
-                                                                                    }
-                                                                                } )
-
-                                                                                .show();
+                                                                                }
+                                                                            } ).addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                    loadingGroup.setVisibility(View.GONE);
+                                                                                    creaPostGroup.setVisibility(View.VISIBLE);
+                                                                                }
+                                                                            });
+                                                                        }
                                                                     }
-                                                                } ).addOnFailureListener(new OnFailureListener() {
-                                                                    @Override
-                                                                    public void onFailure(@NonNull Exception e) {
-                                                                        loadingGroup.setVisibility(View.GONE);
-                                                                        creaPostGroup.setVisibility(View.VISIBLE);
-                                                                    }
-                                                                });
-
-
-                                                            }
-                                                        } ).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                loadingGroup.setVisibility(View.GONE);
-                                                                creaPostGroup.setVisibility(View.VISIBLE);
+                                                                }
                                                             }
                                                         });
+
+
+
                                                     }
                                                 }
                                             } ).addOnFailureListener(new OnFailureListener() {
@@ -1917,245 +1936,266 @@ public class Profile_bottom extends AppCompatActivity {
                                                 String[] arr = uriArray.toArray( new String[uriArray.size()] );
                                                 List<String> listIngg = Arrays.asList( arr );
                                                 String desc = t_desc.getText().toString();
-                                                ArrayPost arrayPost = new ArrayPost();
-                                                if(desc.isEmpty()){
-                                                    arrayPost.setDescrizione( "" );
-                                                }else{
-                                                    arrayPost.setDescrizione( desc );
-                                                }
-                                                arrayPost.setLike( "0" );
-                                                arrayPost.setCategoria( "Post" );
-                                                arrayPost.setPinnato( "no" );
 
 
-                                                SharedPreferences sharedPreferences = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                SharedPreferences.Editor editor = sharedPreferences.edit();
-                                                editor.putInt("fotoCaricate",sharedPreferences.getInt("fotoCaricate",0) + 1);
-                                                Log.d("jndjandl", String.valueOf(sharedPreferences.getInt("fotoCaricate",00) + 1));
-                                                editor.commit();
-                                                arrayPost.setFoto( listIngg );
-                                                FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
-                                                firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                firebaseFirestore.collection("Professionisti").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                                     @Override
-                                                    public void onSuccess(DocumentReference documentReference) {
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                        if(task.isSuccessful()){
+                                                            for (QueryDocumentSnapshot documentSnapshot : task.getResult()){
+                                                                if(documentSnapshot.getString("email").equals(email)){
+                                                                    ArrayPost arrayPost = new ArrayPost();
+                                                                    if(desc.isEmpty()){
+                                                                        arrayPost.setDescrizione( "" );
+                                                                    }else{
+                                                                        arrayPost.setDescrizione( desc );
+                                                                    }
 
-                                                        documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
-                                                            @Override
-                                                            public void onSuccess(Void aVoid) {
-                                                                setGridView();
+                                                                    arrayPost.setEmail(email);
+                                                                    arrayPost.setFotoProfilo(documentSnapshot.getString("fotoProfilo"));
+                                                                    arrayPost.setNomeLocale(documentSnapshot.getString("nomeLocale"));
+                                                                    arrayPost.setLike( "0" );
+                                                                    arrayPost.setCategoria( "Post" );
+                                                                    arrayPost.setPinnato( "no" );
+                                                                    arrayPost.setFoto( listIngg );
+                                                                    SharedPreferences sharedPreferences = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                                    editor.putInt("fotoCaricate",sharedPreferences.getInt("fotoCaricate",0) + 1);
+                                                                    Log.d("jndjandl", String.valueOf(sharedPreferences.getInt("fotoCaricate",00) + 1));
+                                                                    editor.commit();
+                                                                    arrayPost.setFoto( listIngg );
+                                                                    FirebaseFirestore firebaseFirestore = FirebaseFirestore.getInstance();
+                                                                    firebaseFirestore.collection( email+ "Post" ).add( arrayPost ).addOnSuccessListener( new OnSuccessListener<DocumentReference>() {
+                                                                        @Override
+                                                                        public void onSuccess(DocumentReference documentReference) {
+
+                                                                            documentReference.update( "id",documentReference.getId() ).addOnSuccessListener( new OnSuccessListener<Void>() {
+                                                                                @Override
+                                                                                public void onSuccess(Void aVoid) {
+                                                                                    setGridView();
 
 
-                                                                alertDialog.dismiss();
-                                                                Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
-                                                                        .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
-                                                                            @Override
-                                                                            public void onClick(View view) {
+                                                                                    alertDialog.dismiss();
+                                                                                    Snackbar.make( findViewById( android.R.id.content ), getString( R.string.Prodottocreatoconsuccesso ), Snackbar.LENGTH_SHORT )
+                                                                                            .setAction( getString( R.string.visualizza ), new View.OnClickListener() {
+                                                                                                @Override
+                                                                                                public void onClick(View view) {
 
-                                                                                String idPost = documentReference.getId();
+                                                                                                    String idPost = documentReference.getId();
 
-                                                                                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( Profile_bottom.this, R.style.MyDialogTheme );
+                                                                                                    AlertDialog.Builder dialogBuilder = new AlertDialog.Builder( Profile_bottom.this, R.style.MyDialogTheme );
 // ...Irrelevant code for customizing the buttons and title
 
-                                                                                LayoutInflater inflater = getLayoutInflater();
-                                                                                View viewView = inflater.inflate( R.layout.alert_grid_profile, null );
+                                                                                                    LayoutInflater inflater = getLayoutInflater();
+                                                                                                    View viewView = inflater.inflate( R.layout.alert_grid_profile, null );
 
-                                                                                dialogBuilder.setView( viewView );
-                                                                                AlertDialog alertDialog = dialogBuilder.create();
-                                                                                alertDialog.show();
+                                                                                                    dialogBuilder.setView( viewView );
+                                                                                                    AlertDialog alertDialog = dialogBuilder.create();
+                                                                                                    alertDialog.show();
 
-                                                                                ArrayList<String> uriArr = new ArrayList<>();
-                                                                                ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.slider );
-                                                                                TextView desc = (TextView) viewView.findViewById( R.id.textView69 );
-                                                                                ImageButton close = (ImageButton) viewView.findViewById( R.id.imageButton35 );
-                                                                                ImageButton pinna = (ImageButton) viewView.findViewById( R.id.imageButton34 );
-                                                                                TextView insiedeButton = (TextView) viewView.findViewById( R.id.textView72 ) ;
-                                                                                ImageButton elimina = (ImageButton) viewView.findViewById( R.id.imageButton36 );
-                                                                                Group g2 = (Group) viewView.findViewById( R.id.groupEditPhotoProfile );
-                                                                                Group g1 = (Group) viewView.findViewById( R.id.groupo1);
-                                                                                firebaseFirestore.collection( email+"Post" ).document(idPost).get().addOnSuccessListener( new OnSuccessListener<DocumentSnapshot>() {
-                                                                                    @Override
-                                                                                    public void onSuccess(DocumentSnapshot documentSnapshot) {
-                                                                                        if(documentSnapshot != null){
-                                                                                            ArrayPost arrayPost = documentSnapshot.toObject( ArrayPost.class );
-                                                                                            ArrayList<SlideModel> arrayList = new ArrayList<>();
-                                                                                            for (int i = 0;i<arrayPost.getFoto().size();i++){
-                                                                                                arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ),null ) );
-                                                                                                uriArr.add( arrayPost.getFoto().get( i ) );
-                                                                                            }
-                                                                                            imageSlider.setImageList( arrayList );
-                                                                                            if(arrayPost.getPinnato().equals( "no" )){
-                                                                                                insiedeButton.setText( getString( R.string.mettiinevidenza ) );
-                                                                                            }else{
-                                                                                                insiedeButton.setText( getString( R.string.rimuovidallevidenza ) );
-                                                                                            }
-                                                                                            desc.setText( arrayPost.getDescrizione() );
-                                                                                            if(!arrayPost.getDescrizione().isEmpty()){
-                                                                                                desc.setVisibility( View.VISIBLE );
-                                                                                            }
-
-
-
-
-                                                                                        }
-                                                                                    }
-                                                                                } );
-
-                                                                                close.setOnClickListener( new View.OnClickListener() {
-                                                                                    @Override
-                                                                                    public void onClick(View view) {
-                                                                                        alertDialog.dismiss();
-                                                                                    }
-                                                                                } );
-
-                                                                                elimina.setOnClickListener( new View.OnClickListener() {
-                                                                                    @Override
-                                                                                    public void onClick(View view) {
-                                                                                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                                                                            @Override
-                                                                                            public void onClick(DialogInterface dialog, int which) {
-                                                                                                switch (which) {
-                                                                                                    case DialogInterface.BUTTON_POSITIVE:
-                                                                                                        //Yes button clicked
-                                                                                                        g1.setVisibility( View.GONE );
-                                                                                                        g2.setVisibility( View.VISIBLE );
-                                                                                                        FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
-                                                                                                        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                                                                        String[] pin = s2.getString("pin","null").split("ì");
-                                                                                                        SharedPreferences.Editor editor = s2.edit();
-                                                                                                        editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) - 1);
-                                                                                                        Log.d("kjnfdkasndkjna", String.valueOf(s2.getInt("fotoCaricate",00000)));
-                                                                                                        if(pin.length > 1) {
-                                                                                                            for (int i = 0; i < pin.length; i++) {
-                                                                                                                if (pin[i].equals(uriArr.get(0))) {
-                                                                                                                    String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
-                                                                                                                    editor.putString("pin", fin);
+                                                                                                    ArrayList<String> uriArr = new ArrayList<>();
+                                                                                                    ImageSlider imageSlider = (ImageSlider) viewView.findViewById( R.id.slider );
+                                                                                                    TextView desc = (TextView) viewView.findViewById( R.id.textView69 );
+                                                                                                    ImageButton close = (ImageButton) viewView.findViewById( R.id.imageButton35 );
+                                                                                                    ImageButton pinna = (ImageButton) viewView.findViewById( R.id.imageButton34 );
+                                                                                                    TextView insiedeButton = (TextView) viewView.findViewById( R.id.textView72 ) ;
+                                                                                                    ImageButton elimina = (ImageButton) viewView.findViewById( R.id.imageButton36 );
+                                                                                                    Group g2 = (Group) viewView.findViewById( R.id.groupEditPhotoProfile );
+                                                                                                    Group g1 = (Group) viewView.findViewById( R.id.groupo1);
+                                                                                                    firebaseFirestore.collection( email+"Post" ).document(idPost).get().addOnSuccessListener( new OnSuccessListener<DocumentSnapshot>() {
+                                                                                                        @Override
+                                                                                                        public void onSuccess(DocumentSnapshot documentSnapshot) {
+                                                                                                            if(documentSnapshot != null){
+                                                                                                                ArrayPost arrayPost = documentSnapshot.toObject( ArrayPost.class );
+                                                                                                                ArrayList<SlideModel> arrayList = new ArrayList<>();
+                                                                                                                for (int i = 0;i<arrayPost.getFoto().size();i++){
+                                                                                                                    arrayList.add( new SlideModel( String.valueOf( arrayPost.getFoto().get( i ) ),null ) );
+                                                                                                                    uriArr.add( arrayPost.getFoto().get( i ) );
                                                                                                                 }
+                                                                                                                imageSlider.setImageList( arrayList );
+                                                                                                                if(arrayPost.getPinnato().equals( "no" )){
+                                                                                                                    insiedeButton.setText( getString( R.string.mettiinevidenza ) );
+                                                                                                                }else{
+                                                                                                                    insiedeButton.setText( getString( R.string.rimuovidallevidenza ) );
+                                                                                                                }
+                                                                                                                desc.setText( arrayPost.getDescrizione() );
+                                                                                                                if(!arrayPost.getDescrizione().isEmpty()){
+                                                                                                                    desc.setVisibility( View.VISIBLE );
+                                                                                                                }
+
+
+
+
                                                                                                             }
-                                                                                                        }else{
-
-                                                                                                            editor.putString("pin", "null");
-
                                                                                                         }
-                                                                                                        editor.commit();
+                                                                                                    } );
 
-                                                                                                        for (int i = 0;i<uriArr.size();i++){
-                                                                                                            StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
-                                                                                                            storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                    close.setOnClickListener( new View.OnClickListener() {
+                                                                                                        @Override
+                                                                                                        public void onClick(View view) {
+                                                                                                            alertDialog.dismiss();
+                                                                                                        }
+                                                                                                    } );
+
+                                                                                                    elimina.setOnClickListener( new View.OnClickListener() {
+                                                                                                        @Override
+                                                                                                        public void onClick(View view) {
+                                                                                                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                                                                                                                 @Override
-                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                public void onClick(DialogInterface dialog, int which) {
+                                                                                                                    switch (which) {
+                                                                                                                        case DialogInterface.BUTTON_POSITIVE:
+                                                                                                                            //Yes button clicked
+                                                                                                                            g1.setVisibility( View.GONE );
+                                                                                                                            g2.setVisibility( View.VISIBLE );
+                                                                                                                            FirebaseStorage firebaseStorage = FirebaseStorage.getInstance();
+                                                                                                                            SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                                                                            String[] pin = s2.getString("pin","null").split("ì");
+                                                                                                                            SharedPreferences.Editor editor = s2.edit();
+                                                                                                                            editor.putInt("fotoCaricate",s2.getInt("fotoCaricate",0) - 1);
+                                                                                                                            Log.d("kjnfdkasndkjna", String.valueOf(s2.getInt("fotoCaricate",00000)));
+                                                                                                                            if(pin.length > 1) {
+                                                                                                                                for (int i = 0; i < pin.length; i++) {
+                                                                                                                                    if (pin[i].equals(uriArr.get(0))) {
+                                                                                                                                        String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                                                                                        editor.putString("pin", fin);
+                                                                                                                                    }
+                                                                                                                                }
+                                                                                                                            }else{
 
-                                                                                                                    uriArr.remove( 0 );
-                                                                                                                    if(uriArr.size() == 0){
-                                                                                                                        DocumentReference documentReference = firebaseFirestore.collection( email+"Post" ).document(idPost);
-                                                                                                                        documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                                            @Override
-                                                                                                                            public void onComplete(@NonNull Task<Void> task) {
-                                                                                                                                alertDialog.dismiss();
-                                                                                                                                setGridView();
+                                                                                                                                editor.putString("pin", "null");
+
                                                                                                                             }
-                                                                                                                        } );
-                                                                                                                    }else{
-                                                                                                                        Log.d( "kfmldkmf", String.valueOf( uriArr.size() ) );
+                                                                                                                            editor.commit();
+
+                                                                                                                            for (int i = 0;i<uriArr.size();i++){
+                                                                                                                                StorageReference storageReference = firebaseStorage.getReferenceFromUrl( uriArr.get( i ) );
+                                                                                                                                storageReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                    @Override
+                                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+
+                                                                                                                                        uriArr.remove( 0 );
+                                                                                                                                        if(uriArr.size() == 0){
+                                                                                                                                            DocumentReference documentReference = firebaseFirestore.collection( email+"Post" ).document(idPost);
+                                                                                                                                            documentReference.delete().addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                                                @Override
+                                                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                                                    alertDialog.dismiss();
+                                                                                                                                                    setGridView();
+                                                                                                                                                }
+                                                                                                                                            } );
+                                                                                                                                        }else{
+                                                                                                                                            Log.d( "kfmldkmf", String.valueOf( uriArr.size() ) );
+                                                                                                                                        }
+
+
+                                                                                                                                    }
+                                                                                                                                } );
+                                                                                                                            }
+
+
+
+
+
+
+
+                                                                                                                            break;
+
+                                                                                                                        case DialogInterface.BUTTON_NEGATIVE:
+                                                                                                                            //No button clicked
+
+                                                                                                                            dialog.dismiss();
+
+                                                                                                                            break;
                                                                                                                     }
-
-
                                                                                                                 }
-                                                                                                            } );
+                                                                                                            };
+                                                                                                            AlertDialog.Builder builder = new AlertDialog.Builder(Profile_bottom.this);
+                                                                                                            builder.setMessage(getString( R.string.seisicurodivolereliminarequestopost )).setPositiveButton(getString( R.string.si ), dialogClickListener)
+                                                                                                                    .setNegativeButton(getString( R.string.no ), dialogClickListener).show();
                                                                                                         }
+                                                                                                    } );
 
+                                                                                                    pinna.setOnClickListener( new View.OnClickListener() {
+                                                                                                        @Override
+                                                                                                        public void onClick(View view) {
+                                                                                                            if (insiedeButton.getText().toString().equals( getString( R.string.mettiinevidenza ) )) {
 
+                                                                                                                DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
+                                                                                                                documentReference.update( "pinnato", "si" ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                    @Override
+                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                        alertDialog.dismiss();
+                                                                                                                        setGridView();
+                                                                                                                        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                                                                        SharedPreferences.Editor editor = s2.edit();
+                                                                                                                        editor.putString("pin",s2.getString("pin","") +  uriArr.get(0) + "ì");
 
-
-
-
-
-                                                                                                        break;
-
-                                                                                                    case DialogInterface.BUTTON_NEGATIVE:
-                                                                                                        //No button clicked
-
-                                                                                                        dialog.dismiss();
-
-                                                                                                        break;
-                                                                                                }
-                                                                                            }
-                                                                                        };
-                                                                                        AlertDialog.Builder builder = new AlertDialog.Builder(Profile_bottom.this);
-                                                                                        builder.setMessage(getString( R.string.seisicurodivolereliminarequestopost )).setPositiveButton(getString( R.string.si ), dialogClickListener)
-                                                                                                .setNegativeButton(getString( R.string.no ), dialogClickListener).show();
-                                                                                    }
-                                                                                } );
-
-                                                                                pinna.setOnClickListener( new View.OnClickListener() {
-                                                                                    @Override
-                                                                                    public void onClick(View view) {
-                                                                                        if (insiedeButton.getText().toString().equals( getString( R.string.mettiinevidenza ) )) {
-
-                                                                                            DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
-                                                                                            documentReference.update( "pinnato", "si" ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                @Override
-                                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                                    alertDialog.dismiss();
-                                                                                                    setGridView();
-                                                                                                    SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                                                                    SharedPreferences.Editor editor = s2.edit();
-                                                                                                    editor.putString("pin",s2.getString("pin","") +  uriArr.get(0) + "ì");
-
-                                                                                                    editor.commit();
-                                                                                                }
-                                                                                            } );
-                                                                                        }else{
-                                                                                            DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
-                                                                                            documentReference.update( "pinnato", "no" ).addOnCompleteListener( new OnCompleteListener<Void>() {
-                                                                                                @Override
-                                                                                                public void onComplete(@NonNull Task<Void> task) {
-                                                                                                    alertDialog.dismiss();
-                                                                                                    SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
-                                                                                                    String[] pin = s2.getString("pin","null").split("ì");
-                                                                                                    if(pin.length > 1) {
-                                                                                                        for (int i = 0; i < pin.length; i++) {
-                                                                                                            if (pin[i].equals(uriArr.get(0))) {
-                                                                                                                String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
-                                                                                                                SharedPreferences.Editor editor = s2.edit();
-                                                                                                                editor.putString("pin", fin);
-                                                                                                                editor.commit();
+                                                                                                                        editor.commit();
+                                                                                                                    }
+                                                                                                                } );
+                                                                                                            }else{
+                                                                                                                DocumentReference documentReference = firebaseFirestore.collection( email + "Post" ).document( idPost );
+                                                                                                                documentReference.update( "pinnato", "no" ).addOnCompleteListener( new OnCompleteListener<Void>() {
+                                                                                                                    @Override
+                                                                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                        alertDialog.dismiss();
+                                                                                                                        SharedPreferences s2 = getSharedPreferences("fotoPinnate",MODE_PRIVATE);
+                                                                                                                        String[] pin = s2.getString("pin","null").split("ì");
+                                                                                                                        if(pin.length > 1) {
+                                                                                                                            for (int i = 0; i < pin.length; i++) {
+                                                                                                                                if (pin[i].equals(uriArr.get(0))) {
+                                                                                                                                    String fin = s2.getString("pin", "null").replace(uriArr.get(0) + "ì", "");
+                                                                                                                                    SharedPreferences.Editor editor = s2.edit();
+                                                                                                                                    editor.putString("pin", fin);
+                                                                                                                                    editor.commit();
+                                                                                                                                }
+                                                                                                                            }
+                                                                                                                        }else{
+                                                                                                                            SharedPreferences.Editor editor = s2.edit();
+                                                                                                                            editor.putString("pin", "null");
+                                                                                                                            editor.commit();
+                                                                                                                        }
+                                                                                                                        setGridView();
+                                                                                                                    }
+                                                                                                                } );
                                                                                                             }
                                                                                                         }
-                                                                                                    }else{
-                                                                                                        SharedPreferences.Editor editor = s2.edit();
-                                                                                                        editor.putString("pin", "null");
-                                                                                                        editor.commit();
-                                                                                                    }
-                                                                                                    setGridView();
+                                                                                                    } );
+
+
+
+
                                                                                                 }
-                                                                                            } );
-                                                                                        }
-                                                                                    }
-                                                                                } );
+                                                                                            } )
 
-
-
-
-                                                                            }
-                                                                        } )
-
-                                                                        .show();
+                                                                                            .show();
+                                                                                }
+                                                                            } ).addOnFailureListener(new OnFailureListener() {
+                                                                                @Override
+                                                                                public void onFailure(@NonNull Exception e) {
+                                                                                    loadingGroup.setVisibility(View.GONE);
+                                                                                    creaPostGroup.setVisibility(View.VISIBLE);
+                                                                                }
+                                                                            });
+                                                                        }
+                                                                    } ).addOnFailureListener(new OnFailureListener() {
+                                                                        @Override
+                                                                        public void onFailure(@NonNull Exception e) {
+                                                                            loadingGroup.setVisibility(View.GONE);
+                                                                            creaPostGroup.setVisibility(View.VISIBLE);
+                                                                        }
+                                                                    });
+                                                                }
                                                             }
-                                                        } ).addOnFailureListener(new OnFailureListener() {
-                                                            @Override
-                                                            public void onFailure(@NonNull Exception e) {
-                                                                loadingGroup.setVisibility(View.GONE);
-                                                                creaPostGroup.setVisibility(View.VISIBLE);
-                                                            }
-                                                        });
-                                                    }
-                                                } ).addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        loadingGroup.setVisibility(View.GONE);
-                                                        creaPostGroup.setVisibility(View.VISIBLE);
+                                                        }
                                                     }
                                                 });
+
+
+
+
+
                                             }
                                         }
                                     } ).addOnFailureListener(new OnFailureListener() {

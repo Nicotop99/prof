@@ -8,11 +8,15 @@ public class ArrayPost {
     public ArrayPost(){
 
     }
-    public String id,descrizione,like,pinnato,categoria;
+    public String id,descrizione,like,pinnato,categoria,email,fotoProfilo,nomeLocale;
     public List<String> foto;
 
 
-    public ArrayPost(String id, String descrizione, String like, String pinnato, List<String> foto,String categoria) {
+    public ArrayPost(String id, String descrizione, String like, String pinnato, List<String> foto,String categoria
+    ,String email,String fotoProfilo,String nomeLocale) {
+        this.email = email;
+        this.fotoProfilo = fotoProfilo;
+        this.nomeLocale = nomeLocale;
         this.id = id;
         this.categoria = categoria;
         this.descrizione = descrizione;
@@ -21,6 +25,29 @@ public class ArrayPost {
         this.foto = foto;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getFotoProfilo() {
+        return fotoProfilo;
+    }
+
+    public void setFotoProfilo(String fotoProfilo) {
+        this.fotoProfilo = fotoProfilo;
+    }
+
+    public String getNomeLocale() {
+        return nomeLocale;
+    }
+
+    public void setNomeLocale(String nomeLocale) {
+        this.nomeLocale = nomeLocale;
+    }
 
     public String getCategoria() {
         return categoria;

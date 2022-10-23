@@ -51,7 +51,7 @@ public class Registrazione extends AppCompatActivity {
         setEdittext();
         getToken();
     }
-    ArrayList<String> token;
+    ArrayList<String> token = new ArrayList<>();
 
     void getToken() {
 
@@ -149,10 +149,15 @@ public class Registrazione extends AppCompatActivity {
                                                 stringRegistrazione.setNascondiFollower("false");
                                                 stringRegistrazione.setNascondiPost("false");
                                                 stringRegistrazione.setProfiloPubblico("true");
+                                                stringRegistrazione.setPartitaIva("");
+                                                stringRegistrazione.setLati("");
+                                                stringRegistrazione.setLongi("");
+                                                stringRegistrazione.setViaLocale("");
+                                                stringRegistrazione.setNomeLocale("");
                                                 stringRegistrazione.setToken(listIng);
                                                 stringRegistrazione.setFollower( "0" );
                                                 stringRegistrazione.setNascondiCoupon("false");
-                                                stringRegistrazione.setFotoProfilo( "https://firebasestorage.googleapis.com/v0/b/pubmania-404db.appspot.com/o/download%20(5).jfif?alt=media&token=9fbd065e-5e01-445c-a9fe-60a02bbbfcca" );
+                                                stringRegistrazione.setFotoProfilo( "https://firebasestorage.googleapis.com/v0/b/pub-mania.appspot.com/o/images.png?alt=media&token=b0aa5019-39c4-4580-8e90-2f7747d457f8" );
                                                 stringRegistrazione.setEmail( email );
                                                 stringRegistrazione.setNome( nome );
                                                 stringRegistrazione.setNumero( cellulare );
